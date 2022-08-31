@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+</head>
+<body>
+    <%- include('./partials/adminNav'); %>
+    <h1>Recipes</h1><br><br>
+    <button><a href="/admin/recipes/create">Create Recipe</a></button><br><br>
+    <table border="3">
+        <thead>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Process</th>
+            <th>Category</th>
+            <th>Time</th>
+            <th>Serving</th>
+            <th>Source</th>
+            <th>Video</th>
+            <th>Calories</th>
+            <th>Meal Time</th>
+            <th>Rate</th>
+            <th>Ingredients</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <% let i = 0; %> 
+            <% let ingArr = []; %> 
+            <% recs.forEach(rec => { %>
+            <tr> 
+                <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100"></td>
+                <td><%= rec.rec_name %> </td>
+                <td><%= rec.rec_desc %></td>
+                <td><%= rec.rec_process %></td>
+                <td><%= rec.rec_categ %></td>
+                <td><%= rec.rec_time %></td>
+                <td><%= rec.rec_serving %></td>
+                <td><a href="<%= rec.rec_src %>">Source Link</a></td>
+                <!-- <td><iframe width="200" height="200" src="">
+                </iframe></td> -->
+                <td><a href="<%= rec.rec_vid %>">YouTube Link</a></td>
+                <td><%= rec.rec_cal %></td>
+                <td><%= rec.rec_mealTime %></td>
+                <td><%= rec.rec_rate %></td>
+                <!-- ing -->
+                <% if (i < recIngs.length) { %>
+                    <% ingArr = recIngs[i].split(",") %> 
+                    <td>
+                    <% for( let index = 0; index < ingArr.length; index++ ) { %>
+                        <%= ingArr[index]%><br> 
+                    <% } %> 
+                    </td>
+                <% i++; } %> 
+                <!-- actions -->
+                <td>
+                    <button><a href="/admin/recipes/edit/<%= rec.rec_id %>">Edit</a></button>
+                    <button><a href="/admin/recipes/delete/<%= rec.rec_id %>">Delete</a></button>
+                </td>
+            </tr>
+            <%}) %>
+        </tbody>
+    </table>
+
+</body>
+</html>

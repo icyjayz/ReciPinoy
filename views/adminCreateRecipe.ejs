@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title><%= title %></title>
+</head>
+<body>
+    <%- include('./partials/adminNav'); %>
+    <br><br>
+
+    <form action="/admin/recipes/create" method="post" onsubmit="getIngs()" enctype="multipart/form-data">
+        <label for="recNameLbl">Name: </label>
+        <input type="text" name="recNameInp" id="recNameInp" required><br><br>
+        <label for="recDescLbl">Description: </label>
+        <textarea name="recDescInp" id="recDescInp" cols="30" rows="10" required></textarea><br><br>
+        <label for="recPrcLbl">Process: </label>
+        <textarea name="recPrcInp" id="recPrcInp" cols="30" rows="10" required></textarea><br><br>
+        <label for="recPrcLbl">Category: </label>
+        <select name="recCateg" id="recCateg" required>
+            <option value="Luzon">Luzon</option>
+            <option value="Visayas">Visayas</option>
+            <option value="Mindanao">Mindanao</option>
+            <option value="Popular">Popular</option>
+        </select><br><br>
+        <label for="recTimeLbl">Time Process: </label>
+        <input type="text" name="recTimeInp" id="recTimeInp"><br><br>
+        <label for="recSrvLbl">Serving: </label>
+        <input type="number" name="recSrvInp" id="recSrvInp"><br><br>
+        <label for="recSrcLbl">Source: </label>
+        <input type="url" name="recSrcInp" id="recSrcInp" required><br><br>
+        <label for="recVidLbl">Video Link: </label>
+        <input type="url" name="recVidInp" id="recVidInp"><br><br>
+        <label for="recCalLbl">Calorific Value: </label>
+        <input type="text" name="recCalInp" id="recCalInp"><br><br>
+        <label for="recMTime">Meal Time: </label>
+        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+        <label for="mtBreakfast">Breakfast</label>
+        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+        <label for="mtLunch">Lunch</label>
+        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+        <label for="mtLunch">Meryenda</label>
+        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+        <label for="mtDinner">Dinner</label><br><br>
+        <label for="recImageLbl">Image: </label>
+        <input type="file" name="recImgInp" required><br><br>
+        <label for="recIng">Add Ingredients: </label><br>
+        <label for="ingQuantLbl">Quantity: </label>
+        <label for="ingUnitLbl">Unit: </label>
+        <label for="ingNameLbl">Ingredient: </label>
+        <label for="ingInsLbl">Instruction: </label>
+        <div id="ingInps">
+            <h5>put - if n/a</h5>
+            <input type="hidden" value="1" id="ingNum" name="ingNum" required>
+            <input type="text" name="ingQuantInp[]" id="ingQuantInp1" required>
+            <input type="text" name="ingUnitInp[]" id="ingUnitInp1" required>
+            <input type="text" name="recIng[]" id="recIng1" required>
+            <!-- <select name="recIng[]" id="recIng1">
+                <%# ing.forEach(ingName => { %>
+                    <option value="<%#= ingName.ing_id %>"><%#= ingName.ing_name %></option>
+                <%# }) %> 
+                
+            </select> -->
+            <input type="text" name="ingInsInp[]" id="ingInsInp1">
+            <input type="hidden" name="qval" value="" id="qval">
+            <input type="hidden" name="idval" value="" id="idval">
+            <input type="hidden" name="uval" value="" id="uval">
+            <input type="hidden" name="insval" value="" id="insval">
+        </div>
+        
+        <button id="addIngredientsBtn" type="button">Add Another Ingredient</button> <br><br>
+        <button type="submit">Add Recipe</button>
+    </form>
+
+    <script type="text/javascript">
+        $('#addIngredientsBtn').on('click', add);
+        function getIngs() {
+            let qv = [];
+            let iv = [];
+            let uv = [];
+            let insv = [];
+            jQuery('input[name="ingQuantInp[]"]').each(function() {
+         
+                qv.push(this.value);
+            });
+            jQuery('input[name="recIng[]"]').each(function() {
+                let ingstr = this.value.toLowerCase();
+                iv.push(ingstr);
+            });
+            jQuery('input[name="ingUnitInp[]"]').each(function() {
+     
+                uv.push(this.value);
+            });
+            jQuery('input[name="ingInsInp[]"]').each(function() {
+    
+                insv.push(this.value);
+            });
+            
+
+            $('#qval').val(JSON.stringify(qv));
+            $('#idval').val(JSON.stringify(iv));
+            $('#uval').val(JSON.stringify(uv));
+            $('#insval').val(JSON.stringify(insv));
+
+        }
+        function add() {
+            console.log('add button clicked....');
+            let newIngNum = parseInt($('#ingNum').val()) + 1;
+
+            let quantInp = '<br><input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +'">';
+            let ingInp = '<input type="text" name="recIng[]" id="recIng'+ newIngNum +'" required>';
+            let unitInp = '<input type="text" name="ingUnitInp[]" id="ingUnitInp'+ newIngNum +'">';
+            let insInp = '<input type="text" name="ingInsInp[]" id="ingInsInp'+ newIngNum+'">';
+
+            $('#ingInps').append(quantInp);
+            $('#ingInps').append(unitInp);
+            $('#ingInps').append(ingInp);
+            $('#ingInps').append(insInp);
+
+            $('#ingNum').val(newIngNum);    
+        }
+    </script>
+</body>
+</html>
