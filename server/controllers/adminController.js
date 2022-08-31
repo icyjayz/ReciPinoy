@@ -400,6 +400,10 @@ exports.adminRecipeEdit = (req, res) => {
                 }
             })
         }
+        else{
+            console.log('admin not logged in...\n');
+            res.render('admin', { title: 'Admin Login'});
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -536,4 +540,108 @@ try {
 }
 }
 
+exports.adminSearch = (req, res) => {
+    try {
+        session = req.session;
+        if(session.adminId){
+            pool.getConnection((err, conn) =>{
+                if(err){
+                    console.log(err, '\n');
+                }
+                else{
+                    let search = req.body.searchInp;
+                    conn.query('SELECT * FROM rec WHERE rec_name LIKE ?', ['%' + search + '%'], (err, result) => {
+                        if(err){
+                            console.log(err, '\n');
+                        }
+                        else{
+                            res.render('adminSearchREsults', {title: 'Search Results', recs: result});
+                        }   
+                    })
+                }
+            })
+        }
+        else{
+            console.log('admin not logged in...\n');
+            res.render('admin', { title: 'Admin Login'});
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
+exports.adminRecipeView = (req,res) => {
+    try {
+        session = req.session;
+        if(session.adminId){
+            pool.getConnection((err, conn) => {
+                if(err){
+                    console.log('error in adminrecipes...\n');
+                }
+                else{
+                    let rId = req.params.id;
+                    conn.query('SELECT * FROM rec WHERE rec_id = ?',[rId], (err, recs) => {
+                        if(err){
+                            console.log('cannot fetch recipes in db...\n');
+                        }
+                        else{
+                            let recIngs = [];
+                            let ingStringArr = [];
+                            let ingStr = '';
+                            let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
+                            function getIngs(id){
+                                return new Promise((resolve, reject) => {
+                                        conn.query(qStr, [id], (err, ings) => {
+                                            if(err){
+                                                console.log(err, '\n');
+                                            }
+                                            else{
+                                                ings.forEach(ing => {
+                                                    let ingq = ing.ingQuant;
+                                                    let ingu = ing.ingUnit;
+                                                    let ingi = ing.ingIns;
+                                                    if(!ing.ingQuant || ing.ingQuant == 0){
+                                                        ingq = '';
+                                                    }
+                                                    if(!ing.ingUnit){
+                                                        ingu = '';
+                                                    }
+                                                    if(!ing.ingIns){
+                                                        ingi = '';
+                                                    }
+                                                    let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
+                                                    ingStringArr.push(temp);
+                                                });
+                                                ingStr = ingStringArr.join(',');
+                                                //tempArr.push(ingStr);
+                                                ingStringArr = []; 
+                                                resolve(ingStr);
+                                            }
+                                        })
+                                })
+                            }
+                            async function getAllRecIng(r){
+                                for(id of r){
+                                    ingStr = await getIngs(id.rec_id);
+                                    recIngs.push(ingStr);
+                                }
+                                //console.log(recIngs);
+                                conn.release();
+                                res.render('adminRecipeView', { title: recs.rec_name, recs: recs, recIngs: recIngs});
+                            }
+                            getAllRecIng(recs);
+                        }
+                    })
+                             
+                }
+            })
+        }
+        else{
+            console.log('admin not logged in...\n');
+            res.render('admin', { title: 'Admin Login'});
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

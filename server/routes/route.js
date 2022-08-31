@@ -30,6 +30,8 @@ router.post('/admin/recipes/create', adminController.submitRecipe);
 router.get('/admin/recipes/edit/:id', adminController.adminRecipeEdit);
 router.get('/admin/recipes/delete/:id', adminController.adminRecipeDelete);
 router.post('/admin/recipes/edit/:id', adminController.adminRecipeSubmitEdit);
+router.post('/admin/recipes/search', adminController.adminSearch);
+router.get('/admin/recipes/:id', adminController.adminRecipeView);
 
 
 module.exports = router

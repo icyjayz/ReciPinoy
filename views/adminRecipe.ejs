@@ -33,20 +33,42 @@
             <% let ingArr = []; %> 
             <% recs.forEach(rec => { %>
             <tr> 
-                <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100"></td>
+                <td>
+                    <% if (rec.rec_image) { %>
+                        <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100">
+                    <% } %>
+                </td>
                 <td><%= rec.rec_name %> </td>
                 <td><%= rec.rec_desc %></td>
                 <td><%= rec.rec_process %></td>
                 <td><%= rec.rec_categ %></td>
-                <td><%= rec.rec_time %></td>
-                <td><%= rec.rec_serving %></td>
+                <td>
+                    <% if (rec.rec_time) { %>
+                        <%= rec.rec_time %>
+                    <% } %>
+                </td>
+                <td>
+                    <% if (rec.rec_serving) { %>
+                        <%= rec.rec_serving %>
+                    <% } %>
+                </td>
                 <td><a href="<%= rec.rec_src %>">Source Link</a></td>
-                <!-- <td><iframe width="200" height="200" src="">
-                </iframe></td> -->
-                <td><a href="<%= rec.rec_vid %>">YouTube Link</a></td>
-                <td><%= rec.rec_cal %></td>
+                <td>
+                    <% if (rec.rec_vid) { %>
+                        <a href="<%= rec.rec_vid %>">YouTube Link</a>
+                    <% } %> 
+                </td>
+                <td>
+                    <% if (rec.rec_cal) { %>
+                        <%= rec.rec_cal %>
+                    <% } %>
+                </td>
                 <td><%= rec.rec_mealTime %></td>
-                <td><%= rec.rec_rate %></td>
+                <td>
+                    <% if (rec.rec_rate) { %>
+                        <%= rec.rec_rate %>
+                    <% } %>
+                </td>
                 <!-- ing -->
                 <% if (i < recIngs.length) { %>
                     <% ingArr = recIngs[i].split(",") %> 
