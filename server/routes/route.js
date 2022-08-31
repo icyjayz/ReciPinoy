@@ -14,6 +14,10 @@ router.get('/logout', userController.userLogout);
 router.get('/home', userController.userHome);
 router.get('/verify', userController.otpPage);
 router.post('/verify', userController.userVerified);
+router.get('/forgot-password', userController.userForgotPwd);
+router.post('/forgot-password', userController.userSendPwdEmail);
+router.get('/reset-password', userController.userResetPwd);
+router.post('/reset-password', userController.userUpdatePwd);
 
 
 router.get('/admin', adminController.adminPage);

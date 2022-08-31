@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const pool = require('../classes/db');
 const User = require('../classes/user');
+const randToken = require('rand-token');
 
 
 let otp = Math.random();
@@ -19,7 +20,7 @@ let transporter = nodemailer.createTransport({
 
     auth: {
         user: 'pvblcml@gmail.com',
-        pass: 'ikdodeqzumyzrann',
+        pass: 'zfaugmmgmahgwamg',
     }
 
 });
@@ -244,5 +245,121 @@ exports.userVerified = async(req,res) => {
     }
     catch(error){
         res.status(500).json({ message: error.message });
+    }
+}
+
+exports.userForgotPwd = (req, res) => {
+    try {
+        res.render('forgotPwd', { title: 'Password Reset'});
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userSendPwdEmail = (req, res) => {
+    try {
+        let email = req.body.fpEmail;
+        pool.getConnection((err, conn) =>{
+            if(err){
+                console.log(err, '\n');
+                conn.release();
+            }
+            else{
+                conn.query('SELECT * FROM users WHERE user_email = ?', [email], (err, user) => {
+                    if(err){
+                        console.log(err, '\n');
+                        conn.release();
+                    }else{
+                        let userEmail = user[0].user_email;
+                        let token = randToken.generate(20);
+                        var mailOptions = {
+                            from: 'pvblcml@gmail.com',
+                            to: userEmail,
+                            subject: 'ReciPinoy Reset Password Link',
+                            //text: 'Your OTP is: ' + otp.toString()
+                            html: '<p>You requested for reset password, kindly use this <a href="http://localhost:3000/reset-password?token=' + token + '"><strong>link</strong></a> to reset your password</p>'
+                            
+                        };
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                console.log(error);
+                                conn.release();
+                            }
+                            console.log('Message sent: %s', info.messageId);
+                            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                            
+                        });
+                        conn.query('UPDATE users SET user_token = ? WHERE user_email = ?', [token, userEmail], (err, row) =>{
+                            if(err){
+                                console.log(err, '\n');
+                                conn.release();
+                            }
+                            else{
+                                conn.release();
+                                console.log('reset password email sent...\n');
+                                res.redirect('/');
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userResetPwd = (req, res) =>{
+    try {
+        res.render('resetPwd', { title: 'Password Reset', token: req.query.token});
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userUpdatePwd = (req, res) =>{
+    try {
+        let token = req.body.tokenInp;
+        let password = req.body.newPwdInp;
+        let passwordConf = req.body.newPwdInpConf;
+        if(password !== passwordConf){
+            //alert('Passwords does not match');
+            res.redirect('http://localhost:3000/reset-password?token=' + token + '');    
+        }
+        else{
+            pool.getConnection((err, conn) =>{
+                if(err){
+                    console.log(err, '\n');
+                }
+                else{
+                    conn.query('SELECT * FROM users WHERE user_token = ?', [token], (err, user) => {
+                        if(err){
+                            console.log(err, '\n');
+                        }
+                        else{
+                            bcrypt.genSalt(10, async (err, salt) => {
+                                await bcrypt.hash(password, salt, (err, hash) =>{
+                                    const hashed = hash;
+                                    conn.query('UPDATE users SET user_password = ? WHERE user_token = ?', [hashed, token], (err, result) => {
+                                        if(err){
+                                            console.log(err,'\n');
+                                            conn.release();
+                                        }
+                                        else{
+                                            console.log('password updated! \n');
+                                            conn.release();
+                                            res.redirect('/login');
+                                        }
+                                    })
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+        }
+       
+    } catch (error) {
+        res.status(500).json({ message: error.message});
     }
 }
