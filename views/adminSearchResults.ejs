@@ -11,12 +11,16 @@
     <br><br>
     <table>
         <tbody>
-            <% recs.forEach(rec => { %>
-                <tr>
-                    <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100"></td>
-                    <td><a href="/admin/recipes/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
-                </tr>
-            <% }) %>
+            <% if (recs.length > 0) { %>
+                <% recs.forEach(rec => { %>
+                    <tr>
+                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100"></td>
+                        <td><a href="/admin/recipes/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <h3>No recipes found.</h3>
+                <% } %>
         </tbody>
     </table>
 </body>

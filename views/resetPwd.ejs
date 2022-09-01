@@ -7,7 +7,10 @@
     <title><%= title %></title>
 </head>
 <body>
-    <h1>Reset Password Page</h1>
+    <h1>Reset Password Page</h1><br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
     <form action="/reset-password" method="post">
         <input type="hidden" name="tokenInp" value="<%= token %>">
         <label for="newPwdLabel">Enter your new password: </label>

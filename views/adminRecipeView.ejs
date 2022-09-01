@@ -39,7 +39,8 @@
                 <% } %> 
             <% i++; } %>
         </ul>
-        <p><strong>Process:</strong><br><%= rec.rec_process %></p>
+        <p><strong>Process:</strong><br></p>
+        <textarea name="" id="" cols="30" rows="10" readonly><%= rec.rec_process %></textarea><br>
         <a href="<%= rec.rec_src %>"><strong>Source</strong></a>
         <% if (rec.rec_vid) { %>
             <p><strong>Video:</strong><br></p>

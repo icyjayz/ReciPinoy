@@ -11,7 +11,10 @@
 <body>
     <%- include('./partials/adminNav'); %>
     <br><br>
-
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
+    <br><br>
     <form action="/admin/recipes/create" method="post" onsubmit="getIngs()" enctype="multipart/form-data">
         <label for="recNameLbl">Name: </label>
         <input type="text" name="recNameInp" id="recNameInp" required><br><br>

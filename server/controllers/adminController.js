@@ -8,11 +8,12 @@ exports.adminPage = (req, res) => {
     try{
         session = req.session;
         if(session.adminId){
-            res.render('adminHome', { title: 'Admin HomePage', id: session.name});
+            res.render('adminHome', { title: 'Admin HomePage', id: session.adminName});
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     }
     catch(error){
@@ -53,7 +54,8 @@ exports.getAdminData = (req, res) => {
                                 }
                                 else{
                                     // res.send({ message: 'invalid credentials!!!'});
-                                    console.log('Invalid credentials!\n');
+                                    req.flash('msg', 'Invalid credentials!')
+                                    //console.log('Invalid credentials!\n');
                                     conn.release();
                                     res.redirect('/admin');
                                 }
@@ -80,7 +82,6 @@ exports.adminHome = (req, res) => {
     }
     catch(error){
         res.status(500).json({ message: error.message });
-
     }
     
 }
@@ -158,7 +159,8 @@ exports.adminRecipes = (req, res) => {
                                 }
                                 //console.log(recIngs);
                                 conn.release();
-                                res.render('adminRecipe', { title: 'Recipes', recs: recs, recIngs: recIngs});
+                                let msg = req.flash('msg');
+                                res.render('adminRecipe', { title: 'Recipes', recs: recs, recIngs: recIngs, msg});
                             }
                             getAllRecIng(recs);
                         }
@@ -169,7 +171,8 @@ exports.adminRecipes = (req, res) => {
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     }
     catch(error){
@@ -214,7 +217,9 @@ exports.submitRecipe = (req, res) => {
                         })
                     }
                     else{
-                        console.log('invald file format..\n');
+                        let msg = req.flash('msg');
+                        res.render('adminCreateRecipe', {title: 'Create Recipe', ing: rows, msg});
+                        //console.log('invald file format..\n');
                     }
                     conn.query('INSERT INTO rec(rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [rec.getRecName(), rec.getRecDesc(), rec.getRecPrc(), rec.getRecCateg(), rec.getRecTime(), rec.getRecSrv(), rec.getRecSrc(), rec.getRecVid(), rec.getRecCal(), mString, recImgName], (err, result) => {
                         if(err){
@@ -297,7 +302,8 @@ exports.submitRecipe = (req, res) => {
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     }
     catch(error){
@@ -319,12 +325,18 @@ exports.adminRecipeCreate = (req, res) => {
                             console.log(err, '\n');
                         }
                         else{
-                            res.render('adminCreateRecipe', {title: 'Create Recipe', ing: rows});
+                            let msg = req.flash('msg');
+                            res.render('adminCreateRecipe', {title: 'Create Recipe', ing: rows, msg});
                         }
                     })
                 }
             })
             
+        }
+        else{
+            console.log('admin not logged in...\n');
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     }
     catch(error){
@@ -355,7 +367,8 @@ exports.adminRecipeDelete = (req, res) => {
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     }
     catch(error){
@@ -402,7 +415,8 @@ exports.adminRecipeEdit = (req, res) => {
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -554,8 +568,12 @@ exports.adminSearch = (req, res) => {
                         if(err){
                             console.log(err, '\n');
                         }
+                        else if(result){
+                           res.render('adminSearchResults', {title: 'Search Results', recs: result});
+                        }
                         else{
-                            res.render('adminSearchREsults', {title: 'Search Results', recs: result});
+                           // let msg = req.flash('msg', 'No recipes found!');
+                            res.render('adminSearchResults', {title: 'Search Results', recs: result});
                         }   
                     })
                 }
@@ -563,7 +581,8 @@ exports.adminSearch = (req, res) => {
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
         
     } catch (error) {
@@ -639,7 +658,38 @@ exports.adminRecipeView = (req,res) => {
         }
         else{
             console.log('admin not logged in...\n');
-            res.render('admin', { title: 'Admin Login'});
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+exports.adminUsers = (req, res) => {
+    try {
+        session = req.session;
+        if(session.adminId){
+            pool.getConnection((err, conn) => {
+                if(err){
+                    console.log(err, '\n');
+                }
+                else{
+                    conn.query('SELECT * FROM users', (err, users) =>{
+                        if(err){
+                            console.log(err, '\n');
+                        }
+                        else{
+                            res.render('adminUsers', { title: 'Users', users: users});
+                        }
+                    })
+                }
+            })
+        }
+        else{
+            console.log('admin not logged in...\n');
+            let msg = req.flash('msg');
+            res.render('admin', { title: 'Admin Login', msg});
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
+const flash = require('express-flash');
 
 
 require('dotenv').config();
@@ -24,7 +25,7 @@ app.use(session({
     }
 }));
 app.use(fileUpload());
-
+app.use(flash());
 app.set('view engine', 'ejs');
 
 

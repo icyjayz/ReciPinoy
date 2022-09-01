@@ -8,11 +8,15 @@
     <title><%= title %></title>
 </head>
 <body>
-    <h1>Forgot Password Page</h1>
+    <h1>Forgot Password Page</h1><br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
     <form action="/forgot-password" method="post">
         <label for="fpEmail">Email: </label>
         <input type="email" name="fpEmail" id="fpEmail">
         <button type="submit">Send Reset Password Link</button>
     </form>
+    
 </body>
 </html>

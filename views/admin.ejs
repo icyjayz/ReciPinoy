@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>Admin Login Form</h1><br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
+    <br><br>
     <form action="/admin" method="POST">
         <label for="adminEmailLbl">Email: </label>
         <input type="email" name="adminEmailInp" id="adminEmailInp" required><br><br>

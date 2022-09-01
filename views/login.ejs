@@ -7,7 +7,10 @@
     <title><%= title %></title>
 </head>
 <body>
-    <h1>Login Form</h1>
+    <h1>Login Form</h1><br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+        <% } %>
     <form action="/login" method="POST">
         <label for="loginEmailLbl">Email: </label>
         <input type="email" name="loginEmailInp" id="loginEmailInp" required><br><br>
@@ -16,6 +19,7 @@
         <button type="submit">Login</button>
     </form>
     <br><br><a href="/forgot-password">Forgot Password?</a>
-
+    <br><br><a href="/register">New here? Register here.</a>
+    
 </body>
 </html>

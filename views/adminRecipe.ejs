@@ -10,6 +10,10 @@
 <body>
     <%- include('./partials/adminNav'); %>
     <h1>Recipes</h1><br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
+    <br>
     <button><a href="/admin/recipes/create">Create Recipe</a></button><br><br>
     <table border="3">
         <thead>

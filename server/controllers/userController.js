@@ -34,7 +34,8 @@ exports.indexPage = (req, res) =>{
         }
         else{
             console.log('user none...\n');
-            res.render('index', { title: 'Home Page'});
+            let msg = req.flash('msg');
+            res.render('index', { title: 'Home Page', msg});
         }
     }
     catch(error){
@@ -44,7 +45,8 @@ exports.indexPage = (req, res) =>{
 }
 
 exports.registerPage = (req, res) => {
-    res.render('register', { title: 'Register Page'});
+    let msg = req.flash('msg');
+    res.render('register', { title: 'Register Page', msg});
 }
 
 exports.getRegData = (req,res) => {
@@ -67,6 +69,7 @@ exports.getRegData = (req,res) => {
                 let rePassword = req.body.regRePasswordInp;
                 //let categ = 'admin';
                 if(user.password !== rePassword){
+                    req.flash('msg', 'Passwords does not match!');
                     //alert('Passwords does not match');
                     res.redirect('/register');    
                 }
@@ -79,7 +82,8 @@ exports.getRegData = (req,res) => {
                         }
                         else if(row.length > 0)
                         {
-                            console.log('email is already registered!\n');
+                            req.flash('msg', 'Email is already registered!');
+                            //console.log('email is already registered!\n');
                             conn.release();
                             res.redirect('/register');
                         }
@@ -97,8 +101,8 @@ exports.getRegData = (req,res) => {
                                 if (error) {
                                     console.log(error);
                                 }
-                                console.log('Message sent: %s', info.messageId);
-                                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                                //console.log('Message sent: %s', info.messageId);
+                                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
                                 res.redirect('/verify');
                             });
@@ -120,7 +124,8 @@ exports.getRegData = (req,res) => {
     
 }
 exports.loginPage = (req, res) => {
-    res.render('login', { title: 'Login Page'});
+    let msg = req.flash('msg');
+    res.render('login', { title: 'Login Page', msg});
 }
 
 exports.getLoginData = (req, res) => {
@@ -155,8 +160,9 @@ exports.getLoginData = (req, res) => {
                                 }
                                 else{
                                     // res.send({ message: 'invalid credentials!!!'});
-                                    console.log('Invalid credentials!\n');
+                                    //console.log('Invalid credentials!\n');
                                     conn.release();
+                                    req.flash('msg', 'Invalid credentials!');
                                     res.redirect('/login');
                                 }
                             })
@@ -206,7 +212,8 @@ exports.userHome = (req,res) => {
 }
 exports.otpPage = (req, res) => {
     try{
-        res.render('otpVerify', { title: 'Verify your email',  msg: ''});
+        let msg = req.flash('msg');
+        res.render('otpVerify', { title: 'Verify your email',  msg});
     }
     catch(error){
         res.status(500).json({ message: error.message});
@@ -231,6 +238,7 @@ exports.userVerified = async(req,res) => {
                             else{
                                 console.log('user inserted! \n');
                                 conn.release();
+                                req.flash('msg', 'Email verified! You can now login!');
                                 res.redirect('/login');
                             }
                         })
@@ -240,7 +248,9 @@ exports.userVerified = async(req,res) => {
             
         }
         else {
-            res.render('otpVerify', { title: 'Verify your email', msg: 'otp is incorrect'});
+            req.flash('msg', 'Incorrect OTP! Try again!');
+            res.redirect('/verify');
+            //res.render('otpVerify', { title: 'Verify your email', msg: 'otp is incorrect'});
         }
     }
     catch(error){
@@ -250,7 +260,8 @@ exports.userVerified = async(req,res) => {
 
 exports.userForgotPwd = (req, res) => {
     try {
-        res.render('forgotPwd', { title: 'Password Reset'});
+        let msg = req.flash('msg');
+        res.render('forgotPwd', { title: 'Password Reset', msg});
     } catch (error) {
         res.status(500).json({ message: error.message});
     }
@@ -269,14 +280,19 @@ exports.userSendPwdEmail = (req, res) => {
                     if(err){
                         console.log(err, '\n');
                         conn.release();
-                    }else{
+                        res.redirect('/');
+                    }
+                    else if(user.length == 0){
+                        req.flash('msg', 'Email not found!');
+                        res.redirect('/forgot-password');
+                    }
+                    else{
                         let userEmail = user[0].user_email;
                         let token = randToken.generate(20);
                         var mailOptions = {
                             from: 'pvblcml@gmail.com',
                             to: userEmail,
                             subject: 'ReciPinoy Reset Password Link',
-                            //text: 'Your OTP is: ' + otp.toString()
                             html: '<p>You requested for reset password, kindly use this <a href="http://localhost:3000/reset-password?token=' + token + '"><strong>link</strong></a> to reset your password</p>'
                             
                         };
@@ -296,7 +312,8 @@ exports.userSendPwdEmail = (req, res) => {
                             }
                             else{
                                 conn.release();
-                                console.log('reset password email sent...\n');
+                                req.flash('msg', 'Email for password reset is sent!');
+                               // console.log('Reset password email is sent...\n');
                                 res.redirect('/');
                             }
                         })
@@ -311,7 +328,8 @@ exports.userSendPwdEmail = (req, res) => {
 
 exports.userResetPwd = (req, res) =>{
     try {
-        res.render('resetPwd', { title: 'Password Reset', token: req.query.token});
+        let msg = req.flash('msg');
+        res.render('resetPwd', { title: 'Password Reset', token: req.query.token, msg});
     } catch (error) {
         res.status(500).json({ message: error.message});
     }
@@ -323,6 +341,7 @@ exports.userUpdatePwd = (req, res) =>{
         let password = req.body.newPwdInp;
         let passwordConf = req.body.newPwdInpConf;
         if(password !== passwordConf){
+            req.flash('msg', 'Passwords does not match!');
             //alert('Passwords does not match');
             res.redirect('http://localhost:3000/reset-password?token=' + token + '');    
         }
@@ -346,7 +365,8 @@ exports.userUpdatePwd = (req, res) =>{
                                             conn.release();
                                         }
                                         else{
-                                            console.log('password updated! \n');
+                                            //console.log('password updated! \n');
+                                            req.flash('msg', 'You can now login with your new password!');
                                             conn.release();
                                             res.redirect('/login');
                                         }

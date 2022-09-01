@@ -7,12 +7,16 @@
     <title><%= title %></title>
 </head>
 <body>
-    <h1>OTP VERIFICATION PAGE</h1>
+    <h1>OTP VERIFICATION PAGE</h1><br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
+    <h3>Check your email for the OTP</h3>
     <form action="/verify" method="POST">
         <label for="otpLbl">OTP: </label>
         <input type="text" name="otpInp" id="otpInp">
         <button type="submit">Verify Email</button><br><br>
-        <h1><%= msg %></h1>
     </form>
+    
 </body>
 </html>
