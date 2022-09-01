@@ -18,6 +18,8 @@ router.get('/forgot-password', userController.userForgotPwd);
 router.post('/forgot-password', userController.userSendPwdEmail);
 router.get('/reset-password', userController.userResetPwd);
 router.post('/reset-password', userController.userUpdatePwd);
+router.post('/search', userController.userSearch);
+router.get('/recipes/:id', userController.userRecipeView);
 
 
 router.get('/admin', adminController.adminPage);

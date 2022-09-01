@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <table>
+        <tbody>
+            <% if (recs.length > 0) { %>
+                <% recs.forEach(rec => { %>
+                    <tr>
+                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100"></td>
+                        <td><a href="/recipes/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <h3>No recipes found.</h3>
+                <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
