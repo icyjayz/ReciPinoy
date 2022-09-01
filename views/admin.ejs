@@ -5,19 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
-    <h1>Admin Login Form</h1><br><br>
+    <!-- message  -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
     <% } %>
-    <br><br>
-    <form action="/admin" method="POST">
-        <label for="adminEmailLbl">Email: </label>
-        <input type="email" name="adminEmailInp" id="adminEmailInp" required><br><br>
-        <label for="adminPasswordLbl">Password: </label>
-        <input type="password" name="adminPasswordInp" id="adminPasswordInp" required><br><br>
-        <button type="submit">Login</button>
-    </form>
+    
+    <!-- admin login start -->
+    <section class="form-container">
+
+        <form action="/admin" method="POST">
+            <h3>Admin Login Form</h3>
+            <input type="email" name="adminEmailInp" id="adminEmailInp" required placeholder="Enter your email" class="box">
+            <input type="password" name="adminPasswordInp" id="adminPasswordInp" required placeholder="Enter your password" class="box">
+            <button type="submit" class="btn">Login Now</button>
+        </form>
+
+    </section>
+    <!-- admin login end -->
+    
 </body>
 </html>
