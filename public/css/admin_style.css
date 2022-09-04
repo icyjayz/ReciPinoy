@@ -22,7 +22,7 @@
    margin:0; padding:0;
    box-sizing: border-box;
    text-decoration: none;
-   outline: none; border:none;
+   outline: none; 
 }
 
 *::selection{
@@ -54,14 +54,15 @@ body{
 }
 
 section{
-   max-width: 1200px;
+   max-width: 1500px;
    margin:0 auto;
    padding:2rem;
 }
 
 .btn,
 .delete-btn,
-.option-btn{
+.option-btn
+{
    display: block;
    margin-top: 1rem;
    border-radius: .5rem;
@@ -74,7 +75,22 @@ section{
    text-align: center;
 }
 
-.btn{
+.createbtn{
+   display: block;
+   margin-top: 1rem;
+   margin-bottom: 1rem;
+   border-radius: .5rem;
+   cursor: pointer;
+   width: 30%;
+   font-size: 1.8rem;
+   color:var(--white);
+   padding:1.2rem 3rem;
+   text-transform: capitalize;
+   text-align: center;
+   align-items: center;
+}
+
+.btn, .createbtn{
    background-color: var(--main-color);
 }
 
@@ -88,7 +104,8 @@ section{
 
 .btn:hover,
 .delete-btn:hover,
-.option-btn:hover{
+.option-btn:hover,
+.createbtn:hover{
    background-color: var(--black);
 }
 
@@ -103,6 +120,16 @@ section{
    text-transform: capitalize;
    color:var(--black);
    font-size: 3rem;
+}
+
+.nameheading{
+   position: sticky;
+   top: 0;
+   text-align: center;
+   margin-bottom: 2rem;
+   text-transform: capitalize;
+   color:var(--black);
+   font-size: 2rem;
 }
 
 /*--------------------------------------------------------------
@@ -185,18 +212,183 @@ section{
    border-radius: .5rem;
 }
 
+/*--------------------------------------------------------------
+# Admin Header
+--------------------------------------------------------------*/
+.header{
+   position: sticky;
+   top:0; left:0; right:0;
+   background-color: var(--white);
+   box-shadow: var(--box-shadow);
+   z-index: 1000;
+   border-bottom: var(--border);
+}
 
+.header .flex{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   position: relative;
+}
 
+.header .flex .logo{
+   font-size: 2.5rem;
+   color:var(--black);
+}
 
+.header .flex .logo span{
+   color:var(--main-color);
+}
 
+.header .flex .navbar a{
+   margin:0 1rem;
+   font-size: 2rem;
+   color:var(--light-color);
+}
 
+.header .flex .navbar a:hover{
+   color:var(--main-color);
+}
 
+.header .flex .icons > *{
+   font-size: 2.5rem;
+   cursor: pointer;
+   color:var(--light-color);
+   margin-left: 1.7rem;
+}
 
+.header .flex .icons > *:hover{
+   color:var(--red);
+}
 
+.header .flex .logout{
+   font-size: 2.5rem;
+   cursor: pointer;
+   color:var(--light-color);
+   margin-left: 1.5rem;
+}
 
+.header .flex .logout:hover{
+   color:var(--red);
+}
 
+@keyframes fadeIn {
+   0%{
+      transform: translateY(1rem);
+   }
+}
 
+#menu-btn{
+   display: none;
+}
 
+/*--------------------------------------------------------------
+# Admin Home Dashboard
+--------------------------------------------------------------*/
+.dashboard .box-container{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+   gap:1.5rem;
+   align-items: flex-start;
+}
+
+.dashboard .box-container .box{
+   text-align: center;
+   background-color: var(--white);
+   border:var(--border);
+   box-shadow: var(--box-shadow);
+   border-radius: .5rem;
+   padding:1.5rem;
+}
+
+.dashboard .box-container .box h3{
+   font-size: 2.7rem;
+   color:var(--black);
+}
+
+.dashboard .box-container .box h3 span{
+   font-size: 2rem;
+}
+
+.dashboard .box-container .box p{
+   padding:1.5rem;
+   border-radius: .5rem;
+   background-color: var(--light-bg);
+   border-radius: .5rem;
+   font-size: 1.8rem;
+   border:var(--border);
+   margin:1rem 0;
+   color:var(--light-color);
+}
+
+/*--------------------------------------------------------------
+# User Accounts
+--------------------------------------------------------------*/
+.users .box-container{
+   justify-content: center;
+   background-color: var(--white);
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border: var(--border);
+   text-align: center;   
+   font-size: 1.8rem;
+   overflow-y: auto;
+   height: auto;
+}
+
+.users .box-container table{
+   border-collapse: collapse;        
+   width: 100%;
+}
+
+.users .box-container thead th{
+   position: sticky;
+   top: 0;
+}
+
+.users .box-container th,td {
+  padding: 8px 15px;
+  border: 2px solid var(--black);
+}
+
+.users .box-container th{
+   background-color: var(--white);
+ }
+
+/*--------------------------------------------------------------
+# Recipes
+--------------------------------------------------------------*/
+.recipes .box-container{
+   justify-content: center;
+   background-color: var(--white);
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border: var(--border);
+   text-align: center;   
+   font-size: 1.8rem;
+   overflow-y: auto;
+   height: 200rem;
+   width: auto;
+}
+
+.recipes .box-container table{
+   border-collapse: collapse;        
+   width: auto;
+}
+
+.recipes .box-container thead th{
+   position: sticky;
+   top: 0;
+}
+
+.recipes .box-container th,td {
+  padding: 8px 15px;
+  border: 2px solid var(--black);
+}
+
+.recipes .box-container th{
+   background-color: var(--white);
+ }
 
 
 

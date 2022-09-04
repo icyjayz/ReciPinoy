@@ -5,16 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
-    <%- include('./partials/adminNav'); %>
-    <h1>Recipes</h1><br><br>
+    <!-- message  -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
-    <% } %>
-    <br>
-    <button><a href="/admin/recipes/create">Create Recipe</a></button><br><br>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>    
+
+    <!-- admin dashboard section starts  -->
+    <%- include('./partials/adminNav'); %>
+
+    <section class="recipes">
+    
+    <h1 class="heading">Recipes</h1>
+          
+    <form action="/admin/recipes/search" method="post">
+        <input type="text" name="searchInp" id="searchInp">
+        <button type="submit">Search</button>
+    </form>
+    
+    <a href="/admin/recipes/create" class="createbtn">Create Recipe</a>
+
+    <div class=box-container>
     <table border="3">
         <thead>
             <th>Image</th>
@@ -91,6 +112,7 @@
             <%}) %>
         </tbody>
     </table>
-
+    </div>
+</section>
 </body>
 </html>

@@ -5,21 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
-  <!-- naisip ko gawin na lang dropdown eme yung recipes
-like
-manage recipes (under niya)
-create recipes
-view, edit, delete -->
-  <a href="/admin/users">Users</a>
-    <a href="/admin/recipes">Recipes</a>
-    <a href="/admin/logout">Logout</a>
+  <header class="header">
 
-    <form action="/admin/recipes/search" method="post">
-      <input type="text" name="searchInp" id="searchInp">
-      <button type="submit">Search</button>
-    </form>
+    <section class="flex">
+
+      <a href="/admin/home" class="logo">Admin<span>ReciPinoy</span></a>
+
+      <nav class="navbar">
+        <a href="/admin/home">Home</a>
+        <a href="/admin/users">Users</a>
+        <a href="/admin/recipes">Recipes</a>
+      </nav>
+
+      <div class="icons">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <div id="user-btn" class="fas fa-power-off">
+          <a href="/admin/logout" onclick="return confirm('logout from this website?');"></a>
+        </div>
+      </div>
+      <!-- <form action="/admin/recipes/search" method="post">
+        <input type="text" name="searchInp" id="searchInp">
+        <button type="submit">Search</button>
+      </form> -->
+      
+    </section>
+
+  </header>
     
 </body>
 

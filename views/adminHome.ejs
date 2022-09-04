@@ -5,11 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
+    <!-- admin dashboard section starts  -->
     <%- include('./partials/adminNav'); %>
-    <h1>ADMIN HOME PAGE</h1><br><br>
-    <h2>Hi admin, <%= id %>!!!</h2>
+    
+    <section class="dashboard">
+
+    <h1 class="heading">Home Dashboard</h1>
+    <h2 class="nameheading">Hi admin, <%= id %>!!!</h2>
+
+    <div class="box-container">
+
+        <div class="box">
+            <?php
+               $select_recipes = $conn->prepare("SELECT * FROM `rec`");
+               $select_recipes->execute();
+               $numbers_of_recipes = $select_recipes->rowCount();
+            ?>
+            <h3><?= $numbers_of_recipes; ?></h3>
+            <p>recipes added</p>
+            <a href="/admin/recipes" class="btn">see recipes</a>
+         </div>
+      
+         <div class="box">
+            <?php
+               $select_users = $conn->prepare("SELECT * FROM `users`");
+               $select_users->execute();
+               $numbers_of_users = $select_users->rowCount();
+            ?>
+            <h3><?= $numbers_of_users; ?></h3>
+            <p>users accounts</p>
+            <a href="/admin/users" class="btn">see users</a>
+         </div>
+    
+    </div>
+
+    </section>
+    
     <!-- <a href="/admin/recipes">Manage Recipes</a>
     <a href="/admin/logout">Logout</a> -->
 </body>

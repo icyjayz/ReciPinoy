@@ -5,26 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %> </title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
+    <!-- admin dashboard section starts  -->
     <%- include('./partials/adminNav'); %>
-    <h1>Users List</h1>
-<table border="3">
-    <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-    </thead>
-    <tbody>
-        <% users.forEach(user => { %>
-        <tr>
-            <td><%= user.user_id %> </td>
-            <td><%= user.user_name %> </td>
-            <td><%= user.user_email %> </td>
-        </tr>
-        <% }) %>
-    </tbody>
-</table>
+
+    <section class="users">
+    <h1 class="heading">Users List</h1>
+    
+    <div class="box-container">
+    <table border=3>
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.user_id %> </td>
+                <td><%= user.user_name %> </td>
+                <td><%= user.user_email %> </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    </div>
+</section>
+
 </body>
 
 </html>
