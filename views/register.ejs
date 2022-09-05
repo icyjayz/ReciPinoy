@@ -5,25 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Registration Form</h1><br><br>
+    <!-- message -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
-    <% } %>
-    <form action="/register" method="POST">
-        <label for="regNameLbl">Name: </label>
-        <input type="text" name="regNameInp" id="regNameInp" required><br><br>
-        <label for="regEmailLbl">Email: </label>
-        <input type="email" name="regEmailInp" id="regEmailInp" required><br><br>
-        <label for="regPasswordLbl">Password: </label>
-        <input type="password" name="regPasswordInp" id="regPasswordInp" required><br><br>
-        <label for="regRePasswordLbl">Re-type Password: </label>
-        <input type="password" name="regRePasswordInp" id="regRePasswordInp" required><br><br>
-        
-        <button type="submit">Register</button>
-    </form>
-    <br><br><a href="/login">Already have an account? Login here.</a>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>   
+
+    <!-- user header -->
+    <%- include('./partials/guestNav'); %> 
     
+    <!-- register -->
+    <section class="form-container">
+        <form action="/register" method="POST">
+           <h3>register now</h3>
+           <input type="text" name="regNameInp" id="regNameInp" required placeholder="enter your name" class="box" maxlength="50">
+           <input type="email" name="regEmailInp" id="regEmailInp" required placeholder="enter your email" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+           <input type="password" name="regPasswordInp" id="regPasswordInp" required placeholder="enter your password" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+           <input type="password" name="regRePasswordInp" id="regRePasswordInp" required placeholder="confirm your password" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+           <input type="submit" value="register now" name="submit" class="btn">
+           <p>already have an account? <a href="/login">login here.</a></p>
+        </form>
+    </section>
+    
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
 </body>
 </html>

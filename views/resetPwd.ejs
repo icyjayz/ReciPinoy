@@ -5,19 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">    
 </head>
 <body>
-    <h1>Reset Password Page</h1><br><br>
+    <!-- message -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
     <% } %>
-    <form action="/reset-password" method="post">
-        <input type="hidden" name="tokenInp" value="<%= token %>">
-        <label for="newPwdLabel">Enter your new password: </label>
-        <input type="password" name="newPwdInp" id="newPwdInp"><br><br>
-        <label for="newPwdLabelConf">Re-enter your new password: </label>
-        <input type="password" name="newPwdInpConf" id="newPwdInpConf"><br><br>
-        <button type="submit">Confirm New Password</button>
-    </form>
+    
+    <!-- blank header -->
+    <%- include('./partials/logoOnlyNav'); %>    
+
+    <!-- reset password -->
+    <section class="form-container">
+        <form action="/reset-password" method="POST">
+            <h3>reset password form</h3>
+            <input type="hidden" name="tokenInp" value="<%= token %>">
+            <input type="password" name="newPwdInp" id="newPwdInp" placeholder="enter your new password" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="newPwdInpConf" id="newPwdInpConf" placeholder="re-enter your new password" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="submit" value="confirm new password" name="submit" class="btn">
+        </form>
+    </section>
+    
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
 </body>
 </html>

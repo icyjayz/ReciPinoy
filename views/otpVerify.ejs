@@ -5,18 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">    
 </head>
 <body>
-    <h1>OTP VERIFICATION PAGE</h1><br><br>
+    <!-- message -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
-    <% } %>
-    <h3>Check your email for the OTP</h3>
-    <form action="/verify" method="POST">
-        <label for="otpLbl">OTP: </label>
-        <input type="text" name="otpInp" id="otpInp">
-        <button type="submit">Verify Email</button><br><br>
-    </form>
-    
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>   
+
+    <!-- blank header -->
+    <%- include('./partials/logoOnlyNav'); %>
+
+    <!-- OTP Verification -->
+    <section class="form-container">
+        <form action="/verify" method="POST">
+            <h3>OTP Verification Form</h3>
+            <p>Check your email for the OTP Code. Your code is 6 numbers long.</p>
+            <input type="text" name="otpInp" id="otpInp" placeholder="re-enter your new password" class="box" maxlength="6">
+            <input type="submit" value="verify email" name="submit" class="btn">
+        </form>
+    </section>
+
+<!-- custom js file link  -->
+<script src="js/script.js"></script>    
+
 </body>
 </html>

@@ -3,20 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=
-    , initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Forgot Password Page</h1><br><br>
+    <!-- message -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
-    <% } %>
-    <form action="/forgot-password" method="post">
-        <label for="fpEmail">Email: </label>
-        <input type="email" name="fpEmail" id="fpEmail">
-        <button type="submit">Send Reset Password Link</button>
-    </form>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>   
+
+    <!-- blank header -->
+    <%- include('./partials/logoOnlyNav'); %>
+
+    <!-- forgot password -->
+    <section class="form-container">
+        <form action="/forgot-password" method="POST">
+            <h3>forgot password</h3>
+            <p>Please enter your email for a reset password link.</p>
+            <input type="email" name="fpEmail" id="fpEmail" placeholder="enter your email" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="submit" value="send reset password link" name="submit" class="btn">
+            <p><a href="/login">back to login page</a></p>
+        </form>
+    </section>
     
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
 </body>
 </html>
