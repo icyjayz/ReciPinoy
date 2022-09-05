@@ -15,94 +15,84 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- message  -->
-    <% if (msg != '') { %>
-        <div class="message">
-            <span> <%= msg %> </span>
-            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-        </div>
-    <% } %>   
+   <!-- message  -->
+   <% if (msg != '') { %>
+       <div class="message">
+           <span> <%= msg %> </span>
+           <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+       </div>
+   <% } %>   
 
-    <!-- user header -->
-    <%- include('./partials/guestNav'); %>
+   <!-- guest header -->
+   <%- include('./partials/guestNav'); %>
 
-    <!-- user hero starts (flippable content) -->
-    <section class="hero">
+   <!-- user hero starts (flippable content) -->
+   <section class="hero">
 
-        <div class="swiper hero-slider">
+      <div class="swiper hero-slider">
      
-           <div class="swiper-wrapper">
+         <div class="swiper-wrapper">
      
-              <div class="swiper-slide slide">
-                 <div class="content">
-                    <span>Use up your ingredients at home with search by ingredients feature.</span>
-                    <h3>Search Recipes</h3>
-                    <a href="#recipe_page" class="btn">Get Started</a>
-                 </div>
-                 <div class="image">
-                    <img src="images/hero/home-img-1.png" alt="">
-                 </div>
-              </div>
+            <div class="swiper-slide slide">
+               <div class="content">
+                  <span>Use up your ingredients at home with search by ingredients feature.</span>
+                  <h3>Search Recipes</h3>
+                  <a href="#recipe_page" class="btn">Get Started</a>
+               </div>
+                  <div class="image">
+                     <img src="images/hero/home-img-1.png" alt="">
+                  </div>
+               </div>
      
-              <div class="swiper-slide slide">
-                 <div class="content">
-                    <span>Save your favorite recipes with save recipes feature.</span>
-                    <h3>Saved Recipes</h3>
-                    <a href="" class="btn">Get Started</a>
-                 </div>
-                 <div class="image">
-                    <img src="images/hero/home-img-2.png" alt="">
-                 </div>
-              </div>
+               <div class="swiper-slide slide">
+                  <div class="content">
+                     <span>Save your favorite recipes with save recipes feature.</span>
+                     <h3>Saved Recipes</h3>
+                     <a href="" class="btn">Get Started</a>
+                  </div>
+                  <div class="image">
+                     <img src="images/hero/home-img-2.png" alt="">
+                  </div>
+               </div>
      
-              <div class="swiper-slide slide">
-                 <div class="content">
-                    <span>Plan weekly meals at ease with meal planner feature.</span>
-                    <h3>Meal Plan</h3>
-                    <a href="" class="btn">Get Started</a>
-                 </div>
-                 <div class="image">
-                    <img src="images/hero/home-img-3.png" alt="">
-                 </div>
-              </div>
+               <div class="swiper-slide slide">
+                  <div class="content">
+                     <span>Plan weekly meals at ease with meal planner feature.</span>
+                     <h3>Meal Plan</h3>
+                     <a href="" class="btn">Get Started</a>
+                  </div>
+                  <div class="image">
+                     <img src="images/hero/home-img-3.png" alt="">
+                  </div>
+               </div>
      
-              <div class="swiper-slide slide">
-                 <div class="content">
-                    <span>Never forget an ingredient while shopping with grocery list feature.</span>
-                    <h3>Grocery List</h3>
-                    <a href="" class="btn">Get Started</a>
-                 </div>
-                 <div class="image">
-                    <img src="images/hero/home-img-4.png" alt="">
-                 </div>
-              </div>
+               <div class="swiper-slide slide">
+                  <div class="content">
+                     <span>Never forget an ingredient while shopping with grocery list feature.</span>
+                     <h3>Grocery List</h3>
+                     <a href="" class="btn">Get Started</a>
+                  </div>
+                  <div class="image">
+                     <img src="images/hero/home-img-4.png" alt="">
+                  </div>
+               </div>
      
-           </div>
+            </div>
      
-           <div class="swiper-pagination"></div>
+            <div class="swiper-pagination"></div>
      
-        </div>
+         </div>
      
-     </section>
+   </section>
 
-    <!-- search form section starts  -->
-    <section class="search-form">
-        <form method="post" action="/search">
-            <input type="text" name="searchInp" id="searchInp" placeholder="Search Recipes" class="box">
+   <!-- search form section starts  -->
+   <section class="search-form">
+      <form method="post" action="/search">
+         <input type="text" name="searchInp" id="searchInp" placeholder="Search Recipes" class="box">
             <button type="submit" name="search_btn" class="fas fa-search"> </button>
-        </form>
-    </section>
-    <!-- search form section ends -->
-
-    <h1>Home Page</h1><br><br>
-
-    <button>
-        <a href="/register">Register</a>
-    </button>
-    <button>
-        <a href="/login">Login</a>
-    </button>
-
+      </form>
+   </section>
+   <!-- search form section ends -->
 
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 

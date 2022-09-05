@@ -21,9 +21,9 @@
 
       <nav class="navbar">
         <a href="/views/index.ejs">home</a>
-        <a href="/index">saved recipes</a>
-        <a href="/index">meal plan</a>
-        <a href="/index">grocery lists</a>
+        <a href="/views/index.ejs">saved recipes</a>
+        <a href="/views/index.ejs">meal plan</a>
+        <a href="/views/index.ejs">grocery lists</a>
       </nav>
 
       <div class="icons">
@@ -32,10 +32,11 @@
       </div>
 
       <div class="profile">
-        <p class="name">please login first!</p>
+        <p class="name"><%= id %></p>
         <div class="flex">
-          <a href="/login" class="btn">login</a>
-          <a href="/register" class="btn">register</a>
+          <!-- wala pang profile.ejs -->
+           <a href="" class="btn">profile</a>
+           <a href="/logout" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
         </div>
       </div>
    
