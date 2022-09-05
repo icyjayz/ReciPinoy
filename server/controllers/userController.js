@@ -34,8 +34,23 @@ exports.indexPage = (req, res) =>{
         }
         else{
             console.log('user none...\n');
-            let msg = req.flash('msg');
-            res.render('index', { title: 'Home Page', msg});
+            pool.getConnection((err, conn) =>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT * FROM rec ORDER BY rec_id DESC LIMIT 6', (err, recs) => {
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            let msg = req.flash('msg');
+                            res.render('index', { title: 'Home Page', msg, recs: recs});
+                        }
+                    })
+                }
+            })
+            
         }
     }
     catch(error){
