@@ -7,75 +7,90 @@
     , initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
-    <%- include('./partials/adminNav'); %>
-    <br><br>
+    <!-- message  -->
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
     <% } %>
-    <br><br>
-    <form action="/admin/recipes/create" method="post" onsubmit="getIngs()" enctype="multipart/form-data">
-        <label for="recNameLbl">Name: </label>
-        <input type="text" name="recNameInp" id="recNameInp" required><br><br>
-        <label for="recDescLbl">Description: </label>
-        <textarea name="recDescInp" id="recDescInp" cols="30" rows="10" required></textarea><br><br>
-        <label for="recPrcLbl">Process: </label>
-        <textarea name="recPrcInp" id="recPrcInp" cols="30" rows="10" required></textarea><br><br>
-        <label for="recPrcLbl">Category: </label>
-        <select name="recCateg" id="recCateg" required>
-            <option value="Luzon">Luzon</option>
-            <option value="Visayas">Visayas</option>
-            <option value="Mindanao">Mindanao</option>
-            <option value="Popular">Popular</option>
-        </select><br><br>
-        <label for="recTimeLbl">Time Process: </label>
-        <input type="text" name="recTimeInp" id="recTimeInp"><br><br>
-        <label for="recSrvLbl">Serving: </label>
-        <input type="text" name="recSrvInp" id="recSrvInp"><br><br>
-        <label for="recSrcLbl">Source: </label>
-        <input type="url" name="recSrcInp" id="recSrcInp" required><br><br>
-        <label for="recVidLbl">Video Link: </label>
-        <input type="url" name="recVidInp" id="recVidInp"><br><br>
-        <label for="recCalLbl">Calorific Value: </label>
-        <input type="text" name="recCalInp" id="recCalInp"><br><br>
-        <label for="recMTime">Meal Time: </label>
-        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
-        <label for="mtBreakfast">Breakfast</label>
-        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
-        <label for="mtLunch">Lunch</label>
-        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
-        <label for="mtLunch">Meryenda</label>
-        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
-        <label for="mtDinner">Dinner</label><br><br>
-        <label for="recImageLbl">Image: </label>
-        <input type="file" name="recImgInp" required><br><br>
-        <label for="recIng">Add Ingredients: </label><br>
-        <label for="ingQuantLbl">Quantity: </label>
-        <label for="ingUnitLbl">Unit: </label>
-        <label for="ingNameLbl">Ingredient: </label>
-        <label for="ingInsLbl">Instruction: </label>
-        <div id="ingInps">
-            <h5>put - if n/a</h5>
-            <input type="hidden" value="1" id="ingNum" name="ingNum" required>
-            <input type="text" name="ingQuantInp[]" id="ingQuantInp1" required>
-            <input type="text" name="ingUnitInp[]" id="ingUnitInp1" required>
-            <input type="text" name="recIng[]" id="recIng1" required>
+
+    <!-- admin dashboard section starts  -->
+    <%- include('./partials/adminNav'); %>
+    <a href="/admin/recipes" class="back-btn">>> Back</a>
+    
+    <section class="add-recipes">
+        <form action="/admin/recipes/create" method="post" onsubmit="getIngs()" enctype="multipart/form-data">
+            <h3>add recipes</h3>
+            <label for="recNameLbl" class="addRecLabel">Name: </label>
+                <input type="text" name="recNameInp" id="recNameInp" required placeholder="type your recipe name here" maxlength="100" class="box">
+            <label for="recDescLbl" class="addRecLabel">Description: </label>
+                <textarea name="recDescInp" id="recDescInp" cols="30" rows="10" required placeholder="type your recipe description here" maxlength="1000" class="textareabox" ></textarea>
+            <label for="recPrcLbl" class="addRecLabel">Process: </label>
+                <textarea name="recPrcInp" id="recPrcInp" cols="30" rows="10" required placeholder="type the recipe directions here" maxlength="10000" class="textareabox"></textarea>
+            <label for="recPrcLbl" class="addRecLabel">Category: </label>
+                <select name="recCateg" id="recCateg" required class="smallbox">
+                    <option value="" disabled selected>select category --</option>
+                    <option value="Luzon">Luzon</option>
+                    <option value="Visayas">Visayas</option>
+                    <option value="Mindanao">Mindanao</option>
+                    <option value="Popular">Popular</option>
+            </select><br>
+            <label for="recTimeLbl" class="addRecLabel">Time Process: </label>
+                <input type="text" name="recTimeInp" id="recTimeInp" placeholder="total time (hr/min)" maxlength="20" class="timebox"><br>
+            <label for="recSrvLbl" class="addRecLabel">Serving: </label>
+                <input type="text" name="recSrvInp" id="recSrvInp" placeholder="total portion" maxlength="10" class="servingbox"><br>
+            <label for="recSrcLbl" class="addRecLabel">Source: </label>
+                <input type="url" name="recSrcInp" id="recSrcInp" required placeholder="source link of recipe" maxlength="500" class="mediumbox"><br>
+            <label for="recVidLbl" class="addRecLabel">Video Link: </label>
+                <input type="url" name="recVidInp" id="recVidInp" placeholder="youtube link of recipe video" maxlength="500" class="mediumbox"><br>
+            <label for="recCalLbl" class="addRecLabel">Calorific Value: </label>
+                <input type="text" name="recCalInp" id="recCalInp" placeholder="calorific value" maxlength="10" class="servingbox"><br>
+            <label for="recMTime" class="addRecLabel">Meal Time: </label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                    <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                    <label for="mtLunch" class="addRecLabel">Lunch</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+                    <label for="mtLunch" class="addRecLabel">Meryenda</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                    <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
+            <label for="recImageLbl" class="addRecLabel">Image: </label>
+                <input type="file" name="recImgInp" required accept="image/jpg, image/jpeg, image/png, image/webp" class="mediumbox"><br><br>
+            <label for="recIng" class="addRecLabel">Add Ingredients: </label><br>
+            <label for="ingQuantLbl" class="addRecLabel">Quantity: </label>
+            <label for="ingUnitLbl" class="addRecLabel">Unit: </label>
+            <label for="ingNameLbl" class="addRecLabel">Ingredient: </label>
+            <label for="ingInsLbl" class="addRecLabel">Instruction: </label>
+            <div id="ingInps" class="add-ingredients">
+                <h2>put - if n/a</h2>
+                <input type="hidden" value="1" id="ingNum" name="ingNum" required>
+                <input type="text" name="ingQuantInp[]" id="ingQuantInp1" required placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+                <input type="text" name="ingUnitInp[]" id="ingUnitInp1" required placeholder="Unit" maxlength="10" class="s_ingredientbox">
+                <input type="text" name="recIng[]" id="recIng1" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
             <!-- <select name="recIng[]" id="recIng1">
                 <%# ing.forEach(ingName => { %>
                     <option value="<%#= ingName.ing_id %>"><%#= ingName.ing_name %></option>
                 <%# }) %> 
                 
             </select> -->
-            <input type="text" name="ingInsInp[]" id="ingInsInp1">
-            <input type="hidden" name="qval" value="" id="qval">
-            <input type="hidden" name="idval" value="" id="idval">
-            <input type="hidden" name="uval" value="" id="uval">
-            <input type="hidden" name="insval" value="" id="insval">
+                <input type="text" name="ingInsInp[]" id="ingInsInp1" placeholder="Instruction" maxlength="500" class="ingredientbox">
+            <input type="hidden" name="qval" value="" id="qval" required placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+            <input type="hidden" name="idval" value="" id="idval" required placeholder="Unit" maxlength="10" class="s_ingredientbox">
+            <input type="hidden" name="uval" value="" id="uval" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
+            <input type="hidden" name="insval" value="" id="insval" placeholder="Instruction" maxlength="500" class="ingredientbox">
         </div>
         
-        <button id="addIngredientsBtn" type="button">Add Another Ingredient</button> <br><br>
-        <button type="submit">Add Recipe</button>
+        <button id="addIngredientsBtn" type="button" class="createbtn">Add Another Ingredient</button> <br><br>
+        <button type="submit" class="btn">Add Recipe</button>
     </form>
 
     <script type="text/javascript">

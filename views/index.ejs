@@ -48,7 +48,7 @@
                   <div class="content">
                      <span>Save your favorite recipes with save recipes feature.</span>
                      <h3>Saved Recipes</h3>
-                     <a href="" class="btn">Get Started</a>
+                     <a href="/" class="btn">Get Started</a>
                   </div>
                   <div class="image">
                      <img src="images/hero/home-img-2.png" alt="">
@@ -59,7 +59,7 @@
                   <div class="content">
                      <span>Plan weekly meals at ease with meal planner feature.</span>
                      <h3>Meal Plan</h3>
-                     <a href="" class="btn">Get Started</a>
+                     <a href="/" class="btn">Get Started</a>
                   </div>
                   <div class="image">
                      <img src="images/hero/home-img-3.png" alt="">
@@ -70,7 +70,7 @@
                   <div class="content">
                      <span>Never forget an ingredient while shopping with grocery list feature.</span>
                      <h3>Grocery List</h3>
-                     <a href="" class="btn">Get Started</a>
+                     <a href="/" class="btn">Get Started</a>
                   </div>
                   <div class="image">
                      <img src="images/hero/home-img-4.png" alt="">
@@ -85,24 +85,24 @@
      
    </section>
 
-   <!-- search form section starts  -->
+   <!-- search by recipe name form section starts  -->
    <section class="search-form">
       <form method="post" action="/search">
          <input type="text" name="searchInp" id="searchInp" placeholder="Search Recipes" class="box">
             <button type="submit" name="search_btn" class="fas fa-search"> </button>
       </form>
    </section>
-   <!-- search form section ends -->
+   <!-- search by recipe name form section ends -->
 
-   <section class="products">
+   <section class="recipes">
 
-      <h1 class="title" id=recipe_page>latest dishes</h1>
+      <h1 class="title" id=recipe_page>latest recipes</h1>
       
       <div class="box-container">
          <% if (recs.length > 0) { %>
              <% recs.forEach(rec => { %>
                  <form action="" method="post" class="box">
-                     <a href="/admin/recipes/<%= rec.rec_id%>" class="fas fa-eye"></a>
+                     <a href="/recipes/<%= rec.rec_id%>" class="fas fa-eye"></a>
                      <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150">
                      <div class="cat"><%= rec.rec_categ %></div>
                      <div class="name"><%= rec.rec_name %></div>
@@ -114,9 +114,9 @@
      </div>
       
    
-      <div class="more-btn">
+      <!-- <div class="more-btn">
          <a href="menu.html" class="backbtn">veiw all</a>
-      </div>
+      </div> -->
    
    </section>
 

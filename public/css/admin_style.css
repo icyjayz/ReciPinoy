@@ -365,6 +365,126 @@ section{
  }
 
 /*--------------------------------------------------------------
+# Recipes - Add Recipes Form
+--------------------------------------------------------------*/
+.add-recipes form{
+   margin:0 auto;
+   max-width: 100rem;
+   background-color: var(--white);
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border:var(--border);
+   padding:2rem;
+}
+
+.add-recipes form h3{
+   margin-bottom: 2rem;
+   font-size: 2.5rem;
+   color:var(--black);
+   text-transform: capitalize;
+   text-align: center;
+}
+
+.add-recipes form .addRecLabel{
+   margin-bottom: 1rem;
+   font-size: 1.8rem;
+   font-weight: bold;
+   color:var(--black);
+   text-align: left;
+   text-transform: capitalize;
+}
+
+/* variety of box */
+.add-recipes form .box{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 100%;
+   padding:1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .textareabox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 100%;
+   height: 10rem;
+   font-size: 1.7rem;
+   padding:1rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+   resize: vertical;
+}
+
+.add-recipes form .smallbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 20rem;
+   padding: 1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .mediumbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 60rem;
+   padding: 1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .timebox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 18rem;
+   padding: 1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .servingbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 14rem;
+   padding: 1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .add-ingredients .s_ingredientbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 12rem;
+   padding: .5rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .add-ingredients .ingredientbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 35rem;
+   padding: .5rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+/*--------------------------------------------------------------
 # Recipes - Search Form
 --------------------------------------------------------------*/
 
@@ -493,6 +613,10 @@ section{
    color:var(--black);
    margin:1rem 0;
 }
+
+/*--------------------------------------------------------------
+# Recipe View
+--------------------------------------------------------------*/
 
 
 /* media queries  */

@@ -6,92 +6,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <title><%= title %></title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/admin_style.css">
 </head>
 <body>
+    <!-- admin dashboard section starts  -->
     <%- include('./partials/adminNav'); %>
-    <br><br>
+    <a href="/admin/recipes" class="back-btn">>> Back</a>
+
+    <section class="add-recipes">
     <% rec.forEach(r => { %>
-    <form action="/admin/recipes/edit/<%= r.rec_id %>" method="post" enctype="multipart/form-data" onsubmit="getIngs()">
-        <label for="recNameLbl">Name: </label>
-        <input type="text" name="recNameInp" id="recNameInp" value="<%= r.rec_name%>" readonly><br><br>
-        <label for="recDescLbl">Description: </label>
-        <textarea name="recDescInp" id="recDescInp" cols="30" rows="10" required><%= r.rec_desc%></textarea><br><br>
-        <label for="recPrcLbl">Process: </label>
-        <textarea name="recPrcInp" id="recPrcInp" cols="30" rows="10" required><%= r.rec_process%></textarea><br><br>
-        <label for="recPrcLbl">Category: </label>
-        <select name="recCateg" id="recCateg" value="<%= r.rec_categ%>" required>
-            <option value="Luzon">Luzon</option>
-            <option value="Visayas">Visayas</option>
-            <option value="Mindanao">Mindanao</option>
-            <option value="Popular">Popular</option>
-        </select><br><br>
-        <label for="recTimeLbl">Time Process: </label>
-        <input type="text" name="recTimeInp" id="recTimeInp" value="<%= r.rec_time%>"><br><br>
-        <label for="recSrvLbl">Serving: </label>
-        <input type="text" name="recSrvInp" id="recSrvInp" value="<%= r.rec_serving%>"><br><br>
-        <label for="recSrcLbl">Source: </label>
-        <input type="url" name="recSrcInp" id="recSrcInp" value="<%= r.rec_src%>" required><br><br>
-        <label for="recVidLbl">Video Link: </label>
-        <input type="url" name="recVidInp" id="recVidInp" value="<%= r.rec_vid%>"><br><br>
-        <label for="recCalLbl">Calorific Value: </label>
-        <input type="text" name="recCalInp" id="recCalInp" value="<%= r.rec_cal%>"><br><br>
-        <label for="recMTime">Meal Time: </label>
-        <input type="text" name="recMTimeInp" id="recMTimeInp" value="<%= r.rec_mealTime%>" required><br><br>
-        <%# if (r.rec_cal == 'Breakfast') { %>
-            <!-- <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast" checked>
-            <label for="mtBreakfast">Breakfast</label>
-            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
-            <label for="mtLunch">Lunch</label>
-            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
-            <label for="mtDinner">Dinner</label><br><br> -->
-        <%#} else if (r.rec_cal == 'Lunch') { %>
-            <!-- <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
-            <label for="mtBreakfast">Breakfast</label>
-            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch" checked>
-            <label for="mtLunch">Lunch</label>
-            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
-            <label for="mtDinner">Dinner</label><br><br> -->
-        <%#} else { %>
-            <!-- <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
-            <label for="mtBreakfast">Breakfast</label>
-            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
-            <label for="mtLunch">Lunch</label>
-            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner" checked>
-            <label for="mtDinner">Dinner</label><br><br> -->
-         <%# } %> 
-        <label for="recImageLbl">Image: </label>
-        <input type="file" name="recImgInp" required><br><br>
+        <form action="/admin/recipes/edit/<%= r.rec_id %>" method="post" enctype="multipart/form-data" onsubmit="getIngs()">
+            <h3>edit recipes</h3>
+            <label for="recNameLbl" class="addRecLabel">Name: </label>
+                <input type="text" name="recNameInp" id="recNameInp" required placeholder="type your recipe name here" maxlength="100" class="box" value="<%= r.rec_name%>" readonly>
+            <label for="recDescLbl" class="addRecLabel">Description: </label>
+                <textarea name="recDescInp" id="recDescInp" class="textareabox" cols="30" rows="10" required placeholder="type your recipe description here" maxlength="1000"><%= r.rec_desc%></textarea>
+            <label for="recPrcLbl" class="addRecLabel">Process: </label>
+                <textarea name="recPrcInp" id="recPrcInp" class="textareabox" cols="30" rows="10" required placeholder="type the recipe directions here" maxlength="10000"><%= r.rec_process%></textarea>
+            <label for="recPrcLbl" class="addRecLabel">Category: </label>
+                <select name="recCateg" id="recCateg" value="<%= r.rec_categ%>" required class="smallbox">
+                    <option value="" disabled selected>select category --</option>
+                    <option value="Luzon">Luzon</option>
+                    <option value="Visayas">Visayas</option>
+                    <option value="Mindanao">Mindanao</option>
+                    <option value="Popular">Popular</option>
+        </select><br>
+        <label for="recTimeLbl" class="addRecLabel">Time Process: </label>
+            <input type="text" name="recTimeInp" id="recTimeInp" placeholder="total time (hr/min)" maxlength="20" class="timebox" value="<%= r.rec_time%>"><br>
+        <label for="recSrvLbl" class="addRecLabel">Serving: </label>
+            <input type="text" name="recSrvInp" id="recSrvInp" placeholder="total portion" maxlength="10" class="servingbox" value="<%= r.rec_serving%>"><br>
+        <label for="recSrcLbl" class="addRecLabel">Source: </label>
+            <input type="url" name="recSrcInp" id="recSrcInp" required placeholder="source link of recipe" maxlength="500" class="mediumbox" value="<%= r.rec_src%>"><br>
+        <label for="recVidLbl" class="addRecLabel">Video Link: </label>
+            <input type="url" name="recVidInp" id="recVidInp" placeholder="youtube link of recipe video" maxlength="500" class="mediumbox" value="<%= r.rec_vid%>"><br>
+        <label for="recCalLbl" class="addRecLabel">Calorific Value: </label>
+            <input type="text" name="recCalInp" id="recCalInp" placeholder="calorific value" maxlength="10" class="servingbox" value="<%= r.rec_cal%>"><br><br>
+        <label for="recMTime" class="addRecLabel">Meal Time: </label>
+            <input type="text" name="recMTimeInp" id="recMTimeInp" value="<%= r.rec_mealTime%>" required><br>
+            <%# if (r.rec_cal == 'Breakfast') { %>
+                <!-- <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast" checked>
+                <label for="mtBreakfast">Breakfast</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                <label for="mtLunch">Lunch</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                <label for="mtDinner">Dinner</label><br><br> -->
+            <%#} else if (r.rec_cal == 'Lunch') { %>
+                <!-- <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                <label for="mtBreakfast">Breakfast</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch" checked>
+                <label for="mtLunch">Lunch</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                <label for="mtDinner">Dinner</label><br><br> -->
+            <%#} else { %>
+                <!-- <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                <label for="mtBreakfast">Breakfast</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                <label for="mtLunch">Lunch</label>
+                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner" checked>
+                <label for="mtDinner">Dinner</label><br><br> -->
+            <%# } %> 
+        <label for="recImageLbl" class="addRecLabel">Image: </label>
+            <input type="file" name="recImgInp" required accept="image/jpg, image/jpeg, image/png, image/webp" class="mediumbox"><br><br>
         <% }) %>
         <!-- ings -->
         <% let counter = 0; %> 
-        <label for="ingQuantLbl">Quantity: </label>
-        <label for="ingUnitLbl">Unit: </label>
-        <label for="ingNameLbl">Ingredient: </label>
-        <label for="ingInsLbl">Instruction: </label>
+        <label for="recIng" class="addRecLabel">Ingredients: </label><br>
+        <label for="ingQuantLbl" class="addRecLabel">Quantity: </label>
+        <label for="ingUnitLbl" class="addRecLabel">Unit: </label>
+        <label for="ingNameLbl" class="addRecLabel">Ingredient: </label>
+        <label for="ingInsLbl" class="addRecLabel">Instruction: </label>
         
-        <div id="ingInps">
-            <h5>put - if n/a</h5><br>
+        <div id="ingInps" class="add-ingredients">
+            <h2>put - if n/a</h2><br>
         <% ing.forEach(i => { %>
             <% counter++ %>
             <% if (i.ingQuant == 0) { %>
-                <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="">
+                <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
             <% } else { %>
-                <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="<%= i.ingQuant%>">
+                <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="<%= i.ingQuant%>" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
              <% } %> 
-            <input type="text" name="ingUnitInp[]" id="ingUnitInp<%= counter%>" value="<%= i.ingUnit%>">
-            <input type="text" name="recIng[]" id="recIng<%= counter%>" value="<%= i.ing_name%>" required>
-            <input type="text" name="ingInsInp[]" id="ingInsInp<%= counter%>" value="<%= i.ingIns%>">
+            <input type="text" name="ingUnitInp[]" id="ingUnitInp<%= counter%>" value="<%= i.ingUnit%>" placeholder="Unit" maxlength="10" class="s_ingredientbox">
+            <input type="text" name="recIng[]" id="recIng<%= counter%>" value="<%= i.ing_name%>" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
+            <input type="text" name="ingInsInp[]" id="ingInsInp<%= counter%>" value="<%= i.ingIns%>" placeholder="Instruction" maxlength="500" class="ingredientbox">
         <% }) %>
-        <input type="hidden" id="ingNum" name="ingNum" value="<%= counter%>">
+        <input type="hidden" id="ingNum" name="ingNum" value="<%= counter%>" >
         </div>
-        <input type="hidden" name="qval" value="" id="qval">
-        <input type="hidden" name="idval" value="" id="idval">
-        <input type="hidden" name="uval" value="" id="uval">
-        <input type="hidden" name="insval" value="" id="insval">
-        <button id="addIngredientsBtn" type="button">Add Another Ingredient</button><br><br>
-        <button type="submit">Update Recipe</button>
+            <input type="hidden" name="qval" value="" id="qval" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+            <input type="hidden" name="idval" value="" id="idval" placeholder="Unit" maxlength="10" class="s_ingredientbox">
+            <input type="hidden" name="uval" value="" id="uval" placeholder="Ingredient" maxlength="100" class="ingredientbox">
+            <input type="hidden" name="insval" value="" id="insval" placeholder="Ingredient" maxlength="100" class="ingredientbox">
+            <button id="addIngredientsBtn" type="button" class="createbtn">Add Another Ingredient</button><br><br>
+            <button type="submit" class="btn">Update Recipe</button>
     </form>
-    
+</section>    
     
 
     <script type="text/javascript">

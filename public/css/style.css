@@ -318,7 +318,7 @@ section{
 }
 
 /*--------------------------------------------------------------
-# HOME - Search Form
+# HOME - Search by Recipe Name Form
 --------------------------------------------------------------*/
 
 .search-form form{
@@ -345,6 +345,71 @@ section{
 .search-form form .fa-search:hover{
    background-color: var(--yellow);
    color:var(--black);
+}
+
+/*--------------------------------------------------------------
+# HOME - Latest Recipes
+--------------------------------------------------------------*/
+
+.recipes .box-container{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, 33rem);
+   justify-content: center;
+   align-items: flex-start;
+   gap:1.5rem;
+}
+
+.recipes .box-container .box{
+   border:var(--border);
+   padding:1.5rem;
+   position: relative;
+   overflow: hidden;
+}
+
+.recipes .box-container .box img{
+   height: 25rem;
+   width: 100%;
+   object-fit: contain;
+   margin-bottom: 1rem;
+}
+
+.recipes .box-container .box .fa-eye{
+   position: absolute;
+   top:1rem;
+   height: 4.5rem;
+   width: 4.5rem;
+   line-height: 4.3rem;
+   border:var(--border);
+   background-color: var(--white);
+   cursor: pointer;
+   font-size: 2rem;
+   color:var(--black);
+   transition: .2s linear;
+   text-align: center;
+}
+
+.recipes .box-container .box .fa-eye:hover{
+   background-color: var(--black);
+   color:var(--white);
+}
+
+.recipes .box-container .box .fa-eye{
+   left: -10rem;
+}
+
+.recipes .box-container .box:hover .fa-eye{
+   left: 1rem;
+}
+
+.recipes .box-container .box .cat{
+   font-size: 1.8rem;
+   color:var(--light-color);
+}
+
+.recipes .box-container .box .name{
+   font-size: 2rem;
+   color:var(--black);
+   margin:1rem 0;
 }
 
 /*--------------------------------------------------------------
