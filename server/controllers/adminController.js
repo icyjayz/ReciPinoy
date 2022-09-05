@@ -77,7 +77,33 @@ exports.adminHome = (req, res) => {
     try{
         session = req.session;
         if(session.adminId){
-            res.render('adminHome', {title: 'Admin Homepage', id: session.adminName});
+            pool.getConnection((err, conn) => {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT COUNT(*) AS rec_count FROM rec', (err, rec) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            let r = rec[0].rec_count;
+                            conn.query('SELECT COUNT(*) AS user_count FROM users', (err, user) =>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let u = user[0].user_count;
+                                    conn.release();
+                                    res.render('adminHome', {title: 'Admin Homepage', id: session.adminName, rec: r, user: u});
+                                }
+                            })
+                        }
+                    }) 
+                }
+                
+
+            })
         }
     }
     catch(error){
@@ -94,6 +120,7 @@ exports.adminLogout = (req, res) => {
             console.log(req.session, '\n');
             //conn.destroy();
             res.redirect('/');
+            
         }
     }
     catch(error){

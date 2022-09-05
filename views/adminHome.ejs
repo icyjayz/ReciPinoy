@@ -24,23 +24,23 @@
     <div class="box-container">
 
         <div class="box">
-            <?php
+            <!-- <?php
                $select_recipes = $conn->prepare("SELECT * FROM `rec`");
                $select_recipes->execute();
                $numbers_of_recipes = $select_recipes->rowCount();
-            ?>
-            <h3><?= $numbers_of_recipes; ?></h3>
+            ?> -->
+            <h3><%= rec %></h3>
             <p>recipes added</p>
             <a href="/admin/recipes" class="btn">see recipes</a>
          </div>
       
          <div class="box">
-            <?php
+            <!-- <?php
                $select_users = $conn->prepare("SELECT * FROM `users`");
                $select_users->execute();
                $numbers_of_users = $select_users->rowCount();
-            ?>
-            <h3><?= $numbers_of_users; ?></h3>
+            ?> -->
+            <h3><%= user %> </h3>
             <p>users accounts</p>
             <a href="/admin/users" class="btn">see users</a>
          </div>
