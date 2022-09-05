@@ -94,6 +94,48 @@
    </section>
    <!-- search form section ends -->
 
+   <section class="products">
+
+      <h1 class="title" id=recipe_page>latest dishes</h1>
+   
+      <div class="box-container">
+   
+         <?php
+            $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 6");
+            $select_products->execute();
+            if($select_products->rowCount() > 0){
+               while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){
+         ?>
+         <form action="" method="post" class="box">
+            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+            <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
+            <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
+            <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
+            <a href="recipe_view.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
+            <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+            <div class="cat"><?= $fetch_products['category']; ?></div>
+            <div class="name"><?= $fetch_products['name']; ?></div>
+            <!-- <div class="flex">
+               <div class="price"><span>PHP</span><?= $fetch_products['price']; ?></div>
+               <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+            </div> -->
+         </form>
+         <?php
+               }
+            }else{
+               echo '<p class="empty">no products added yet!</p>';
+            }
+         ?>
+   
+      </div>
+   
+      <div class="more-btn">
+         <a href="menu.html" class="backbtn">veiw all</a>
+      </div>
+   
+   </section>
+
+
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
 <!-- custom js file link  -->

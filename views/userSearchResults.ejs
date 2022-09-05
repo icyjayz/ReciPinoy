@@ -5,21 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-    <table>
-        <tbody>
+    <!-- guest dashboard section starts  -->
+    <%- include('./partials/guestNav'); %>
+    
+    <section class="recipeResults">
+        <a href="/" class="back-btn">>> Back</a>
+
+
+        <h1 class="titleheading">Search Results</h1>
+    
+        <div class="box-container">
             <% if (recs.length > 0) { %>
                 <% recs.forEach(rec => { %>
-                    <tr>
-                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100"></td>
-                        <td><a href="/recipes/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
-                    </tr>
+                    <form action="" method="post" class="box">
+                        <a href="/recipes/<%= rec.rec_id%>" class="fas fa-eye"></a>
+                        <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150">
+                        <div class="cat"><%= rec.rec_categ %></div>
+                        <div class="name"><%= rec.rec_name %></div>
+                    </form>
                 <% }) %>
             <% } else { %>
-                <h3>No recipes found.</h3>
+                <p class="empty">No recipes found.</p>
                 <% } %>
-        </tbody>
-    </table>
+        </div>
+    
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
 </body>
 </html>

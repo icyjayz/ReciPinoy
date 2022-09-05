@@ -27,11 +27,14 @@
     <section class="recipes">
     
     <h1 class="heading">Recipes</h1>
-          
-    <form action="/admin/recipes/search" method="post">
-        <input type="text" name="searchInp" id="searchInp">
-        <button type="submit">Search</button>
-    </form>
+
+    <!-- search form section -->
+    <section class="search-form">
+        <form method="post" action="/admin/recipes/search">
+            <input type="text" name="searchInp" id="searchInp" placeholder="Search Recipes" class="box">
+            <button type="submit" name="search_btn" class="fas fa-search"> </button>
+        </form>
+    </section>
     
     <a href="/admin/recipes/create" class="createbtn">Create Recipe</a>
 

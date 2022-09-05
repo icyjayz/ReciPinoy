@@ -94,7 +94,8 @@ section{
 }
 
 .btn,
-.delete-btn{
+.delete-btn,
+.back-btn{
    margin-top: 1rem;
    display: inline-block;
    font-size: 2rem;
@@ -114,8 +115,15 @@ section{
    color:var(--white);
 }
 
+.back-btn{
+   background-color: var(--white);
+   border: 2px var(--black);
+   color: var(--black);
+}
+
 .btn:hover,
-.delete-btn:hover{
+.delete-btn:hover,
+.back-btn:hover{
    letter-spacing: .2rem;
 }
 
@@ -339,7 +347,6 @@ section{
    color:var(--black);
 }
 
-
 /*--------------------------------------------------------------
 # Form for Login/Register/Forgot&Reset Password
 --------------------------------------------------------------*/
@@ -379,4 +386,164 @@ section{
  
 .form-container form p a:hover{
    text-decoration: underline;
+}
+
+/*--------------------------------------------------------------
+# Recipe Search Results
+--------------------------------------------------------------*/
+.titleheading{
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: capitalize;
+      color:var(--black);
+      font-size: 3rem;
+}
+
+.recipeResults .box-container{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, 33rem);
+   justify-content: center;
+   align-items: flex-start;
+   gap:1.5rem;
+}
+
+.recipeResults .box-container .box{
+   border:var(--border);
+   padding:1.5rem;
+   position: relative;
+   overflow: hidden;
+}
+
+.recipeResults .box-container .box img{
+   height: 25rem;
+   width: 100%;
+   object-fit: contain;
+   margin-bottom: 1rem;
+}
+
+.recipeResults .box-container .box .fa-eye{
+   position: absolute;
+   top:1rem;
+   height: 4.5rem;
+   width: 4.5rem;
+   line-height: 4.3rem;
+   border:var(--border);
+   background-color: var(--white);
+   cursor: pointer;
+   font-size: 2rem;
+   color:var(--black);
+   transition: .2s linear;
+   text-align: center;
+}
+
+.recipeResults .box-container .box .fa-eye:hover{
+   background-color: var(--black);
+   color:var(--white);
+}
+
+.recipeResults .box-container .box .fa-eye{
+   left: -10rem;
+}
+
+.recipeResults .box-container .box:hover .fa-eye{
+   left: 1rem;
+}
+
+.recipeResults .box-container .box .cat{
+   font-size: 1.8rem;
+   color:var(--light-color);
+}
+
+.recipeResults .box-container .box .name{
+   font-size: 2rem;
+   color:var(--black);
+   margin:1rem 0;
+}
+
+
+
+
+
+/* media queries  */
+
+@media (max-width:991px) {
+   
+   html{
+      font-size: 55%;
+   }
+
+}
+
+@media (max-width:768px){
+
+   #menu-btn{
+      display: inline-block;
+   }
+
+   .header .flex .navbar{
+      position: absolute;
+      top:99%; left: 0; right: 0;
+      border-top: var(--border);
+      border-bottom: var(--border);
+      background-color: var(--white);
+      transition: .2s linear;
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+   }
+
+   .header .flex .navbar a{
+      display: block;
+      margin:2rem;
+   }
+
+   .header .flex .navbar.active{
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+   }
+
+}
+
+@media (max-width:450px) {
+   
+   html{
+      font-size: 50%;
+   }
+
+   .title{
+      font-size: 3rem;
+   }
+
+   .header .flex .logo{
+      font-size: 2rem;
+   }
+
+   .hero .slide .content h3{
+      font-size: 5rem;
+   }
+
+   .recipes .box-container{
+      grid-template-columns: 1fr;
+   }
+
+   .recipeResults .box-container{
+      grid-template-columns: 1fr;
+   }
+
+   .heading h3{
+      font-size: 3.5rem;
+   }
+
+   .recipes{
+      padding:1.5rem;
+      justify-content: center;
+   }
+
+   .recipeResults{
+      padding:1.5rem;
+      justify-content: center;
+   }
+
+   .flex-btn{
+      flex-flow: column;
+      gap:0;
+   }   
+
 }
