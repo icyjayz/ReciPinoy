@@ -90,7 +90,7 @@ section{
 .createbtn{
    display: block;
    margin-top: 1rem;
-   margin-bottom: 1rem;
+   margin-bottom: 2rem;
    border-radius: .5rem;
    cursor: pointer;
    width: 30%;
@@ -496,7 +496,7 @@ section{
 .search-form form .box{
    width: 100%;
    border:var(--border);
-   padding:1.4rem;
+   padding:1.2rem;
    font-size: 1.8rem;
    color:var(--black);
 }
@@ -527,7 +527,7 @@ section{
    text-align: center;   
    font-size: 1.8rem;
    overflow-y: auto;
-   height: 200rem;
+   height: 41.5rem;
    width: auto;
 }
 
@@ -617,6 +617,144 @@ section{
 /*--------------------------------------------------------------
 # Recipe View
 --------------------------------------------------------------*/
+#image {  
+   position: absolute;
+   display: block;  
+   margin-left: 15rem;  
+   margin-right: auto;  
+   border: 2px solid var(--black);  
+   padding: 5px;  
+}  
+
+/* Recipe Name */
+.adminRecipeView h3{
+   position: absolute;
+   font-size: 4rem;
+   color: var(--black);
+   margin-left: 65rem;
+   margin-top: 5rem;
+}
+
+/* Recipe Description */
+.adminRecipeView h5{
+   position: absolute;
+   font-size: 2rem;
+   color: var(--black);
+   text-align: left;
+   margin-left: 65rem;
+   margin-top: 11rem;
+   padding-right: 15rem;
+}
+
+/* Recipe Category */
+.adminRecipeView .recViewCateg{
+   position: absolute;
+   margin-left: 65rem;
+   margin-top: 30rem;
+   padding-right: 1rem;
+}
+
+/* Recipe Time */
+.adminRecipeView .recViewTime{
+   position: absolute;
+   margin-left: 65rem;
+   margin-top: 33rem;
+   padding-right: 1rem;
+}
+
+/* Recipe Serving */
+.adminRecipeView .recViewServing{
+   position: absolute;
+   margin-left: 65rem;
+   margin-top: 36rem;
+   padding-right: 1rem;
+}
+
+/* Recipe Calories */
+.adminRecipeView .recViewCalories{
+   position: absolute;
+   margin-left: 65rem;
+   margin-top: 39rem;
+   padding-right: 1rem;
+}
+
+/* Recipe Rating */
+.adminRecipeView .recViewRating{
+   position: absolute;
+   margin-left: 65rem;
+   margin-top: 42rem;
+   padding-right: 1rem;
+}
+
+.adminRecipeView .recSourceTitle{
+   font-size: 2rem;
+   position: absolute;
+   margin-left: 65rem;
+   margin-top: 44rem;
+   padding-right: 1rem;
+}
+
+/* Recipe p */
+.adminRecipeView p,
+.adminRecipeView ul li{
+   font-size: 2rem;
+   color: var(--black);
+   text-align: left;
+}
+
+/* Recipe Ingredient */
+.adminRecipeView .recIngredientTitle{
+   position: absolute;
+   margin-left: 20rem;
+   margin-top: 55rem;
+   padding-right: 1rem;
+}
+
+.adminRecipeView ul{
+   position: absolute;
+   margin-top: 58rem;
+   margin-left: 20rem;
+}
+
+/* Recipe Process */
+.adminRecipeView .recProcessTitle{
+   position: absolute;
+   margin-left: 85rem;
+   margin-top: 55rem;
+   padding-right: 1rem;
+}
+
+.adminRecipeView .recProcessBox{
+   position: absolute;
+   margin-left: 85rem;
+   margin-top: 58rem;
+   padding-right: 1rem;
+   padding-bottom: 1rem;
+   font-size: 2rem;
+   width: 55rem;
+   height:45rem;
+   resize: vertical;
+}
+
+.adminRecipeView .recVideoTitle{
+   position: absolute;
+   margin-left: 74rem;
+   margin-top: 105rem;
+   font-size: 2rem;
+   width: 55rem;
+   height:45rem;
+}
+
+.adminRecipeView .recVideo{
+   position: absolute;
+   margin-left: 50rem;
+   margin-top: 110rem;
+   padding-right: 1rem;
+   padding-bottom: 1rem;
+   width: 55rem;
+   height:45rem;
+   resize: vertical;
+}
 
 
 /* media queries  */

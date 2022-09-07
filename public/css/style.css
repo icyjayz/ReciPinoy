@@ -3,7 +3,7 @@
 
 /* Colors */
 :root{
-   --yellow:#fed330;
+   --green:#2DC268;
    --red:#e74c3c;
    --white:#fff;
    --black:#222;
@@ -23,7 +23,7 @@
 }
 
 *::selection{
-   background-color: var(--yellow);
+   background-color: var(--green);
    color:var(--black);
 }
 
@@ -37,7 +37,7 @@
 }
 
 ::-webkit-scrollbar-thumb{
-   background-color: var(--yellow);
+   background-color: var(--green);
 }
 
 html{
@@ -85,7 +85,7 @@ section{
 }
 
 .heading p a{
-   color:var(--yellow);
+   color:var(--green);
 }
 
 .heading p a:hover{
@@ -106,8 +106,8 @@ section{
 }
 
 .btn{
-   background-color: var(--yellow);
-   color:var(--black);
+   background-color: var(--green);
+   color:var(--white);
 }
 
 .delete-btn{
@@ -147,7 +147,7 @@ section{
    align-items: center;
    gap:1rem;
    justify-content: space-between;
-   background-color: var(--yellow);
+   background-color: var(--green);
 }
 
 .message span{
@@ -211,7 +211,7 @@ section{
 }
 
 .header .flex .navbar a:hover{
-   color:var(--yellow);
+   color:var(--green);
    text-decoration: underline;
 }
 
@@ -223,7 +223,7 @@ section{
 }
 
 .header .flex .icons > *:hover{
-   color: var(--yellow);
+   color: var(--green);
 }
 
 .header .flex .icons span{
@@ -273,7 +273,7 @@ section{
 }
 
 .header .flex .profile .account a:hover{
-   color:var(--yellow);
+   color:var(--green);
    text-decoration: underline;
 }
 
@@ -314,7 +314,7 @@ section{
 }
  
 .swiper-pagination-bullet-active{
-   background-color: var(--yellow);
+   background-color: var(--green);
 }
 
 /*--------------------------------------------------------------
@@ -343,8 +343,8 @@ section{
 }
  
 .search-form form .fa-search:hover{
-   background-color: var(--yellow);
-   color:var(--black);
+   background-color: var(--green);
+   color:var(--white);
 }
 
 /*--------------------------------------------------------------

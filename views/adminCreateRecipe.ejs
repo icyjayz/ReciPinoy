@@ -73,8 +73,8 @@
             <div id="ingInps" class="add-ingredients">
                 <h2>put - if n/a</h2>
                 <input type="hidden" value="1" id="ingNum" name="ingNum" required>
-                <input type="text" name="ingQuantInp[]" id="ingQuantInp1" required placeholder="Quantity" maxlength="10" class="s_ingredientbox">
-                <input type="text" name="ingUnitInp[]" id="ingUnitInp1" required placeholder="Unit" maxlength="10" class="s_ingredientbox">
+                <input type="text" name="ingQuantInp[]" id="ingQuantInp1" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+                <input type="text" name="ingUnitInp[]" id="ingUnitInp1" placeholder="Unit" maxlength="10" class="s_ingredientbox">
                 <input type="text" name="recIng[]" id="recIng1" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
             <!-- <select name="recIng[]" id="recIng1">
                 <%# ing.forEach(ingName => { %>
@@ -83,8 +83,8 @@
                 
             </select> -->
                 <input type="text" name="ingInsInp[]" id="ingInsInp1" placeholder="Instruction" maxlength="500" class="ingredientbox">
-            <input type="hidden" name="qval" value="" id="qval" required placeholder="Quantity" maxlength="10" class="s_ingredientbox">
-            <input type="hidden" name="idval" value="" id="idval" required placeholder="Unit" maxlength="10" class="s_ingredientbox">
+            <input type="hidden" name="qval" value="" id="qval" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+            <input type="hidden" name="idval" value="" id="idval" placeholder="Unit" maxlength="10" class="s_ingredientbox">
             <input type="hidden" name="uval" value="" id="uval" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
             <input type="hidden" name="insval" value="" id="insval" placeholder="Instruction" maxlength="500" class="ingredientbox">
         </div>
@@ -128,10 +128,10 @@
             console.log('add button clicked....');
             let newIngNum = parseInt($('#ingNum').val()) + 1;
 
-            let quantInp = '<br><input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +'">';
-            let ingInp = '<input type="text" name="recIng[]" id="recIng'+ newIngNum +'" required>';
-            let unitInp = '<input type="text" name="ingUnitInp[]" id="ingUnitInp'+ newIngNum +'">';
-            let insInp = '<input type="text" name="ingInsInp[]" id="ingInsInp'+ newIngNum+'">';
+            let quantInp = '<br><input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +' placeholder="Quantity" maxlength="10" class="s_ingredientbox">';
+            let ingInp = '<input type="text" name="recIng[]" id="recIng'+ newIngNum +' required placeholder="Ingredient" maxlength="100" class="ingredientbox">';
+            let unitInp = '<input type="text" name="ingUnitInp[]" id="ingUnitInp'+ newIngNum +' placeholder="Unit" maxlength="10" class="s_ingredientbox">';
+            let insInp = '<input type="text" name="ingInsInp[]" id="ingInsInp'+ newIngNum+' placeholder="Instruction" maxlength="500" class="ingredientbox">';
 
             $('#ingInps').append(quantInp);
             $('#ingInps').append(unitInp);

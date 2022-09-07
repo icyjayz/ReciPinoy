@@ -16,44 +16,63 @@
     <!-- admin dashboard section starts  -->
     <%- include('./partials/adminNav'); %>
 
+    <a href="/admin/recipes" class="back-btn">>> Back</a>
+
+    <div class = adminRecipeView>
     <% let i = 0; %> 
     <% let ingArr = []; %> 
     <% recs.forEach(rec => { %>
         <% if (rec.rec_image) { %>
-            <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" width="100%">
-        <% } %><br><br>
+            <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" id="image" height="500rem" width="455rem">
+        <% } %>
         <h3><%= rec.rec_name %></h3>
         <h5><%= rec.rec_desc %></h5>
-        <p><strong>Category: </strong><%= rec.rec_categ %></p>
+        <div class="recViewCateg">
+            <p><strong>Category: </strong><%= rec.rec_categ %></p>
+        </div>
         <% if (rec.rec_time) { %>
-            <p><strong>Total Time: </strong><%= rec.rec_time %></p>
+            <div class="recViewTime">
+                <p><strong>Total Time: </strong><%= rec.rec_time %></p>
+            </div>
         <% } %>
         <% if (rec.rec_serving) { %>
-            <p><strong>Serving: </strong><%= rec.rec_srv %></p>
+            <div class="recViewServing">
+                <p><strong>Serving: </strong><%= rec.rec_srv %></p>
+            </div>
         <% } %>
         <% if (rec.rec_cal) { %>
-            <p><strong>Calories: </strong><%= rec.rec_cal %></p>
+            <div class="recViewCalories">
+                <p><strong>Calories: </strong><%= rec.rec_cal %></p>
+            </div>
         <% } %>
         <% if (rec.rec_Rate) { %>
-            <p><strong>Rating: </strong><%= rec.rec_rate %></p>
+            <div class="recViewRating">
+                <p><strong>Rating: </strong><%= rec.rec_rate %></p>
+            </div>
         <% } %>
-        <p><strong>Ingredients: <br></strong></p>
-        <ul>
-            <% if (i < recIngs.length) { %>
-                <% ingArr = recIngs[i].split(",") %> 
-                <% for( let index = 0; index < ingArr.length; index++ ) { %>
-                    <li><%= ingArr[index]%></li>
-                <% } %> 
-            <% i++; } %>
-        </ul>
-        <p><strong>Process:</strong><br></p>
-        <textarea name="" id="" cols="30" rows="10" readonly><%= rec.rec_process %></textarea><br>
-        <a href="<%= rec.rec_src %>"><strong>Source</strong></a>
+        <div class="recIngredientTitle">
+            <p><strong>Ingredients: </strong></p>
+        </div>
+            <ul>
+                <% if (i < recIngs.length) { %>
+                    <% ingArr = recIngs[i].split(",") %> 
+                    <% for( let index = 0; index < ingArr.length; index++ ) { %>
+                        <li><%= ingArr[index]%></li>
+                    <% } %> 
+                <% i++; } %>
+            </ul>
+        <div class="recProcessTitle">
+            <p><strong>Process:</strong></p>
+        </div>
+            <textarea name="" id="" cols="30" rows="10" readonly class="recProcessBox"><%= rec.rec_process %></textarea><br>
+        <a href="<%= rec.rec_src %>" class="recSourceTitle"><strong>Source</strong></a>
         <% if (rec.rec_vid) { %>
-            <p><strong>Video:</strong><br></p>
-        <iframe width="200" height="200" src="<%= rec.rec_vid %>"></iframe>
+            <div class="recVideoTitle">
+                <p><strong>Video</strong><br></p>
+            </div>
+        <iframe width="400" height="400" src="<%= rec.rec_vid %>" class="recVideo"></iframe>
         <% } %> 
     <% }) %>
-
+    </div>
 </body>
 </html>
