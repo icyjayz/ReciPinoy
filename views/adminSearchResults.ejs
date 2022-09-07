@@ -24,14 +24,85 @@
 
     <div class="box-container">
         <% if (recs.length > 0) { %>
-            <% recs.forEach(rec => { %>
-                <form action="" method="post" class="box">
-                    <a href="/admin/recipes/<%= rec.rec_id%>" class="fas fa-eye"></a>
-                    <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150">
-                    <div class="cat"><%= rec.rec_categ %></div>
-                    <div class="name"><%= rec.rec_name %></div>
-                </form>
-            <% }) %>
+            <%#recs.forEach(rec => { %>
+                <table border="3">
+                    <thead>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <!-- <th>Description</th>
+                        <th>Process</th> -->
+                        <th>Category</th>
+                        <th>Time</th>
+                        <th>Serving</th>
+                        <th>Source</th>
+                        <th>Video</th>
+                        <th>Calories</th>
+                        <th>Meal Time</th>
+                        <!-- <th>Rate</th>
+                        <th>Ingredients</th> -->
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <% let i = 0; %> 
+                        <% let ingArr = []; %> 
+                        <% recs.forEach(rec => { %>
+                        <tr> 
+                            <td>
+                                <% if (rec.rec_image) { %>
+                                    <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100">
+                                <% } %>
+                            </td>
+                            <td><%= rec.rec_name %> </td>
+                            <!-- <td><%= rec.rec_desc %></td>
+                            <td><%= rec.rec_process %></td> -->
+                            <td><%= rec.rec_categ %></td>
+                            <td>
+                                <% if (rec.rec_time) { %>
+                                    <%= rec.rec_time %>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (rec.rec_serving) { %>
+                                    <%= rec.rec_serving %>
+                                <% } %>
+                            </td>
+                            <td><a href="<%= rec.rec_src %>">Source Link</a></td>
+                            <td>
+                                <% if (rec.rec_vid) { %>
+                                    <a href="<%= rec.rec_vid %>">YouTube Link</a>
+                                <% } %> 
+                            </td>
+                            <td>
+                                <% if (rec.rec_cal) { %>
+                                    <%= rec.rec_cal %>
+                                <% } %>
+                            </td>
+                            <td><%= rec.rec_mealTime %></td>
+                            <!-- <td>
+                                <% if (rec.rec_rate) { %>
+                                    <%= rec.rec_rate %>
+                                <% } %>
+                            </td> -->
+                            <!-- ing -->
+                            <!-- <% if (i < recIngs.length) { %>
+                                <% ingArr = recIngs[i].split("/") %> 
+                                <td>
+                                <% for( let index = 0; index < ingArr.length; index++ ) { %>
+                                    <%= ingArr[index]%><br> 
+                                <% } %> 
+                                </td>
+                            <% i++; } %>  -->
+                            <!-- actions -->
+                            <td>
+                                <a href="/admin/recipes/<%= rec.rec_id %>" class="recview-btn">View Recipe</a>
+                                <a href="/admin/recipes/edit/<%= rec.rec_id %>" class="recedit-btn">Edit</a>
+                                <a href="/admin/recipes/delete/<%= rec.rec_id %>" class="recdelete-btn">Delete</a>
+                            </td>
+                        </tr>
+                        <%}) %>
+                    </tbody>
+                </table>
+            <%# }) %>
         <% } else { %>
             <p class="empty">No recipes found.</p>
             <% } %>

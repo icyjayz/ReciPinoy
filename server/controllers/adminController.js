@@ -608,10 +608,53 @@ exports.adminSearch = (req, res) => {
                             console.log(err, '\n');
                         }
                         else if(result){
-                           res.render('adminSearchResults', {title: 'Search Results', recs: result});
+                            let recIngs = [];
+                            let ingStringArr = [];
+                            let ingStr = '';
+                            let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
+                            function getIngs(id){
+                                return new Promise((resolve, reject) => {
+                                        conn.query(qStr, [id], (err, ings) => {
+                                            if(err){
+                                                console.log(err, '\n');
+                                            }
+                                            else{
+                                                ings.forEach(ing => {
+                                                    let ingq = ing.ingQuant;
+                                                    let ingu = ing.ingUnit;
+                                                    let ingi = ing.ingIns;
+                                                    if(!ing.ingQuant || ing.ingQuant == 0){
+                                                        ingq = '';
+                                                    }
+                                                    if(!ing.ingUnit){
+                                                        ingu = '';
+                                                    }
+                                                    if(!ing.ingIns){
+                                                        ingi = '';
+                                                    }
+                                                    let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
+                                                    ingStringArr.push(temp);
+                                                });
+                                                ingStr = ingStringArr.join('/');
+                                                ingStringArr = []; 
+                                                resolve(ingStr);
+                                            }
+                                        })
+                                })
+                            }
+                            async function getAllRecIng(r){
+                                for(id of r){
+                                    ingStr = await getIngs(id.rec_id);
+                                    recIngs.push(ingStr);
+                                }
+                                conn.release();
+                                //let msg = req.flash('msg');
+                                //res.render('adminRecipe', { title: 'Recipes', recs: recs, recIngs: recIngs, msg});
+                                res.render('adminSearchResults', {title: 'Search Results', recs: result, recIngs: recIngs});
+                            }
+                            getAllRecIng(result);
                         }
                         else{
-                           // let msg = req.flash('msg', 'No recipes found!');
                             res.render('adminSearchResults', {title: 'Search Results', recs: result});
                         }   
                     })
