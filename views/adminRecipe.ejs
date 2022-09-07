@@ -108,9 +108,9 @@
                 <% i++; } %>  -->
                 <!-- actions -->
                 <td>
-                    <button><a href="/admin/recipes/<%= rec.rec_id %>">View Recipe</a></button>
-                    <button><a href="/admin/recipes/edit/<%= rec.rec_id %>">Edit</a></button>
-                    <button><a href="/admin/recipes/delete/<%= rec.rec_id %>">Delete</a></button>
+                    <a href="/admin/recipes/<%= rec.rec_id %>" class="recview-btn">View Recipe</a>
+                    <a href="/admin/recipes/edit/<%= rec.rec_id %>" class="recedit-btn">Edit</a>
+                    <a href="/admin/recipes/delete/<%= rec.rec_id %>" class="recdelete-btn">Delete</a>
                 </td>
             </tr>
             <%}) %>

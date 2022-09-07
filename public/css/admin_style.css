@@ -4,6 +4,8 @@
 /* Colors */
 :root{
    --main-color:#4834d4;
+   --light-blue:#51B8E8;
+   --darker-blue:#2E74B8;
    --red:#e74c3c;
    --orange:#f39c12;
    --black:#34495e;
@@ -76,6 +78,22 @@ section{
    border: none;
 }
 
+.recview-btn, 
+.recedit-btn,
+.recdelete-btn
+{
+   display: block;
+   border-radius: .5rem;
+   cursor: pointer;
+   width: 13rem;
+   font-size: 1.5rem;
+   padding: 1rem 1rem;
+   text-transform: capitalize;
+   text-align: center;
+   border: none;
+   margin-bottom: 2px;
+}
+
 .back-btn
 {
    margin-top: 1rem;
@@ -85,6 +103,7 @@ section{
    cursor: pointer;
    text-transform: capitalize;
    transition: .2s linear;
+
 }
 
 .createbtn{
@@ -110,6 +129,22 @@ section{
    background-color: var(--red);
 }
 
+.recview-btn{
+   background-color: var(--light-blue);
+   color: var(--white);
+}
+
+.recedit-btn{
+   background-color: var(--darker-blue);
+   color: var(--white);
+}
+
+.recdelete-btn{
+   background-color: var(--red);
+   color: var(--white);
+}
+
+.delete-btn
 .back-btn{
    color: var(--black);
 }
