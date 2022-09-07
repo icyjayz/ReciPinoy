@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- wala pa sa git -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title><%=title  %> </title>
+</head>
+<body>
+    <h1>Recipe Recommender using ingredients</h1>
+    <br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
+    <br><br>
+    <form action="/recommend" method="post" onsubmit="getIngs()">
+        <div id="ingInps">
+            <h3>Enter your ingredients onhand: </h3>
+            <input type="hidden" name="ingNum" id="ingNum" value="4">
+            <input type="text" name="ings[]" id="ing1" required><br>
+            <input type="text" name="ings[]" id="ing2" required><br>
+            <input type="text" name="ings[]" id="ing3" required><br>
+            <input type="text" name="ings[]" id="ing4" required>
+        </div>
+        <input type="hidden" name="ingsVal" value="4" id="ingsVal">
+        <br><button type="button" id="addIngredientsBtn">Add another ingredient</button><br><br><br>
+        <div id="exIngs">
+            <input type="hidden" name="exIngNum" id="exIngNum" value="0">
+            <h3 id="exTitle"></h3>
+        </div>
+        <input type="hidden" name="exIngsVal" value="" id="exIngsVal">
+        <br><button type="button" id="exIngredientsBtn">Exclude ingredients</button>
+        <br><br>
+        <button type="submit">Get Recommendation!</button>
+    </form>
+
+    <script type="text/javascript">
+        $('#addIngredientsBtn').on('click', add);
+        $('#exIngredientsBtn').on('click', exclude);
+        function getIngs() {
+            let iv = [];
+            let xv = [];
+            
+            jQuery('input[name="exIng[]"]').each(function() {
+                let ingstr = this.value.toLowerCase();
+                xv.push(ingstr);
+            });
+            jQuery('input[name="ings[]"]').each(function() {
+                let ingstr = this.value.toLowerCase();
+                iv.push(ingstr);
+            });
+
+            $('#exIngsVal').val(JSON.stringify(xv));
+            $('#ingsVal').val(JSON.stringify(iv));
+        }
+        
+        function exclude() {
+            let newIngNum = parseInt($('#exIngNum').val()) + 1;
+            let ings = '<br><input type="text" name="exIng[]" id="exIng'+ newIngNum +'">';
+            let title = 'Excluded Ingredients: ';
+            $('#exTitle').text(title);
+            $('#exIngs').append(ings);
+            $('#exIngNum').val(newIngNum);  
+        }
+
+        function add() {
+            console.log('add button clicked....');
+            let newIngNum = parseInt($('#ingNum').val()) + 1;
+            let ings = '<br><input type="text" name="ings[]" id="ing'+ newIngNum +'">';
+
+            $('#ingInps').append(ings);
+            $('#ingNum').val(newIngNum);    
+            
+        }
+    </script>
+</body>
+</html>

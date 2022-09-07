@@ -171,8 +171,7 @@ exports.adminRecipes = (req, res) => {
                                                     let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
                                                     ingStringArr.push(temp);
                                                 });
-                                                ingStr = ingStringArr.join(',');
-                                                //tempArr.push(ingStr);
+                                                ingStr = ingStringArr.join('/');
                                                 ingStringArr = []; 
                                                 resolve(ingStr);
                                             }
@@ -184,7 +183,6 @@ exports.adminRecipes = (req, res) => {
                                     ingStr = await getIngs(id.rec_id);
                                     recIngs.push(ingStr);
                                 }
-                                //console.log(recIngs);
                                 conn.release();
                                 let msg = req.flash('msg');
                                 res.render('adminRecipe', { title: 'Recipes', recs: recs, recIngs: recIngs, msg});
@@ -238,92 +236,103 @@ exports.submitRecipe = (req, res) => {
                     }else{
                         mString = rec.getRecMTime();
                     }
-                    if(rec.getRecImg().mimetype == "image/jpeg" || rec.getRecImg().mimetype == "image/png"){
-                        rec.getRecImg().mv('images/' + recImgName, (err) => {
-                            res.status(500).send(err);
-                        })
-                    }
-                    else{
-                        let msg = req.flash('msg');
-                        res.render('adminCreateRecipe', {title: 'Create Recipe', ing: rows, msg});
-                        //console.log('invald file format..\n');
-                    }
-                    conn.query('INSERT INTO rec(rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [rec.getRecName(), rec.getRecDesc(), rec.getRecPrc(), rec.getRecCateg(), rec.getRecTime(), rec.getRecSrv(), rec.getRecSrc(), rec.getRecVid(), rec.getRecCal(), mString, recImgName], (err, result) => {
+                    conn.query('SELECT * FROM rec WHERE rec_name = ?', [rec.getRecName()], (err, rec) => {
                         if(err){
                             console.log(err, '\n');
                             conn.release();
-                        }else{
-                            recId = result.insertId;
-                            console.log(recId);
-                            let ing = new Recipe.Ing();
-                            let ingNum = req.body.ingNum;
-                            ing.quant = JSON.parse(req.body.qval);
-                            ing.name = JSON.parse(req.body.idval);
-                            ing.unit = JSON.parse(req.body.uval);
-                            ing.ins = JSON.parse(req.body.insval);
-                      
-                            function insertNewIng(ingName){
-                                return new Promise((resolve, reject) => {
-                                    conn.query('INSERT INTO ing(ing_name) VALUES (?)', [ingName],(err, ins) =>{
-                                        if(err){
-                                            console.log(err, '\n');
-                                        } else{
-                                            let ii = ins.insertId;
-                                            resolve(ii);
-                                        }
-                                    });
+                        }else if(rec[0]){
+                            conn.release();
+                            req.flash('msg', 'The database has recipe for this dish already!');
+                            res.redirect('/admin/recipes/create');
+                        }
+                        else{
+                            if(rec.getRecImg().mimetype == "image/jpeg" || rec.getRecImg().mimetype == "image/png"){
+                                rec.getRecImg().mv('images/' + recImgName, (err) => {
+                                    res.status(500).send(err);
                                 })
                             }
-                            async function insertRecIng(ingName, qf, ingUnit, ingIns){
-                                const ii = await insertNewIng(ingName);
-                                conn.query('INSERT INTO recIng(recId, ingId, ingQuant, ingUnit, ingIns) VALUES (?, ?, ?, ?, ?)', [recId, ii, qf, ingUnit, ingIns], (err, row) => {
-                                    if(err){
-                                        console.log(err, '\n');
-                                        conn.release();
-                                    }
-                                    else{
-                                        console.log('new ing added + recing inserted...\n');
-                                    }
-                                })
-                                
+                            else{
+                                let msg = req.flash('msg');
+                                res.render('adminCreateRecipe', {title: 'Create Recipe', ing: rows, msg});
                             }
-
-                            for(let i = 0; i < ingNum; i++){
-                                let ingQuant = ing.getIngQuant()[i];
-                                let ingUnit = ing.getIngUnit()[i];
-                                let ingName = ing.getIngName()[i];
-                                let ingIns = ing.getIngIns()[i];
-                                let qf; 
-                                if(parseFloat(ingQuant)){
-                                    qf = parseFloat(ingQuant);
-                                  }
-                                else{
-                                    qf = 0;
-                                }
-                                conn.query('SELECT * FROM ing WHERE ing_name = ?', [ingName], (err, rows) =>{
-                                    if(err){
-                                        console.log(err, '\n');
+                            conn.query('INSERT INTO rec(rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [rec.getRecName(), rec.getRecDesc(), rec.getRecPrc(), rec.getRecCateg(), rec.getRecTime(), rec.getRecSrv(), rec.getRecSrc(), rec.getRecVid(), rec.getRecCal(), mString, recImgName], (err, result) => {
+                                if(err){
+                                    console.log(err, '\n');
+                                    conn.release();
+                                }else{
+                                    recId = result.insertId;
+                                    console.log(recId);
+                                    let ing = new Recipe.Ing();
+                                    let ingNum = req.body.ingNum;
+                                    ing.quant = JSON.parse(req.body.qval);
+                                    ing.name = JSON.parse(req.body.idval);
+                                    ing.unit = JSON.parse(req.body.uval);
+                                    ing.ins = JSON.parse(req.body.insval);
+                              
+                                    function insertNewIng(ingName){
+                                        return new Promise((resolve, reject) => {
+                                            conn.query('INSERT INTO ing(ing_name) VALUES (?)', [ingName],(err, ins) =>{
+                                                if(err){
+                                                    console.log(err, '\n');
+                                                } else{
+                                                    let ii = ins.insertId;
+                                                    resolve(ii);
+                                                }
+                                            });
+                                        })
                                     }
-                                    else if(rows[0]){
-                                        let ii = rows[0].ing_id;
+                                    async function insertRecIng(ingName, qf, ingUnit, ingIns){
+                                        const ii = await insertNewIng(ingName);
                                         conn.query('INSERT INTO recIng(recId, ingId, ingQuant, ingUnit, ingIns) VALUES (?, ?, ?, ?, ?)', [recId, ii, qf, ingUnit, ingIns], (err, row) => {
                                             if(err){
                                                 console.log(err, '\n');
                                                 conn.release();
                                             }
                                             else{
-                                                console.log('recing added...\n');
+                                                console.log('new ing added + recing inserted...\n');
+                                            }
+                                        })
+                                        
+                                    }
+        
+                                    for(let i = 0; i < ingNum; i++){
+                                        let ingQuant = ing.getIngQuant()[i];
+                                        let ingUnit = ing.getIngUnit()[i];
+                                        let ingName = ing.getIngName()[i];
+                                        let ingIns = ing.getIngIns()[i];
+                                        let qf; 
+                                        if(parseFloat(ingQuant)){
+                                            qf = parseFloat(ingQuant);
+                                          }
+                                        else{
+                                            qf = 0;
+                                        }
+                                        conn.query('SELECT * FROM ing WHERE ing_name = ?', [ingName], (err, rows) =>{
+                                            if(err){
+                                                console.log(err, '\n');
+                                            }
+                                            else if(rows[0]){
+                                                let ii = rows[0].ing_id;
+                                                conn.query('INSERT INTO recIng(recId, ingId, ingQuant, ingUnit, ingIns) VALUES (?, ?, ?, ?, ?)', [recId, ii, qf, ingUnit, ingIns], (err, row) => {
+                                                    if(err){
+                                                        console.log(err, '\n');
+                                                        conn.release();
+                                                    }
+                                                    else{
+                                                        console.log('recing added...\n');
+                                                    }
+                                                })
+                                            }
+                                            else{
+                                                insertRecIng(ingName, qf, ingUnit, ingIns);
                                             }
                                         })
                                     }
-                                    else{
-                                        insertRecIng(ingName, qf, ingUnit, ingIns);
-                                    }
-                                })
-                            }
-                            res.redirect('/admin/recipes'); 
+                                    res.redirect('/admin/recipes'); 
+                                }
+                            })
                         }
-                    })
+                    });
                 }
             })
         }
@@ -659,7 +668,7 @@ exports.adminRecipeView = (req,res) => {
                                                     let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
                                                     ingStringArr.push(temp);
                                                 });
-                                                ingStr = ingStringArr.join(',');
+                                                ingStr = ingStringArr.join('/');
                                                 //tempArr.push(ingStr);
                                                 ingStringArr = []; 
                                                 resolve(ingStr);

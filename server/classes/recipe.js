@@ -69,7 +69,21 @@ const Ing = class{
         return this.ins;
     }
 }
+
+const Recomm = class{
+    constructor(ings, exIngs){
+        this.ings = ings;
+        this.exIngs = exIngs;
+    }
+    getIngs(){
+        return this.ings;
+    }
+    getExIngs(){
+        return this.exIngs;
+    }
+}
 module.exports = {
     Recipe: Recipe,
-    Ing: Ing
+    Ing: Ing,
+    Recomm: Recomm
 }

@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title  %> </title>
-</head>
-<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <% let i = 0; %> 
     <% let ingArr = []; %> 
     <% recs.forEach(rec => { %>
+    <title><%= rec.rec_name %></title>
+</head>
+<body>
+    
+    
         <% if (rec.rec_image) { %>
             <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100">
         <% } %><br><br>
@@ -20,7 +23,15 @@
             <p><strong>Total Time: </strong><%= rec.rec_time %></p>
         <% } %>
         <% if (rec.rec_serving) { %>
-            <p><strong>Serving: </strong><%= rec.rec_srv %></p>
+            <% if (rec.rec_serving == 1) { %>
+                <p><strong>Serving: </strong></p>
+                <button type="button" id="minusButton">-</button>
+                <input type="number" name="servingInp" id="servingInp" value="<%= rec.rec_serving %>" min="<%= rec.rec_serving %>" readonly>
+                <button type="button" id="plusButton">+</button>
+            <% } else { %>
+                <p><strong>Serving: </strong><%= rec.rec_serving %></p>
+            <% } %>
+            
         <% } %>
         <% if (rec.rec_cal) { %>
             <p><strong>Calories: </strong><%= rec.rec_cal %></p>
@@ -30,12 +41,12 @@
         <% } %>
         <p><strong>Ingredients: <br></strong></p>
         <ul>
-            <% if (i < recIngs.length) { %>
-                <% ingArr = recIngs[i].split(",") %> 
-                <% for( let index = 0; index < ingArr.length; index++ ) { %>
-                    <li><%= ingArr[index]%></li>
-                <% } %> 
-            <% i++; } %>
+            <div id="ings">
+                <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
+            <% for( let index = 0; index < recIngs.length; index++ ) { %>
+                <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li>
+            <% } %>
+            </div>
         </ul>
         <p><strong>Process:</strong><br></p>
         <textarea name="" id="" cols="30" rows="10" readonly><%= rec.rec_process %></textarea><br>
@@ -45,6 +56,53 @@
         <iframe width="200" height="200" src="<%= rec.rec_vid %>"></iframe>
         <% } %> 
     <% }) %>
+    
+    <script type="text/javascript">
+        const minusButton = document.getElementById('minusButton');
+        const plusButton = document.getElementById('plusButton');
+        const inputField = document.getElementById('servingInp');
 
+        minusButton.addEventListener('click', event => {
+            event.preventDefault();
+            let currentValue = parseInt($('#servingInp').val());
+            currentValue = currentValue - 1;
+            $('#servingInp').val(currentValue);
+            //console.log(currentValue);
+            let newIngNum = parseInt($('#ingCount').val());
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li><% } %>';
+            $("#ings").html(htmlStr);
+            for (let index = 1; index <= newIngNum; index++) {
+                let i = "quantSpan" + index.toString();
+                let span = document.getElementById(i);
+                let spanVal = span.textContent;
+                if(spanVal && parseFloat(spanVal)){
+                    let newVal = parseFloat(spanVal) * currentValue;
+                    newVal = newVal.toFixed(2);
+                    span.textContent = newVal.toString();
+                }
+            }
+        });
+
+        plusButton.addEventListener('click', event => {
+            event.preventDefault();
+            // const currentValue = Number(servingInp.value);
+            let currentValue = parseInt($('#servingInp').val());
+            currentValue = currentValue + 1;
+            $('#servingInp').val(currentValue);
+            let newIngNum = parseInt($('#ingCount').val());
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li><% } %>';
+            $("#ings").html(htmlStr);
+            for (let index = 1; index <= newIngNum; index++) {
+                let i = "quantSpan" + index.toString();
+                let span = document.getElementById(i);
+                let spanVal = span.textContent;
+                if(spanVal && parseFloat(spanVal)){
+                    let newVal = parseFloat(spanVal) * currentValue;
+                    newVal = newVal.toFixed(2);
+                    span.textContent = newVal.toString();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> </title>
+</head>
+<body>
+    <h1>Recommended Recipes</h1>
+    <br><br>
+    <% if (msg != '') { %>
+        <h3><%= msg %> </h3>
+    <% } %>
+    <br><br>
+    <h3>Included Ingredients:</h3><br>
+    <% for( let index = 0; index < ings.length; index++ ) { %>
+        <li><%= ings[index] %> </li>
+    <% } %>
+
+    <h3>Excluded Ingredients:</h3><br>
+    <% if (exIngs) { %>
+        <% exIngs.forEach(ex => { %>
+            <li><%= ex %> </li>
+        <% }) %>
+    <% } else { %>
+        <p><strong>No exclusions.</strong></p>
+    <% } %>
+    <h3>Recommended Recipes</h3>
+    <table>
+        <tbody>
+            <% for( let index = 0; index < recId.length; index++ ) { %>
+                <tr>
+                    <td><img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" height="100"></td>
+                    <td><a href="/recipes/<%= recId[index]%>"><%= recName[index] %></a></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
