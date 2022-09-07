@@ -589,65 +589,36 @@ section{
 # Recipe Search Results
 --------------------------------------------------------------*/
 .recipeResults .box-container{
-   display: grid;
-   grid-template-columns: repeat(auto-fit, 33rem);
    justify-content: center;
-   align-items: flex-start;
-   gap:1.5rem;
-}
-
-.recipeResults .box-container .box{
-   border:var(--border);
-   padding:1.5rem;
-   position: relative;
-   overflow: hidden;
-}
-
-.recipeResults .box-container .box img{
-   height: 25rem;
-   width: 100%;
-   object-fit: contain;
-   margin-bottom: 1rem;
-}
-
-.recipeResults .box-container .box .fa-eye{
-   position: absolute;
-   top:1rem;
-   height: 4.5rem;
-   width: 4.5rem;
-   line-height: 4.3rem;
-   border:var(--border);
    background-color: var(--white);
-   cursor: pointer;
-   font-size: 2rem;
-   color:var(--black);
-   transition: .2s linear;
-   text-align: center;
-}
-
-.recipeResults .box-container .box .fa-eye:hover{
-   background-color: var(--black);
-   color:var(--white);
-}
-
-.recipeResults .box-container .box .fa-eye{
-   left: -10rem;
-}
-
-.recipeResults .box-container .box:hover .fa-eye{
-   left: 1rem;
-}
-
-.recipeResults .box-container .box .cat{
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border: var(--border);
+   text-align: center;   
    font-size: 1.8rem;
-   color:var(--light-color);
+   overflow-y: auto;
+   height: 41.5rem;
+   width: auto;
 }
 
-.recipeResults .box-container .box .name{
-   font-size: 2rem;
-   color:var(--black);
-   margin:1rem 0;
+.recipeResults .box-container table{
+   border-collapse: collapse;        
+   width: auto;
 }
+
+.recipeResults .box-container thead th{
+   position: sticky;
+   top: 0;
+}
+
+.recipeResults .box-container th,td {
+  padding: 8px 15px;
+  border: 2px solid var(--black);
+}
+
+.recipeResults .box-container th{
+   background-color: var(--white);
+ }
 
 /*--------------------------------------------------------------
 # Recipe View
