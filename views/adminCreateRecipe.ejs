@@ -71,7 +71,6 @@
             <label for="ingNameLbl" class="addRecLabel">Ingredient: </label>
             <label for="ingInsLbl" class="addRecLabel">Instruction: </label>
             <div id="ingInps" class="add-ingredients">
-                <h2>put - if n/a</h2>
                 <input type="hidden" value="1" id="ingNum" name="ingNum" required>
                 <input type="text" name="ingQuantInp[]" id="ingQuantInp1" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
                 <input type="text" name="ingUnitInp[]" id="ingUnitInp1" placeholder="Unit" maxlength="10" class="s_ingredientbox">
@@ -128,10 +127,10 @@
             console.log('add button clicked....');
             let newIngNum = parseInt($('#ingNum').val()) + 1;
 
-            let quantInp = '<br><input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +' placeholder="Quantity" maxlength="10" class="s_ingredientbox">';
-            let ingInp = '<input type="text" name="recIng[]" id="recIng'+ newIngNum +' required placeholder="Ingredient" maxlength="100" class="ingredientbox">';
-            let unitInp = '<input type="text" name="ingUnitInp[]" id="ingUnitInp'+ newIngNum +' placeholder="Unit" maxlength="10" class="s_ingredientbox">';
-            let insInp = '<input type="text" name="ingInsInp[]" id="ingInsInp'+ newIngNum+' placeholder="Instruction" maxlength="500" class="ingredientbox">';
+            let quantInp = '<br><input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +' "placeholder="Quantity" maxlength="10"  class="s_ingredientbox">';
+            let ingInp = '<input type="text" name="recIng[]" id="recIng'+ newIngNum +' "required placeholder="Ingredient" maxlength="100" class="ingredientbox">';
+            let unitInp = '<input type="text" name="ingUnitInp[]" id="ingUnitInp'+ newIngNum +' "placeholder="Unit" maxlength="10" class="s_ingredientbox">';
+            let insInp = '<input type="text" name="ingInsInp[]" id="ingInsInp'+ newIngNum+' "placeholder="Instruction" maxlength="500" class="ingredientbox">';
 
             $('#ingInps').append(quantInp);
             $('#ingInps').append(unitInp);
