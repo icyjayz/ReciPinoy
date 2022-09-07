@@ -26,7 +26,7 @@
             <% if (rec.rec_serving == 1) { %>
                 <p><strong>Serving: </strong></p>
                 <button type="button" id="minusButton">-</button>
-                <input type="number" name="servingInp" id="servingInp" value="<%= rec.rec_serving %>" min="<%= rec.rec_serving %>" readonly>
+                <input type="number" name="servingInp" id="servingInp" value="<%= rec.rec_serving %>" min="1" readonly>
                 <button type="button" id="plusButton">+</button>
             <% } else { %>
                 <p><strong>Serving: </strong><%= rec.rec_serving %></p>
@@ -67,7 +67,6 @@
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue - 1;
             $('#servingInp').val(currentValue);
-            //console.log(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
             let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li><% } %>';
             $("#ings").html(htmlStr);
@@ -75,17 +74,22 @@
                 let i = "quantSpan" + index.toString();
                 let span = document.getElementById(i);
                 let spanVal = span.textContent;
-                if(spanVal && parseFloat(spanVal)){
-                    let newVal = parseFloat(spanVal) * currentValue;
-                    newVal = newVal.toFixed(2);
-                    span.textContent = newVal.toString();
+                if(spanVal){
+                    if(Number(spanVal) % 1 === 0){
+                        let newVal = parseInt(spanVal) * currentValue;
+                        span.textContent = newVal.toString();
+                    }
+                    else{
+                        let newVal = parseFloat(spanVal) * currentValue;
+                        newVal = newVal.toFixed(2);
+                        span.textContent = newVal.toString();
+                    } 
                 }
             }
         });
 
         plusButton.addEventListener('click', event => {
             event.preventDefault();
-            // const currentValue = Number(servingInp.value);
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue + 1;
             $('#servingInp').val(currentValue);
@@ -96,10 +100,17 @@
                 let i = "quantSpan" + index.toString();
                 let span = document.getElementById(i);
                 let spanVal = span.textContent;
-                if(spanVal && parseFloat(spanVal)){
-                    let newVal = parseFloat(spanVal) * currentValue;
-                    newVal = newVal.toFixed(2);
-                    span.textContent = newVal.toString();
+                
+                if(spanVal){
+                    if(Number(spanVal) % 1 === 0){
+                        let newVal = parseInt(spanVal) * currentValue;
+                        span.textContent = newVal.toString();
+                    }
+                    else{
+                        let newVal = parseFloat(spanVal) * currentValue;
+                        newVal = newVal.toFixed(2);
+                        span.textContent = newVal.toString();
+                    } 
                 }
             }
         });

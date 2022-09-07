@@ -83,7 +83,12 @@ exports.getRegData = (req,res) => {
                 glPassword = user.getUserPassword();
                 let rePassword = req.body.regRePasswordInp;
                 //let categ = 'admin';
-                if(user.password !== rePassword){
+                if(user.getUserPassword().length < 8){
+                    req.flash('msg', 'Passwords should be at least 8 characters!');
+                    //alert('Passwords does not match');
+                    res.redirect('/register'); 
+                }
+                if(user.getUserPassword() !== rePassword){
                     req.flash('msg', 'Passwords does not match!');
                     //alert('Passwords does not match');
                     res.redirect('/register');    
