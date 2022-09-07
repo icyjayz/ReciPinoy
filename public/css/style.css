@@ -14,11 +14,12 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
-*{
+*, *::before {
    font-family: 'Rubik', sans-serif;
    margin:0; padding:0;
    box-sizing: border-box;
-   outline: none; border: none;
+   outline: none; 
+   border: none;
    text-decoration: none;
 }
 
@@ -26,6 +27,7 @@
    background-color: var(--green);
    color:var(--black);
 }
+
 
 ::-webkit-scrollbar{
    height: .5rem;
@@ -95,7 +97,8 @@ section{
 
 .btn,
 .delete-btn,
-.back-btn{
+.back-btn
+{
    margin-top: 1rem;
    display: inline-block;
    font-size: 2rem;
@@ -116,8 +119,6 @@ section{
 }
 
 .back-btn{
-   background-color: var(--white);
-   border: 2px var(--black);
    color: var(--black);
 }
 
@@ -525,6 +526,107 @@ section{
    margin:1rem 0;
 }
 
+/*--------------------------------------------------------------
+# Recipe View
+--------------------------------------------------------------*/
+
+.userRecipeView .rec-view{
+   margin-left: 5%;
+   position: relative;
+   justify-content: center;
+   margin-right: 5%;
+   display:flex;
+}
+
+.userRecipeView .rec-view .img-rec{
+   border: 2px solid var(--black);  
+   padding: 5px;
+   justify-content: center;
+   flex-basis: 50%;
+}
+
+.userRecipeView .rec-content{
+   position: relative;
+   margin-left: 5%;
+   margin-right: 5%;
+   justify-content: center;
+}
+
+.userRecipeView .rec-content .rec-name{
+   font-size: 30px;
+   margin: 1rem 0;
+}
+
+.userRecipeView .rec-content .rec-desc{
+   font-size: 1.5em;
+   margin: 1rem 0;
+   color:var(--light-color);
+   text-align: justify;
+   margin: 0 auto;
+   padding-bottom: 2rem;
+}
+
+.userRecipeView .rec-content .rec-col .rec-col-list {
+   list-style: none;
+   display: flex;
+   justify-content:space-evenly;
+   align-items: center;
+   margin: 0 auto;
+   padding-bottom: 2rem;
+}
+
+.userRecipeView .rec-content .rec-col .rec-col-list li{
+   display: list-item;
+}
+
+.userRecipeView .rec-content .rec-col .rec-col-list h3{
+   font-size: 15px;
+}
+.userRecipeView .rec-content .rec-col .rec-col-list span{
+   font-size: 12px;
+}
+
+.userRecipeView .rec-content .rec-ing {
+   font-size: 20px;
+   margin: 1rem 0;
+   padding-bottom: 2rem;
+}
+
+.userRecipeView .rec-content .rec-ing .ing-title {
+   font-size: 25px;
+}
+
+.userRecipeView .rec-content .rec-process .rproc {
+   font-size: 25px;
+   padding-bottom: 2em;
+   margin-bottom: 2em;
+}
+
+/* copy pasted lang to xd */
+.userRecipeView .rec-content .rec-process textarea{
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1.8em;
+}
+
+.userRecipeView .rec-content .rec-vid {
+   padding-top: 3em;
+}
+
+.userRecipeView .rec-content .rec-vid .rvid {
+   font-size: 25px;
+}
+
+.userRecipeView .rec-content .rec-vid iframe{
+   
+   top: 0;
+  left: 0;
+  
+  width: 100%;
+  height: 100%;
+}
 
 
 
@@ -611,4 +713,12 @@ section{
       gap:0;
    }   
 
+}
+
+@media only screen and (max-width: 1200px) {
+   .img-rec{
+      width: 100%;
+      object-fit: cover;
+      object-position: bottom;
+   }
 }

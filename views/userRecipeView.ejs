@@ -9,53 +9,107 @@
     <% let ingArr = []; %> 
     <% recs.forEach(rec => { %>
     <title><%= rec.rec_name %></title>
+
+        <!-- font awesome cdn link  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+        <!-- custom css file link  -->
+        <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
+    <!-- header -->
+    <%- include('./partials/logoOnlyNav'); %>
     
-    
+    <a href="/" class="back-btn">>> Back</a>
+
+    <section>
+
+    <div class="userRecipeView">
+        <div class="rec-view">
         <% if (rec.rec_image) { %>
-            <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="100">
+            <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" class="img-rec">
         <% } %><br><br>
-        <h3><%= rec.rec_name %></h3>
-        <h5><%= rec.rec_desc %></h5>
-        <p><strong>Category: </strong><%= rec.rec_categ %></p>
-        <% if (rec.rec_time) { %>
-            <p><strong>Total Time: </strong><%= rec.rec_time %></p>
-        <% } %>
-        <% if (rec.rec_serving) { %>
-            <% if (rec.rec_serving == 1) { %>
-                <p><strong>Serving: </strong></p>
-                <button type="button" id="minusButton">-</button>
-                <input type="number" name="servingInp" id="servingInp" value="<%= rec.rec_serving %>" min="1" readonly>
-                <button type="button" id="plusButton">+</button>
-            <% } else { %>
-                <p><strong>Serving: </strong><%= rec.rec_serving %></p>
-            <% } %>
-            
-        <% } %>
-        <% if (rec.rec_cal) { %>
-            <p><strong>Calories: </strong><%= rec.rec_cal %></p>
-        <% } %>
-        <% if (rec.rec_Rate) { %>
-            <p><strong>Rating: </strong><%= rec.rec_rate %></p>
-        <% } %>
-        <p><strong>Ingredients: <br></strong></p>
+        </div>
+
+    <div class="rec-content">
+        <h3 class="rec-name"><%= rec.rec_name %></h3>
+        <h5 class="rec-desc"><%= rec.rec_desc %></h5>
+        
+        <div class="rec-col">
+            <ul class="rec-col-list">
+                <li>
+                    <h3>CATEGORY</h3>
+                    <span><%= rec.rec_categ %></span>
+                </li>
+                <li>
+                    <h3>TOTAL TIME</h3>
+                <% if (rec.rec_time) { %>
+                    <span><%= rec.rec_time %></span>
+                <% } %>
+                </li>
+                <li>
+                <% if (rec.rec_serving) { %>
+                    <h3>SERVING </h3>
+                    <% if (rec.rec_serving == 1) { %>
+                        <span>
+                            <button type="button" id="minusButton">-</button>
+                            <input type="number" name="servingInp" id="servingInp" value="<%= rec.rec_serving %>" min="1" readonly>
+                            <button type="button" id="plusButton">+</button>
+                        </span>
+                    <% } else { %>
+                        <span><%= rec.rec_serving %></span>
+                    <% } %>
+                <% } %>
+                </li>
+                <li>
+                <h3>CALORIES</h3>
+                <% if (rec.rec_cal) { %>
+                    <span><%= rec.rec_cal %></span>
+                <% } %>
+                </li>
+                <li>
+                <h3>RATING</h3>
+                <% if (rec.rec_Rate) { %>
+                    <span><%= rec.rec_rate %></span>
+                <% } %>
+                </li>
+        </ul>
+        </div>
+
+        <div class="rec-ing">
+        <label class="ing-title">Ingredients </label>
         <ul>
             <div id="ings">
                 <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
             <% for( let index = 0; index < recIngs.length; index++ ) { %>
-                <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li>
+                <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                <span><%=recIngs[index]%></span></li>
             <% } %>
             </div>
         </ul>
-        <p><strong>Process:</strong><br></p>
-        <textarea name="" id="" cols="30" rows="10" readonly><%= rec.rec_process %></textarea><br>
-        <a href="<%= rec.rec_src %>"><strong>Source</strong></a>
-        <% if (rec.rec_vid) { %>
-            <p><strong>Video:</strong><br></p>
-        <iframe width="200" height="200" src="<%= rec.rec_vid %>"></iframe>
+        </div>
+
+        <div class="rec-process">
+        <label class="rproc">Process </label>
+            <textarea name="" id="" cols="30" rows="10" readonly><%= rec.rec_process %></textarea><br>
+        </div>
+
+
+        <!-- <div class="rec-src"><a href="<%= rec.rec_src %>"><strong>Source</strong></a></div> -->
+
+        <div class="rec-vid">
+            <% if (rec.rec_vid) { %>
+            <label class="rvid">Video </label>
+            <iframe src="<%= rec.rec_vid %>"></iframe>
         <% } %> 
+        </div>
+    </div>
+</div>
+</section>
     <% }) %>
+
+
+
     
     <script type="text/javascript">
         const minusButton = document.getElementById('minusButton');
