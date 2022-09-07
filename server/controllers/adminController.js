@@ -215,40 +215,43 @@ exports.submitRecipe = (req, res) => {
                     conn.release();
                 }
                 else{
-                    let rec = new Recipe.Recipe();
-                    rec.name = req.body.recNameInp;
-                    rec.desc = req.body.recDescInp;
-                    rec.prc = req.body.recPrcInp;
-                    rec.categ = req.body.recCateg;
-                    rec.time = req.body.recTimeInp;
-                    rec.srv = req.body.recSrvInp;
-                    rec.src = req.body.recSrcInp;
-                    rec.vid = req.body.recVidInp;
-                    rec.cal = req.body.recCalInp;
-                    rec.mTime = req.body.recMTimeInp;
-                    rec.img = req.files.recImgInp;
-                    let recImgName = rec.getRecImg().name;
-                    let mString = '';
-                    if(Array.isArray(rec.getRecMTime())){
-                        rec.getRecMTime().forEach(time => {
-                            mString += time + ', ';
-                        });
-                    }else{
-                        mString = rec.getRecMTime();
-                    }
-                    conn.query('SELECT * FROM rec WHERE rec_name = ?', [rec.getRecName()], (err, rec) => {
+                    conn.query('SELECT * FROM rec WHERE rec_name = ?', [req.body.recNameInp], (err, rec) => {
                         if(err){
                             console.log(err, '\n');
                             conn.release();
-                        }else if(rec[0]){
+                        }
+                        else if(rec[0]){
                             conn.release();
                             req.flash('msg', 'The database has recipe for this dish already!');
                             res.redirect('/admin/recipes/create');
                         }
                         else{
+                            let rec = new Recipe.Recipe();
+                            rec.name = req.body.recNameInp;
+                            rec.desc = req.body.recDescInp;
+                            rec.prc = req.body.recPrcInp;
+                            rec.categ = req.body.recCateg;
+                            rec.time = req.body.recTimeInp;
+                            rec.srv = req.body.recSrvInp;
+                            rec.src = req.body.recSrcInp;
+                            rec.vid = req.body.recVidInp;
+                            rec.cal = req.body.recCalInp;
+                            rec.mTime = req.body.recMTimeInp;
+                            rec.img = req.files.recImgInp;
+                            let recImgName = rec.getRecImg().name;
+                            let mString = '';
+                            if(Array.isArray(rec.getRecMTime())){
+                                rec.getRecMTime().forEach(time => {
+                                    mString += time + ', ';
+                                });
+                            }else{
+                                mString = rec.getRecMTime();
+                            }
                             if(rec.getRecImg().mimetype == "image/jpeg" || rec.getRecImg().mimetype == "image/png"){
                                 rec.getRecImg().mv('images/' + recImgName, (err) => {
-                                    res.status(500).send(err);
+                                    if(err){
+                                        res.status(500).send(err);
+                                    }
                                 })
                             }
                             else{
@@ -332,7 +335,7 @@ exports.submitRecipe = (req, res) => {
                                 }
                             })
                         }
-                    });
+                    })
                 }
             })
         }
