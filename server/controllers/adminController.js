@@ -462,7 +462,7 @@ exports.adminRecipeEdit = (req, res) => {
     }
 }
 
-exports.adminRecipeSubmitEdit = (req,res) => {
+exports.adminRecipeSubmitEdit = (req,res) => { 
 try {
     session = req.session;
     if(session.adminId){
@@ -472,11 +472,6 @@ try {
             }
             else{
                 let rId = req.params.id;
-                conn.query('DELETE FROM recing WHERE recId = ?', [rId], (err, row) =>{
-                    if(err){
-                        console.log(err, '\n');
-                    }
-                    else{
                         let rec = new Recipe.Recipe();
                         rec.name = req.body.recNameInp;
                         rec.desc = req.body.recDescInp;
@@ -500,17 +495,26 @@ try {
                         }
                         if(rec.getRecImg().mimetype == "image/jpeg" || rec.getRecImg().mimetype == "image/png"){
                             rec.getRecImg().mv('images/' + recImgName, (err) => {
-                                res.status(500).send(err);
+                                if(err){
+                                    res.status(500).send(err);
+                                }
                             })
                         }
                         else{
-                            console.log('invald file format..\n');
+                            let msg = req.flash('msg');
+                            res.render('adminCreateRecipe', {title: 'Create Recipe', ing: rows, msg});
                         }
                         conn.query('UPDATE `rec` SET `rec_name`= ?,`rec_desc`= ?,`rec_process`= ?,`rec_categ`= ?,`rec_time`= ? ,`rec_serving`= ?,`rec_src`= ?,`rec_vid`= ?,`rec_cal`= ?,`rec_mealTime`= ?,`rec_image`= ? WHERE rec_id = ?', [rec.getRecName(), rec.getRecDesc(), rec.getRecPrc(), rec.getRecCateg(), rec.getRecTime(), rec.getRecSrv(), rec.getRecSrc(), rec.getRecVid(), rec.getRecCal(), mString, recImgName, rId], (err, recs) => {
                             if(err){
                                 console.log(err, '\n');
                             }
                             else{
+                                conn.query('DELETE FROM recing WHERE recId = ?', [rId], (err, row) =>{
+                                    if(err){
+                                        console.log(err, '\n');
+                                    }
+                                    else{ 
+
                                 let ing = new Recipe.Ing();
                                 let ingNum = req.body.ingNum;
                                 ing.quant = JSON.parse(req.body.qval);
@@ -580,11 +584,10 @@ try {
                                 }
                                 
                                 res.redirect('/admin/recipes');
+                                    }
+                                })
                             }
                         })
-                        
-                    }
-                })
             }
         })
     }
