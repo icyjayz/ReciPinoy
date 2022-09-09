@@ -20,6 +20,7 @@ router.get('/reset-password', userController.userResetPwd);
 router.post('/reset-password', userController.userUpdatePwd);
 router.post('/search', userController.userSearch);
 router.get('/recipes/:id', userController.userRecipeView);
+router.post('/recipes/:id', userController.userRateRec);
 router.get('/recommend', userController.userRecommend);
 router.post('/recommend', userController.userRecommendRecipe);
 

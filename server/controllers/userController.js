@@ -490,7 +490,7 @@ exports.userRecipeView = (req, res) => {
                                     let quantNum = i.match(regexQuant);
                                     let iStr = i.match(regexStr); 
                                     if(Array.isArray(quantNum)){
-                                        console.log(quantNum);
+                                        //console.log(quantNum);
                                         quantArr.push(quantNum[0]);
                                     }else{
                                         quantArr.push(quantNum);
@@ -506,7 +506,8 @@ exports.userRecipeView = (req, res) => {
                                 }
                             }
                             conn.release();
-                            res.render('userRecipeView', { title: recs.rec_name, recs: recs, recIngs: recIngs, quantArr: quantArr});
+                            let msg = req.flash('msg');
+                            res.render('userRecipeView', { recs: recs, recIngs: recIngs, quantArr: quantArr, msg});
                         }
                         getAllRecIng(recs);
                     }
@@ -525,7 +526,6 @@ try {
     res.render('recommend', {title: 'Recipe Recommender', msg});
 } catch (error) {
     res.status(500).json({ message: error.message});
-
 }
 }
 
@@ -765,4 +765,32 @@ pool.getConnection((err, conn) => {
 } catch (error) {
 res.status(500).json({ message: error.message});
 }
+}
+
+exports.userRateRec = (req, res) =>{
+    try {
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn)=>{
+                let rate = req.body.recRating;
+                console.log(rate);
+                let id = req.params.id;
+                conn.query('UPDATE rec SET rec_rate = ? WHERE rec_id = ?', [rate, id], (err, row) => {
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        req.flash('msg', 'Recipe successfully rated!');
+                        res.redirect('/recipes/' + id);
+                    }
+                })
+            })
+        }else{
+            req.flash('msg', 'You need to login to rate the recipe!')
+            res.redirect('/login');
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
 }

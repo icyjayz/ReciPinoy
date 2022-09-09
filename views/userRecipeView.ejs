@@ -17,13 +17,21 @@
         <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
+     <!-- message -->
+     <% if (msg != '') { %>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>   
+
     <!-- header -->
     <%- include('./partials/logoOnlyNav'); %>
     
     <a href="/" class="back-btn">>> Back</a>
 
     <section>
-
+    
     <div class="userRecipeView">
         <div class="rec-view">
         <% if (rec.rec_image) { %>
@@ -69,8 +77,9 @@
                 </li>
                 <li>
                 <h3>RATING</h3>
-                <% if (rec.rec_Rate) { %>
-                    <span><%= rec.rec_rate %></span>
+                <% if (rec.rec_rate) { %>
+                    <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ -->
+                    <span><%= rec.rec_rate %></span> 
                 <% } %>
                 </li>
         </ul>
@@ -106,12 +115,34 @@
     </div>
 </div>
 </section>
+
+        <form action="/recipes/<%= rec.rec_id%>" method="post">
+            <br><h3>Rate the recipe!</h3><br>
+        <div class="stars" data-rating="0">
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+        </div>
+        <input type="hidden" name="recRating" id="recRating" value="<%= rec.rec_rate %>">
+        <br><br><button type="submit">Submit Rating!</button>
+        </form>
     <% }) %>
-
-
 
     
     <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            let stars = document.querySelectorAll('.star');
+            stars.forEach(function(star){
+                star.addEventListener('click', setRating); 
+            });
+            
+            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            let target = stars[rating - 1];
+            target.dispatchEvent(new MouseEvent('click'));
+        });
+
         const minusButton = document.getElementById('minusButton');
         const plusButton = document.getElementById('plusButton');
         const inputField = document.getElementById('servingInp');
@@ -168,6 +199,30 @@
                 }
             }
         });
+
+        function setRating(ev){
+            let span = ev.currentTarget;
+            let stars = document.querySelectorAll('.star');
+            let match = false;
+            let num = 0;
+            stars.forEach(function(star, index){
+                if(match){
+                    star.classList.remove('rated');
+                }else{
+                    star.classList.add('rated');
+                }
+                //are we currently looking at the span that was clicked
+                if(star === span){
+                    match = true;
+                    num = index + 1;
+                }
+            });
+            //console.log('js ' + num);
+            let currentRating = document.getElementById('recRating').value;
+            let newRating = (num + parseInt(currentRating))/2;
+            document.getElementById('recRating').value = Math.round(newRating);
+            document.querySelector('.stars').setAttribute('data-rating', num);
+        }
     </script>
 </body>
 </html>
