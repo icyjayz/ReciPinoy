@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <% let i = 0; %> 
     <% let ingArr = []; %> 
+    <% let srv = 0; %> 
     <% recs.forEach(rec => { %>
     <title><%= rec.rec_name %></title>
 
@@ -60,12 +61,16 @@
                     <h3>SERVING </h3>
                     <% if (rec.rec_serving == 1) { %>
                         <span>
+                            <% srv = rec.rec_serving; %> 
                             <button type="button" id="minusButton">-</button>
                             <input type="number" name="servingInp" id="servingInp" value="<%= rec.rec_serving %>" min="1" readonly>
                             <button type="button" id="plusButton">+</button>
                         </span>
                     <% } else { %>
-                        <span><%= rec.rec_serving %></span>
+                        <% srv = rec.rec_serving; %> 
+                        <button type="button" id="minusButton">-</button>
+                        <input type="number" name="servingInp" id="servingInp" value="1" min="1" readonly>
+                        <button type="button" id="plusButton">+</button>
                     <% } %>
                 <% } %>
                 </li>
@@ -73,13 +78,21 @@
                 <h3>CALORIES</h3>
                 <% if (rec.rec_cal) { %>
                     <span><%= rec.rec_cal %></span>
-                <% } %>
+                
+                <% } else { %>
+                    <span>Calorific value is not available.</span>
+                    <% } %>  
                 </li>
                 <li>
                 <h3>RATING</h3>
                 <% if (rec.rec_rate) { %>
-                    <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ -->
+                    <% if (rec.rec_rate > 0) { %>
+                     <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ -->
                     <span><%= rec.rec_rate %></span> 
+                    <% } else { %>
+                        <span>This recipe hasn't been rated.</span>
+                    <% } %>
+                    
                 <% } %>
                 </li>
         </ul>
@@ -91,8 +104,17 @@
             <div id="ings">
                 <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
             <% for( let index = 0; index < recIngs.length; index++ ) { %>
-                <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
-                <span><%=recIngs[index]%></span></li>
+                <% if (srv == 1) { %>
+                    <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                    <span><%=recIngs[index]%></span></li>
+                <% } else { %>
+                    <% let newQuant = quantArr[index];%>
+                    <% newQuant = newQuant / srv; %>
+                    <% newQuant = newQuant.toFixed(2); %>  
+                    <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span>
+                    <span><%=recIngs[index]%></span></li>
+                <% } %>
+                
             <% } %>
             </div>
         </ul>
@@ -145,15 +167,27 @@
 
         const minusButton = document.getElementById('minusButton');
         const plusButton = document.getElementById('plusButton');
-        const inputField = document.getElementById('servingInp');
+        const srvField = document.getElementById('servingInp').value;
+        minusButton.disabled = true;
+        function btnCntrl(val) {
+            if (val != 1) {
+                minusButton.disabled = false;
+            }
+            else{
+                minusButton.disabled = true;
+            }
+        }
 
         minusButton.addEventListener('click', event => {
             event.preventDefault();
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue - 1;
             $('#servingInp').val(currentValue);
+            btnCntrl(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
-            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li><% } %>';
+
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+
             $("#ings").html(htmlStr);
             for (let index = 1; index <= newIngNum; index++) {
                 let i = "quantSpan" + index.toString();
@@ -178,8 +212,11 @@
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue + 1;
             $('#servingInp').val(currentValue);
+            btnCntrl(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
-            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li><% } %>';
+
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+
             $("#ings").html(htmlStr);
             for (let index = 1; index <= newIngNum; index++) {
                 let i = "quantSpan" + index.toString();
@@ -219,9 +256,17 @@
             });
             //console.log('js ' + num);
             let currentRating = document.getElementById('recRating').value;
-            let newRating = (num + parseInt(currentRating))/2;
-            document.getElementById('recRating').value = Math.round(newRating);
-            document.querySelector('.stars').setAttribute('data-rating', num);
+            if (currentRating != 0) {
+                let newRating = (num + parseInt(currentRating))/2;
+                document.getElementById('recRating').value = Math.round(newRating);
+                document.querySelector('.stars').setAttribute('data-rating', num);
+            }
+            else{
+                let newRating = (num + parseInt(currentRating));
+                document.getElementById('recRating').value = Math.round(newRating);
+                document.querySelector('.stars').setAttribute('data-rating', num);
+            }
+            
         }
     </script>
 </body>

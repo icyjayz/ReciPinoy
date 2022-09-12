@@ -31,6 +31,9 @@
            <input type="text" name="regNameInp" id="regNameInp" required placeholder="enter your name" class="box" maxlength="50">
            <input type="email" name="regEmailInp" id="regEmailInp" required placeholder="enter your email" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
            <input type="password" name="regPasswordInp" id="regPasswordInp" required placeholder="enter your password" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+           <!-- dinagdag ni eka pasensya ka na :D -->
+            <span id="charCheck"></span>
+           <!-- end -->
            <input type="password" name="regRePasswordInp" id="regRePasswordInp" required placeholder="confirm your password" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
            <input type="submit" value="register now" name="submit" class="btn">
            <p>already have an account? <a href="/login">login here.</a></p>
@@ -40,5 +43,28 @@
 <!-- custom js file link  -->
 <script src="public/js/script.js"></script>
 
+<!-- dinagdag ni eka pasensya ka na :D -->
+<script>
+    function checkLength(value){
+        let minLength = 8;
+        if(value.length < minLength){
+            return true;
+        }
+        else{
+            return false;
+        } 
+    
+    }
+    let charCheck = document.getElementById('charCheck');
+    document.getElementById('regPasswordInp').onkeyup = function(){
+        if(checkLength(this.value))
+        {
+            charCheck.innerHTML = "Passwords should be at least 8 characters!";
+        }
+        else {
+            charCheck.innerHTML = "";
+        }
+    }
+</script>
 </body>
 </html>

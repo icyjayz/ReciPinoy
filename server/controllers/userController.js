@@ -567,7 +567,7 @@ pool.getConnection((err, conn) => {
         }
         function getRecIds(ingsId) {
             return new Promise((resolve, reject) => {
-                conn.query('SELECT recId FROM recing WHERE ingId = ?', [ingsId], (err, recs) =>{
+                conn.query('SELECT recId FROM recing WHERE ingId = ? LIMIT 35', [ingsId], (err, recs) =>{
                     if(err){
                         console.log(err);
                     }
@@ -672,7 +672,7 @@ pool.getConnection((err, conn) => {
             }
             function getFinalRecIds(i) {
                 return new Promise((resolve, reject) => {
-                    conn.query('SELECT recId FROM recing WHERE ingId = ?', [i], (err, recs) =>{
+                    conn.query('SELECT recId FROM recing WHERE ingId = ? LIMIT 35', [i], (err, recs) =>{
                         if(err){
                             console.log(err);
                         }
@@ -775,6 +775,7 @@ exports.userRateRec = (req, res) =>{
                 let rate = req.body.recRating;
                 console.log(rate);
                 let id = req.params.id;
+                console.log(id);
                 conn.query('UPDATE rec SET rec_rate = ? WHERE rec_id = ?', [rate, id], (err, row) => {
                     if(err){
                         console.log(err);
