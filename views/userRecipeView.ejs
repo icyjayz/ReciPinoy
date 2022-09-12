@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <% let i = 0; %> 
     <% let ingArr = []; %> 
-    <% let srv = 0; %> 
+    <% let srv = 0; %>
     <% recs.forEach(rec => { %>
     <title><%= rec.rec_name %></title>
 
@@ -105,14 +105,26 @@
                 <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
             <% for( let index = 0; index < recIngs.length; index++ ) { %>
                 <% if (srv == 1) { %>
-                    <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
-                    <span><%=recIngs[index]%></span></li>
+                    <% if (quantArr[index] != 0) { %>
+                        <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                        <span><%=recIngs[index]%></span></li>
+                    <% } else { %>
+                        <li><span id="quantSpan<%= index + 1%>"></span>
+                            <span><%=recIngs[index]%></span></li>
+                    <% } %>
+                    
                 <% } else { %>
                     <% let newQuant = quantArr[index];%>
                     <% newQuant = newQuant / srv; %>
                     <% newQuant = newQuant.toFixed(2); %>  
-                    <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span>
-                    <span><%=recIngs[index]%></span></li>
+
+                    <% if (quantArr[index] != 0) { %>
+                        <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                        <span><%=recIngs[index]%></span></li>
+                    <% } else { %>
+                        <li><span id="quantSpan<%= index + 1%>"></span>
+                            <span><%=recIngs[index]%></span></li>
+                    <% } %>
                 <% } %>
                 
             <% } %>
@@ -254,9 +266,8 @@
                     num = index + 1;
                 }
             });
-            //console.log('js ' + num);
             let currentRating = document.getElementById('recRating').value;
-            if (currentRating != 0) {
+            if ((parseInt(currentRating)) != 0) {
                 let newRating = (num + parseInt(currentRating))/2;
                 document.getElementById('recRating').value = Math.round(newRating);
                 document.querySelector('.stars').setAttribute('data-rating', num);

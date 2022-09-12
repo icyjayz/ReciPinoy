@@ -773,9 +773,9 @@ exports.userRateRec = (req, res) =>{
         if(session.userId){
             pool.getConnection((err, conn)=>{
                 let rate = req.body.recRating;
-                console.log(rate);
+                // console.log(rate);
                 let id = req.params.id;
-                console.log(id);
+                // console.log(id);
                 conn.query('UPDATE rec SET rec_rate = ? WHERE rec_id = ?', [rate, id], (err, row) => {
                     if(err){
                         console.log(err);
