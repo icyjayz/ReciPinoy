@@ -21,6 +21,7 @@
 
       <nav class="navbar">
         <a href="/">home</a>
+        <a href="/recipes">view recipes</a>
         <a href="/">saved recipes</a>
         <a href="/">meal plan</a>
         <a href="/">grocery lists</a>
@@ -31,15 +32,37 @@
         <div id="menu-btn" class="fas fa-bars"></div>
       </div>
 
-      <div class="profile">
-        <p class="name"><%= id %></p>
+      <!-- <div class="profile">
+        <p class="name"><%#= id %></p>
         <div class="flex">
-          <!-- wala pang profile.ejs -->
+          wala pang profile.ejs
            <a href="" class="btn">profile</a>
            <a href="/logout" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
         </div>
-      </div>
-   
+      </div> -->
+
+      <!-- eka -->
+      <% if (id != '') { %>
+        <div class="profile">
+          <p class="name"><%= id %></p>
+          <div class="flex">
+            <!-- wala pang profile.ejs -->
+             <a href="" class="btn">profile</a>
+             <a href="/logout" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
+          </div>
+        </div>
+      
+      <% } else { %>
+        <div class="profile">
+          <p class="name">please login first!</p>
+          <div class="flex">
+            <a href="/login" class="btn">login</a>
+            <a href="/register" class="btn">register</a>
+          </div>
+        </div>
+      <% } %> 
+      <!-- eka end -->
+
     </section>
 
   </header>

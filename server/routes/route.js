@@ -23,6 +23,9 @@ router.get('/recipes/:id', userController.userRecipeView);
 router.post('/recipes/:id', userController.userRateRec);
 router.get('/recommend', userController.userRecommend);
 router.post('/recommend', userController.userRecommendRecipe);
+router.get('/recipes', userController.userRecipes);
+router.post('/recipes', userController.userSortRecipes);
+
 
 
 router.get('/admin', adminController.adminPage);

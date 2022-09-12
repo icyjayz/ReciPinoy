@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+ 
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+    <title>Recipes</title>
+</head>
+<body>
+     <!-- user header -->
+     <%- include('./partials/userNav'); %>
+
+     <form action="/recipes" method="post">
+        <div id="sortResults">
+            <select name="alphabet" id="alphabet" onchange="this.form.submit()">
+                <option value="" disabled selected>sort alphabetically</option>
+                <option value="a-z">a to z</option>
+                <option value="z-a">z to a</option>
+            </select>
+            <select name="rating" id="rating" onchange="this.form.submit()">
+                <option value="" disabled selected>sort by ratings</option>
+                <option value="h-l">rating: highest to lowest</option>
+                <option value="l-h">rating: lowest to highest</option>
+            </select>
+         </div>
+        <table>
+            <tbody>
+                <% recs.forEach(rec => { %>
+                    <tr>
+                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150"></td>
+                        <td><a href="/recipes/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
+                        <td><% if (rec.rec_rating != 0) { %>
+                            <span>Rating: <%=rec.rec_rate  %> </span>
+                        <% } %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+     </form>
+     
+     
+</body>
+</html>

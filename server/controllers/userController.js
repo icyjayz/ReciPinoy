@@ -5,6 +5,8 @@ const User = require('../classes/user');
 const randToken = require('rand-token');
 const Recipe = require('../classes/recipe');
 
+
+
 let otp = Math.random();
 otp = otp * 1000000;
 otp = parseInt(otp);
@@ -45,7 +47,7 @@ exports.indexPage = (req, res) =>{
                         }
                         else{
                             let msg = req.flash('msg');
-                            res.render('index', { title: 'Home Page', msg, recs: recs});
+                            res.render('index', { title: 'Home Page', msg, recs: recs, id: ''});
                         }
                     })
                 }
@@ -795,3 +797,110 @@ exports.userRateRec = (req, res) =>{
         res.status(500).json({ message: error.message});
     }
 }
+
+exports.userRecipes = (req, res) =>{
+    try {
+        function getRec(conn, name) {
+            conn.query('SELECT * FROM rec', (err, recs) => {
+                if (err) {
+                    console.log(err);   
+                } else {
+                    res.render('userRecipes', { title: 'Recipes', recs: recs, id: name});
+                }
+            })
+        }
+        pool.getConnection((err, conn) => {
+            if (err) {
+                console.log(err);
+            } else{
+                session = req.session;
+                if (session.userId) {
+                    getRec(conn, session.userName);
+                }
+                else{
+                    getRec(conn, '');
+                }
+            }
+        })
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userSortRecipes = (req, res) =>{
+    try {
+        function sortRecsA(conn, alphabet, name) {
+            if (alphabet === 'a-z') {
+                conn.query('SELECT * FROM rec ORDER BY rec_name', (err, recs) =>{
+                    if (err) {
+                        console.log(err);   
+                    } else {
+                        conn.release();
+                        res.render('userRecipes', { title: 'Recipes', recs: recs, id: name});
+                    }
+                })
+            } else {
+                conn.query('SELECT * FROM rec ORDER BY rec_name DESC', (err, recs) =>{
+                    if (err) {
+                        console.log(err);   
+                    } else {
+                        conn.release();
+                        res.render('userRecipes', { title: 'Recipes', recs: recs, id: name});
+                    }
+                })
+            }
+        }
+        function sortRecsR(conn, rating, name) {
+            if(rating === 'h-l'){
+                conn.query('SELECT * FROM rec ORDER BY rec_rate DESC', (err, recs) =>{
+                    if (err) {
+                        console.log(err);   
+                    } else {
+                        conn.release();
+                        res.render('userRecipes', { title: 'Recipes', recs: recs, id: name});
+                    }
+                })
+            } else {
+                conn.query('SELECT * FROM rec ORDER BY rec_rate', (err, recs) =>{
+                    if (err) {
+                        console.log(err);   
+                    } else {
+                        conn.release();
+                        res.render('userRecipes', { title: 'Recipes', recs: recs, id: name});
+                    }
+                })
+            }
+        }
+        pool.getConnection((err, conn) => {
+            if (err) {
+                console.log(err);
+            } else{
+                let alphabet = req.body.alphabet;
+                let rating = req.body.rating;
+
+                session = req.session;
+                if (session.userId) {
+                    if(alphabet){
+                        sortRecsA(conn, alphabet, session.userName)
+                    }
+                    else{
+                        sortRecsR(conn, rating, session.userName);
+                    }
+                }
+                else{
+                    if(alphabet){
+                        sortRecsA(conn, alphabet, '')
+                    }
+                    else{
+                        sortRecsR(conn, rating, '');
+                    }
+                }
+            }
+        })
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
