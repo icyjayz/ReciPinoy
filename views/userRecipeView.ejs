@@ -51,8 +51,8 @@
                     <span><%= rec.rec_categ %></span>
                 </li>
                 <li>
-                    <h3>TOTAL TIME</h3>
                 <% if (rec.rec_time) { %>
+                    <h3>TOTAL TIME</h3>
                     <span><%= rec.rec_time %></span>
                 <% } %>
                 </li>
@@ -86,13 +86,9 @@
                 <li>
                 <h3>RATING</h3>
                 <% if (rec.rec_rate) { %>
-                    <% if (rec.rec_rate > 0) { %>
-                     <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ -->
-                    <span><%= rec.rec_rate %></span> 
-                    <% } else { %>
-                        <span>This recipe hasn't been rated.</span>
-                    <% } %>
-                    
+                    <span><%= rec.rec_rate %></span>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ -->
+                <% } else { %>
+                    <span>This recipe hasn't been rated.</span>
                 <% } %>
                 </li>
         </ul>
