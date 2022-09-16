@@ -4,28 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+     <!-- para sa input ng ing -->
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <title><%= title %> </title>
 </head>
 <body>
-    <h1>Recommended Recipes</h1>
+    <a class="back-btn" onclick="history.back()">>> Back</a>
+    <br><br>
+    <a href="/recommend">Get Recommendation again!</a>
+    <br><br>
     <br><br>
     <% if (msg != '') { %>
         <h3><%= msg %> </h3>
     <% } %>
     <br><br>
     <h3>Included Ingredients:</h3><br>
-    <% for( let index = 0; index < ings.length; index++ ) { %>
-        <li><%= ings[index] %> </li>
-    <% } %>
+    <form action="/recommend/new" method="post" id="resForm">
+        <div id="ingDiv">
+            <ul id="ingCont">
+                <% for( let index = 0; index < ings.length; index++ ) { %>
+                    <!-- mukhang button to dapat yung li since clickable sya -->
+                    <li><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</li> 
+                    <input type="hidden" name="ings[]" id="ing<%= index+1 %>" value="<%= ings[index] %>">
+                    <input type="hidden" name="ingNum" id="ingNum" value="<%= index+1 %>">
+                <% } %>
+                </ul>
+        </div>
+    <button type="button" id="addIngredientsBtn">Add ingredients to include</button><br><br>
+    <div id="showForm" style="display:none;">
+            <input type="text" name="ings[]" id="ingNew" class ="ingsInp">
+            <button type="button" onclick="add()">Include ingredient</button>
+            <input type="hidden" name="ingsVal" value="" id="ingsVal">
+    </div>
+
 
     <h3>Excluded Ingredients:</h3><br>
     <% if (exIngs) { %>
-        <% exIngs.forEach(ex => { %>
-            <li><%= ex %> </li>
-        <% }) %>
+        <div id="exIngDiv">
+            <ul id="exIngCont">
+                <% for( let index = 0; index < exIngs.length; index++ ) { %>
+                     <!-- mukhang button to dapat yung li since clickable sya -->
+                     <li><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</li> 
+                    <input type="hidden" name="exIng[]" id="exIng<%= index+1 %>" value="<%= exIngs[index] %>">
+                    
+                <% } %>
+                </ul>
+                <input type="hidden" name="exIngNum" id="exIngNum" value="0">
+        </div>
+        
     <% } else { %>
         <p><strong>No exclusions.</strong></p>
+        <input type="hidden" name="exIngNum" id="exIngNum" value="0">
     <% } %>
+    <button type="button" id="addExIngredientsBtn">Add ingredients to exclude</button><br><br>
+    <div id="showExForm" style="display:none;">
+        <!-- <input type="hidden" name="exIngNum" id="exIngNum" value="0"> -->
+        <input type="text" name="exIng[]" id="exIngNew" class ="ingsInp">
+        <button type="button" onclick="add()">Exclude ingredient</button>
+        <input type="hidden" name="exIngsVal" value="" id="exIngsVal">  
+    </div>
+</form>
+
     <h3>Recommended Recipes</h3>
     <table>
         <tbody>
@@ -37,5 +78,139 @@
             <% } %>
         </tbody>
     </table>
+
+
+    <script type="text/javascript">
+        $('#addIngredientsBtn').on('click', addIngForm);
+        $('#addExIngredientsBtn').on('click', addExIngForm);
+        
+        let deletedIng = [];
+        let deletedExIng = [];
+        $(document).ready(function() {   //https://github.com/ashwanibakshi/autocompletesearch
+            $(".ingsInp").autocomplete({  
+            source:function(req,res){
+                $.ajax({
+                    url:'/recommend/search',
+                    method:'post',
+                    dataType:'json',
+                    data:{'ing':req.term},
+                    success:function(data){ 
+                        let ingRes = new Array();
+                            $.each(data.data,(index,values)=>{
+                                ingRes.push({'value':values.ing_name});
+                        });
+                        res(ingRes)
+                    },
+                    error:function(){
+                        alert('server error occured')
+                    }
+                });
+            }
+            });
+        });
+
+        function addIngForm() {
+            let form = document.getElementById("showForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function addExIngForm() {
+            let form = document.getElementById("showExForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function add() {
+            let xv = [];
+            let iv = [];
+            jQuery('input[name="exIng[]"]').each(function() { 
+                let exIngstr = this.value;
+                if(exIngstr){
+                    if(deletedExIng.length > 0){
+                        for (let index = 0; index < deletedExIng.length; index++) {
+                        const element = deletedExIng[index];
+                        if(exIngstr != element){
+                            xv.push(exIngstr.toLowerCase());
+                            let newIngNum = parseInt($('#exIngNum').val()) + 1;
+                            $('#exIngNum').val(newIngNum);                      
+                        }
+                        }
+                    }
+                    else{
+                        xv.push(exIngstr.toLowerCase());
+                        let newIngNum = parseInt($('#exIngNum').val()) + 1;
+                        $('#exIngNum').val(newIngNum);
+                    }
+                }
+            });
+
+            jQuery('input[name="ings[]"]').each(function() {
+                let ingstr = this.value;
+                if(ingstr){
+                    if(deletedIng.length > 0){
+                        for (let index = 0; index < deletedIng.length; index++) {
+                        const element = deletedIng[index];
+                        if(ingstr != element){
+                            iv.push(ingstr.toLowerCase());
+                        }
+                        }
+                    }
+                    else{
+                        iv.push(ingstr.toLowerCase());
+                    }
+                    
+                }
+            });
+
+            if(iv.length < 4){
+                alert("Ingredients should be at least 4!");
+                document.getElementById("showForm").style.display = "block";
+                document.getElementById('ingNew').setAttribute(required, '');
+                document.getElementById('ingNew').focus();
+            }
+            else{
+                $('#exIngsVal').val(JSON.stringify(xv));
+                $('#ingsVal').val(JSON.stringify(iv))
+                document.getElementById("resForm").submit();
+            }
+            
+        }
+
+        const ingCont = document.querySelector("#ingDiv");
+        const ings = ingCont.querySelectorAll('ul > li');
+        ings.forEach(i => {
+            i.addEventListener('click',(e)=>{
+                let ingStr = e.target.textContent;
+                let newStr = ingStr.replace(/x/g, '');
+                newStr = newStr.trim();
+                deletedIng.push(newStr.toLowerCase());
+                e.target.remove();
+                add();
+            }   
+            )
+        })
+
+        const exIngcont = document.querySelector("#exIngDiv");
+        const exIngs = exIngcont.querySelectorAll('ul > li');
+        exIngs.forEach(ex => {
+            ex.addEventListener('click',(e)=>{
+                let ingStr = e.target.textContent;
+                let newStr = ingStr.replace(/x/g, '');
+                newStr = newStr.trim();
+                deletedExIng.push(newStr.toLowerCase());
+                e.target.remove();
+                add();
+            }   
+            )
+        })
+        
+    </script>
 </body>
 </html>

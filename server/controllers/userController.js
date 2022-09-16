@@ -522,15 +522,6 @@ exports.userRecipeView = (req, res) => {
     }
 }
 
-exports.userRecommend = (req,res) =>{
-try {
-    let msg = req.flash('msg');
-    res.render('recommend', {title: 'Recipe Recommender', msg});
-} catch (error) {
-    res.status(500).json({ message: error.message});
-}
-}
-
 exports.userRecommendRecipe = (req,res) =>{
 try {
 pool.getConnection((err, conn) => {
@@ -540,7 +531,6 @@ pool.getConnection((err, conn) => {
     else{
         let recomm = new Recipe.Recomm();
         recomm.ings = JSON.parse(req.body.ingsVal);
-        let ingNum = req.body.ingNum;
         let exIngNum = req.body.exIngNum;
         //to get recipes based on ing
         let counts = {};
@@ -652,6 +642,7 @@ pool.getConnection((err, conn) => {
         
         if(exIngNum > 0){
             recomm.exIngs = JSON.parse(req.body.exIngsVal);
+            console.log(recomm.getExIngs());
             let exIngsId = [];
             let rIds = [];
             //query to get ing ids of excluded ings
@@ -904,3 +895,279 @@ exports.userSortRecipes = (req, res) =>{
     }
 }
 
+exports.userRecommend = (req,res) =>{
+try {
+    let msg = req.flash('msg');
+    res.render('recommend', {title: 'Recipe Recommender', msg});
+    
+} catch (error) {
+    res.status(500).json({ message: error.message});
+}
+}
+
+exports.userRecommAC = (req,res) =>{
+    try {
+        pool.getConnection((err, conn) =>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                conn.query('SELECT ing_name FROM ing WHERE ing_name LIKE ? ORDER BY ing_name LIMIT 5',[req.body.ing + '%'], (err, ings) =>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        conn.release();
+                        res.json({data: ings});
+                    }
+                })
+            }
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userRecommAdd= (req,res) =>{
+    try {
+        pool.getConnection((err, conn) => {
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log(req.body.ingsVal);
+                let recomm = new Recipe.Recomm();
+                recomm.ings = JSON.parse(req.body.ingsVal);
+                // console.log(recomm.getIngs());
+                // let ingNum = req.body.ingNum;
+                let exIngNum = req.body.exIngNum;
+                console.log(exIngNum);
+                //to get recipes based on ing
+                let counts = {};
+                let finalRids = [];
+                let recIds = []; 
+                let ingsId = [];
+                let recImage = [];
+                let recId = [];
+                let recName = []; 
+                function getIngId(ings) {
+                    return new Promise((resolve, reject) => {
+                        conn.query('SELECT * FROM ing WHERE ing_name = ?', [ings], (err, iid) =>{
+                            if(err){
+                                console.log(err);
+                            }
+                            else if (iid[0]) {
+                                let id = iid[0].ing_id;
+                                resolve(id);
+                            }
+                            else{
+                                req.flash('msg', 'There is an invalid ingredient! Look for misspelled and try again!');
+                                res.redirect('/recommend');
+                            }
+                        })
+                    })
+                }
+                function getRecIds(ingsId) {
+                    return new Promise((resolve, reject) => {
+                        conn.query('SELECT recId FROM recing WHERE ingId = ? LIMIT 35', [ingsId], (err, recs) =>{
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                for (let index = 0; index < recs.length; index++) {
+                                    const element = recs[index].recId;
+                                    recIds.push(element);
+                                }
+                                resolve();
+                            }  
+                        })
+                    })
+                }
+                function toFindDuplicates(arr){
+                    for(let i =0; i < arr.length; i++){ 
+                        if (counts[arr[i]]){
+                        counts[arr[i]] += 1
+                        } else {
+                        counts[arr[i]] = 1
+                        }
+                        }
+                        console.log(counts)
+                }
+                function getRecDetails(id) {
+                    return new Promise((resolve, reject) => {
+                        conn.query('SELECT * FROM rec WHERE rec_id = ?', [id], (err, recs) =>{
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                let id = recs[0].rec_id;
+                                let name = recs[0].rec_name;
+                                let image = recs[0].rec_image;
+                                //console.log(id);
+                                recName.push(name);
+                                recId.push(id);
+                                recImage.push(image);
+                                resolve();
+                            }
+                        })
+                    })
+                }
+                async function getRecommRec() {
+                    let ings = recomm.getIngs();
+                    for(i of ings){
+                        const id = await getIngId(i);
+                        ingsId.push(id);
+                    }
+                    console.log(ingsId);
+                    
+                    for(r of ingsId){
+                        const rf = await getRecIds(r);
+                    }
+                    toFindDuplicates(recIds);
+                    let cVal = Object.values(counts);
+                    let mx = Math.max(...cVal);
+                    for (let index = mx; index > 0; --index) {
+                        let matched = Object.keys(counts).filter(function(key) {
+                            return counts[key] === index;
+                        });
+        
+                        matched.forEach(m => {
+                            let pint = parseInt(m);
+                            finalRids.push(pint);
+                        });
+                    }
+                    
+                    //console.log(finalRids);
+                    for (const rec of finalRids) {
+                        const rf = await getRecDetails(rec);
+                    }
+        
+                    console.log(recId);
+                    let msg = req.flash('msg');
+                    conn.release();
+                    //console.log('before render');
+                    res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+                    //console.log(finalRids);// arrange from highest match to lowest
+                }
+                
+                if(exIngNum > 0){
+                    recomm.exIngs = JSON.parse(req.body.exIngsVal);
+                    console.log(recomm.getExIngs());
+
+                    let exIngsId = [];
+                    let rIds = [];
+                    //query to get ing ids of excluded ings
+                    function getExIngsId(id) {
+                        return new Promise((resolve, reject) => {
+                            conn.query('SELECT * FROM ing WHERE ing_name = ?', [id], (err, iid) =>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                else if (iid[0]) {
+                                    let id = iid[0].ing_id;
+                                    resolve(id);
+                                }
+                                else{
+                                    req.flash('msg', 'There is an invalid ingredient! Look for misspelled and try again!');
+                                    res.redirect('/recommend');
+                                }
+                            })
+                        })
+                    }
+                    function getFinalRecIds(i) {
+                        return new Promise((resolve, reject) => {
+                            conn.query('SELECT recId FROM recing WHERE ingId = ? LIMIT 35', [i], (err, recs) =>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                else if(recs){
+                                    for (let index = 0; index < recs.length; index++) {
+                                        const element = recs[index].recId;
+                                        rIds.push(element);
+                                    }
+                                    //let r = recs[0].recId;
+                                    resolve();
+                                }
+                                else{
+                                    req.flash('msg', 'No recipes found given the inclusion and exclusion of ingredients!');
+                                    res.redirect('/recommend');
+                                }  
+                            })
+                        })
+                    }
+                    async function getExIngs(){
+                        let exIngs = recomm.getExIngs();
+                        for (const ex of exIngs) {
+                            let exids = await getExIngsId(ex);
+                            exIngsId.push(exids);
+                        }
+                        console.log(exIngsId); //ing id of excluded ings
+                        
+                        for (const i of exIngsId) {
+                            const rf = await getRecIds(i);
+                        }
+                        console.log(recIds);// rec id of recs that has the excluded ings
+                        
+                        //query to get ing id for inputted ings
+                        let ings = recomm.getIngs();
+                        for(i of ings){
+                            const id = await getIngId(i);
+                            ingsId.push(id);
+                        }
+                        console.log(ingsId); //ing id of included ings
+        
+                        for (const i of ingsId) {
+                            let r = await getFinalRecIds(i);
+                            //recTempIds.push(r);
+                        }
+                        console.log(rIds); // rec ids of included ings
+                        for (let index = 0; index < recIds.length; index++) {
+                            const element = recIds[index];
+                            if (rIds.includes(element)) {
+                                for(let i = 0; i < rIds.length; i++){ 
+                                    if (rIds[i] === element) { 
+                                        rIds.splice(i, 1); 
+                                    }
+                                }
+                            }
+                            
+                        }
+        
+                        toFindDuplicates(rIds);
+                        let cVal = Object.values(counts);
+                        let mx = Math.max(...cVal);
+                        for (let index = mx; index > 0; --index) {
+                            let matched = Object.keys(counts).filter(function(key) {
+                                return counts[key] === index;
+                            });
+                            matched.forEach(m => {
+                                let pint = parseInt(m);
+                                finalRids.push(pint);
+                            });
+                        }
+                        //console.log(finalRids);
+                        for (const rec of finalRids) {
+                            const rf = await getRecDetails(rec);
+                        }
+        
+                        console.log(recId);
+                        let msg = req.flash('msg');
+                        conn.release();
+                        //console.log('before render');
+                        res.render('recommendResults', {title: 'Recommended Recipe', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+                        //console.log(finalRids);// arrange from highest match to lowest
+                    }
+                    //func to return reciped without the excluded ings
+                    getExIngs();
+                }
+                else{ 
+                    //func to return recipes based on ings
+                    getRecommRec();
+                }
+            }
+        })
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}

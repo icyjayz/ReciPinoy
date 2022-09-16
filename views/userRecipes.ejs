@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
  
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- custom js file link  -->
+<script src="/public/js/script.js"></script>
     <title>Recipes</title>
 </head>
 <body>
      <!-- user header -->
      <%- include('./partials/userNav'); %>
 
-     <form action="/recipes" method="post">
+    <form action="/recipes" method="post">
         <div id="sortResults">
             <select name="alphabet" id="alphabet" onchange="this.form.submit()">
                 <option value="" disabled selected>sort alphabetically</option>
@@ -43,8 +46,7 @@
                 <% }) %>
             </tbody>
         </table>
-     </form>
-     
+     </form>   
      
 </body>
 </html>

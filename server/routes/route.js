@@ -25,7 +25,8 @@ router.get('/recommend', userController.userRecommend);
 router.post('/recommend', userController.userRecommendRecipe);
 router.get('/recipes', userController.userRecipes);
 router.post('/recipes', userController.userSortRecipes);
-
+router.post('/recommend/search', userController.userRecommAC);
+router.post('/recommend/new', userController.userRecommAdd);
 
 
 router.get('/admin', adminController.adminPage);

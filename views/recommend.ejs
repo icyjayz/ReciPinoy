@@ -1,55 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- wala pa sa git -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- para sa input ng ing -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <title><%=title  %> </title>
 </head>
 <body>
+    <a class="back-btn" onclick="history.back()">>> Back</a>
+    <br><br>
     <h1>Recipe Recommender using ingredients</h1>
     <br><br>
     <% if (msg != '') { %>
         <h3><%= msg %> </h3>
     <% } %>
     <br><br>
-    <form action="/recommend" method="post" onsubmit="getIngs()">
+    <form action="/recommend" method="post" onsubmit="getAllIngs()">
         <div id="ingInps">
-            <h3>Enter your ingredients onhand: </h3>
-            <input type="hidden" name="ingNum" id="ingNum" value="4">
-            <input type="text" name="ings[]" id="ing1" required><br>
-            <input type="text" name="ings[]" id="ing2" required><br>
-            <input type="text" name="ings[]" id="ing3" required><br>
-            <input type="text" name="ings[]" id="ing4" required>
+            <h3>Enter your ingredients onhand: </h3> 
+            <h4 id="ingCheck"></h4>
+            <input type="hidden" name="ingNum" id="ingNum" value="0">
+            <input type="text" name="ings[]" id="ing1" class ="ingsInp">
+            <ul id="ingCont"></ul>
         </div>
-        <input type="hidden" name="ingsVal" value="4" id="ingsVal">
+        <input type="hidden" name="ingsVal" value="" id="ingsVal">
         <br><button type="button" id="addIngredientsBtn">Add another ingredient</button><br><br><br>
+
         <div id="exIngs">
             <input type="hidden" name="exIngNum" id="exIngNum" value="0">
-            <h3 id="exTitle"></h3>
+            <h3 id="exTitle">Excluded Ingredients: </h3>
+            <input type="text" name="exIng[]" class ="ingsInp" id="exIng">
+            <ul id="exIngCont"></ul>
         </div>
         <input type="hidden" name="exIngsVal" value="" id="exIngsVal">
         <br><button type="button" id="exIngredientsBtn">Exclude ingredients</button>
         <br><br>
-        <button type="submit">Get Recommendation!</button>
+        <button type="submit" disabled id="getRecommBtn">Get Recommendation!</button>
     </form>
 
     <script type="text/javascript">
         $('#addIngredientsBtn').on('click', add);
         $('#exIngredientsBtn').on('click', exclude);
-        function getIngs() {
-            let iv = [];
-            let xv = [];
-            
-            jQuery('input[name="exIng[]"]').each(function() {
-                let ingstr = this.value.toLowerCase();
-                xv.push(ingstr);
+        let iv = [];
+        let xv = [];
+
+        $(document).ready(function() { //https://github.com/ashwanibakshi/autocompletesearch
+        $(".ingsInp").autocomplete({ 
+           source:function(req,res){
+               $.ajax({
+                url:'/recommend/search',
+                method:'post',
+                dataType:'json',
+                data:{'ing':req.term},
+                success:function(data){ 
+                    let ingRes = new Array();
+                        $.each(data.data,(index,values)=>{
+                            ingRes.push({'value':values.ing_name});
+                     });
+                     res(ingRes)
+                 },
+                 error:function(){
+                     alert('server error occured')
+                 }
+               });
+           }
+       });
+});
+
+        function getAllIngs() {
+            $('#ingCont').each(function(){
+                $(this).find('li').each(function(){
+                    let current = $(this);
+                    if(current.children().size() > 0){
+                        let ingStr = $(this).text();
+                        let newStr = ingStr.replace(/x/g, '');
+                        newStr = newStr.trim();
+                        iv.push(newStr.toLowerCase());
+                    }
+                });
             });
-            jQuery('input[name="ings[]"]').each(function() {
-                let ingstr = this.value.toLowerCase();
-                iv.push(ingstr);
+
+            $('#exIngCont').each(function(){
+                $(this).find('li').each(function(){
+                    let current = $(this);
+                    if(current.children().size() > 0){
+                        let ingStr = $(this).text();
+                        let newStr = ingStr.replace(/x/g, '');
+                        newStr = newStr.trim();
+                        xv.push(newStr.toLowerCase());
+                    }
+                });
             });
 
             $('#exIngsVal').val(JSON.stringify(xv));
@@ -58,21 +104,32 @@
         
         function exclude() {
             let newIngNum = parseInt($('#exIngNum').val()) + 1;
-            let ings = '<br><input type="text" name="exIng[]" id="exIng'+ newIngNum +'">';
-            let title = 'Excluded Ingredients: ';
-            $('#exTitle').text(title);
-            $('#exIngs').append(ings);
+            let ingstr = $("#exIng").val();
+            let p = '<li onclick="removeIng(this)"><pre>'+ ingstr +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</pre></li>';
+            $('#exIngCont').append(p);
+            $("#exIng").val('');
             $('#exIngNum').val(newIngNum);  
         }
 
         function add() {
-            console.log('add button clicked....');
             let newIngNum = parseInt($('#ingNum').val()) + 1;
-            let ings = '<br><input type="text" name="ings[]" id="ing'+ newIngNum +'">';
+            $('#ingNum').val(newIngNum); 
+            let str = $("#ing1").val();
+            let p = '<li onclick="removeIng(this)"><pre>'+ str +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</pre></li>';
+            $('#ingCont').append(p);
+            $("#ing1").val('');
+            let ingCheck = document.getElementById('ingCheck');
+            let ingNum = parseInt($('#ingNum').val());
+            if (ingNum > 0 && ingNum < 4) {
+                ingCheck.innerHTML = "Ingredients should be at least 4!";
+            } else {
+                getRecommBtn.disabled = false;
+                ingCheck.innerHTML = '';
+            }   
+        }
 
-            $('#ingInps').append(ings);
-            $('#ingNum').val(newIngNum);    
-            
+        function removeIng(ing) {
+            ing.parentNode.removeChild(ing);
         }
     </script>
 </body>
