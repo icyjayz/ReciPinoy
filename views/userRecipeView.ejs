@@ -27,9 +27,10 @@
     <% } %>   
 
     <!-- header -->
-    <%- include('./partials/logoOnlyNav'); %>
+    <%#- include('./partials/logoOnlyNav'); %>
+    <%- include('./partials/userNav'); %>
     
-    <a href="/" class="back-btn">>> Back</a>
+    <a class="back-btn" onclick="history.back()">>> Back</a>
 
     <section>
     
@@ -78,7 +79,6 @@
                 <h3>CALORIES</h3>
                 <% if (rec.rec_cal) { %>
                     <span><%= rec.rec_cal %></span>
-                
                 <% } else { %>
                     <span>Calorific value is not available.</span>
                     <% } %>  

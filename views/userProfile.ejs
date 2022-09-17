@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Profile</title>
+</head>
+<body>
+    <!-- message -->
+    <% if (msg != '') { %>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>   
+
+    <!-- user header -->
+    <%#- include('./partials/guestNav'); %>
+    <%- include('./partials/userNav'); %>
+
+    <% user.forEach(u => { %>
+        <form action="/profile" method="post">
+        <label for="emalLbl">Email: <%= u.user_email %> </label><br>
+        <label for="nameInp">Display Name: </label>
+        <input type="text" name="userName" id="userName" value="<%= u.user_name %>" required>
+        <br><br>
+        <!-- <button type="button" onclick="add()">Add dietary restrictions</button> -->
+        <label for="dietRLbl">Dietary Restrictions: </label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Lactose intolerance">
+        <label for="dietRLacInt">Lactose intolerance</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Gluten intolerance">
+        <label for="dietRGutInt">Gluten intolerance</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Vegetarianism">
+        <label for="dietRVegetnism">Vegetarianism</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Veganism">
+        <label for="dietRVeganism">Veganism</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Kosher">
+        <label for="dietRKosher">Kosher</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Keto">
+        <label for="dietRKeto">Keto</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Diabetes">
+        <label for="dietRDiab">Diabetes</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Dairy-free">
+        <label for="dietRDairy">Dairy-free</label>
+        <input type="checkbox" name="deitRInp" id="deitRInp" value="Low carb">
+        <label for="dietRLowCarb">Low carb</label>
+        <input type="checkbox" name="deitRInp" id="deitRInpFA" value="Food allergies">
+        <label for="dietRFA">Food allergies</label>
+
+        <br><br><button type="submit">save changes</button>
+        </form>
+        
+    <% }) %>
+
+</body>
+<script type="text/javascript">
+    function add() {
+        
+    }
+</script>
+</html>

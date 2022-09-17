@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 
 
-router.get('/', userController.indexPage,);
+router.get('/', userController.indexPage);
 router.get('/register', userController.registerPage);
 router.post('/register', userController.getRegData);
 router.get('/login', userController.loginPage);
@@ -27,6 +27,8 @@ router.get('/recipes', userController.userRecipes);
 router.post('/recipes', userController.userSortRecipes);
 router.post('/recommend/search', userController.userRecommAC);
 router.post('/recommend/new', userController.userRecommAdd);
+
+router.get('/profile', userController.profilePage);
 
 
 router.get('/admin', adminController.adminPage);

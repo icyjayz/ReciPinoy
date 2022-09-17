@@ -63,7 +63,7 @@ exports.indexPage = (req, res) =>{
 
 exports.registerPage = (req, res) => {
     let msg = req.flash('msg');
-    res.render('register', { title: 'Register Page', msg});
+    res.render('register', { title: 'Register Page', msg, id: ''});
 }
 
 exports.getRegData = (req,res) => {
@@ -147,7 +147,7 @@ exports.getRegData = (req,res) => {
 }
 exports.loginPage = (req, res) => {
     let msg = req.flash('msg');
-    res.render('login', { title: 'Login Page', msg});
+    res.render('login', { title: 'Login Page', msg, id: ''});
 }
 
 exports.getLoginData = (req, res) => {
@@ -181,8 +181,6 @@ exports.getLoginData = (req, res) => {
                                     
                                 }
                                 else{
-                                    // res.send({ message: 'invalid credentials!!!'});
-                                    //console.log('Invalid credentials!\n');
                                     conn.release();
                                     req.flash('msg', 'Invalid credentials!');
                                     res.redirect('/login');
@@ -418,12 +416,15 @@ exports.userSearch = (req, res) => {
                     if(err){
                         console.log(err, '\n');
                     }
-                    else if(result){
-                       res.render('userSearchResults', {title: 'Search Results', recs: result});
-                    }
                     else{
-                       // let msg = req.flash('msg', 'No recipes found!');
-                        res.render('userSearchResults', {title: 'Search Results', recs: result});
+                        session = req.session;
+                        if(session.userId){
+                            res.render('userSearchResults', {title: 'Search Results', recs: result, id: session.userName});
+                        }
+                        else{
+                            res.render('userSearchResults', {title: 'Search Results', recs: result, id: ''});
+                        }
+                        
                     }   
                 })
             }
@@ -509,7 +510,14 @@ exports.userRecipeView = (req, res) => {
                             }
                             conn.release();
                             let msg = req.flash('msg');
-                            res.render('userRecipeView', { recs: recs, recIngs: recIngs, quantArr: quantArr, msg});
+                            session = req.session;
+                            if(session.userId){
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, quantArr: quantArr, msg, id: session.userName});
+                            }
+                            else{
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, quantArr: quantArr, msg, id: ''});
+                            }
+                            
                         }
                         getAllRecIng(recs);
                     }
@@ -636,7 +644,15 @@ pool.getConnection((err, conn) => {
             let msg = req.flash('msg');
             conn.release();
             //console.log('before render');
-            res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+            session = req.session;
+            if(session.userId){
+                res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: session.userName});
+            }
+            else{
+                res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: ''});
+            }
+            // res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+
             //console.log(finalRids);// arrange from highest match to lowest
         }
         
@@ -743,7 +759,16 @@ pool.getConnection((err, conn) => {
                 let msg = req.flash('msg');
                 conn.release();
                 //console.log('before render');
-                res.render('recommendResults', {title: 'Recommended Recipe', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+
+                session = req.session;
+                if(session.userId){
+                    res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: session.userName});
+                }
+                else{
+                    res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: ''});
+                }
+
+                // res.render('recommendResults', {title: 'Recommended Recipe', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
                 //console.log(finalRids);// arrange from highest match to lowest
             }
             //func to return reciped without the excluded ings
@@ -897,9 +922,16 @@ exports.userSortRecipes = (req, res) =>{
 
 exports.userRecommend = (req,res) =>{
 try {
-    let msg = req.flash('msg');
-    res.render('recommend', {title: 'Recipe Recommender', msg});
-    
+    session = req.session;
+    if(session.userId){
+        // res.render('userHome', { title: 'User Home', id: session.userName});
+        let msg = req.flash('msg');
+        res.render('recommend', {title: 'Recipe Recommender', msg, id: session.userName});
+    }
+    else{
+        let msg = req.flash('msg');
+        res.render('recommend', {title: 'Recipe Recommender', msg, id: ''});
+    }
 } catch (error) {
     res.status(500).json({ message: error.message});
 }
@@ -1046,7 +1078,13 @@ exports.userRecommAdd= (req,res) =>{
                     let msg = req.flash('msg');
                     conn.release();
                     //console.log('before render');
-                    res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+                    session = req.session;
+                    if(session.userId){
+                        res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: session.userName});
+                    }
+                    else{
+                        res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: ''});
+                    }
                     //console.log(finalRids);// arrange from highest match to lowest
                 }
                 
@@ -1154,7 +1192,13 @@ exports.userRecommAdd= (req,res) =>{
                         let msg = req.flash('msg');
                         conn.release();
                         //console.log('before render');
-                        res.render('recommendResults', {title: 'Recommended Recipe', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg});
+                        session = req.session;
+                        if(session.userId){
+                            res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: session.userName});
+                        }
+                        else{
+                            res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: ''});
+                        }
                         //console.log(finalRids);// arrange from highest match to lowest
                     }
                     //func to return reciped without the excluded ings
@@ -1167,6 +1211,34 @@ exports.userRecommAdd= (req,res) =>{
             }
         })
         
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+//test
+
+exports.profilePage = (req,res) => {
+    try {
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn) => {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT * FROM users WHERE user_id = ?', [session.userId], (err, user) => {
+                        if(err){
+                            console.log(err);
+                        } else {
+                            conn.release();
+                            let msg = req.flash('msg');
+                            res.render('userProfile', { user: user, id: session.userName, msg})
+                        }
+                    })
+                }
+            })
+        }
     } catch (error) {
         res.status(500).json({ message: error.message});
     }

@@ -11,6 +11,10 @@
     <title><%= title %> </title>
 </head>
 <body>
+    <!-- user header -->
+    <%#- include('./partials/guestNav'); %>
+    <%#- include('./partials/userNav'); %>
+    
     <a class="back-btn" onclick="history.back()">>> Back</a>
     <br><br>
     <a href="/recommend">Get Recommendation again!</a>
@@ -130,12 +134,15 @@
         function add() {
             let xv = [];
             let iv = [];
-            jQuery('input[name="exIng[]"]').each(function() { 
+            jQuery('input[name="exIng[]"]').each(function() { //dito na ko ayaw ko naHHUHU
                 let exIngstr = this.value;
                 if(exIngstr){
+                    // let newIngNum = parseInt($('#exIngNum').val()) + 1;
+                    // $('#exIngNum').val(newIngNum);
                     if(deletedExIng.length > 0){
                         for (let index = 0; index < deletedExIng.length; index++) {
                         const element = deletedExIng[index];
+                        // alert(element);
                         if(exIngstr != element){
                             xv.push(exIngstr.toLowerCase());
                             let newIngNum = parseInt($('#exIngNum').val()) + 1;
