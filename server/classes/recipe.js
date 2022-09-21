@@ -71,15 +71,24 @@ const Ing = class{
 }
 
 const Recomm = class{
-    constructor(ings, exIngs){
+    constructor(ings, exIngs, allergy, restrict){
         this.ings = ings;
         this.exIngs = exIngs;
+        this.allergy = allergy;
+        this.restrict = restrict;
     }
     getIngs(){
         return this.ings;
     }
     getExIngs(){
         return this.exIngs;
+    }
+    getAllergy(){
+        return this.allergy;
+    }
+
+    getRestrict(){
+        return this.restrict;
     }
 }
 module.exports = {

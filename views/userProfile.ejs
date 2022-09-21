@@ -31,38 +31,179 @@
         <label for="nameInp">Display Name: </label>
         <input type="text" name="userName" id="userName" value="<%= u.user_name %>" required>
         <br><br>
-        <!-- <button type="button" onclick="add()">Add dietary restrictions</button> -->
         <label for="dietRLbl">Dietary Restrictions: </label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Lactose intolerance">
-        <label for="dietRLacInt">Lactose intolerance</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Gluten intolerance">
-        <label for="dietRGutInt">Gluten intolerance</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Vegetarianism">
-        <label for="dietRVegetnism">Vegetarianism</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Veganism">
-        <label for="dietRVeganism">Veganism</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Kosher">
-        <label for="dietRKosher">Kosher</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Keto">
-        <label for="dietRKeto">Keto</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Diabetes">
-        <label for="dietRDiab">Diabetes</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Dairy-free">
-        <label for="dietRDairy">Dairy-free</label>
-        <input type="checkbox" name="deitRInp" id="deitRInp" value="Low carb">
-        <label for="dietRLowCarb">Low carb</label>
-        <input type="checkbox" name="deitRInp" id="deitRInpFA" value="Food allergies">
-        <label for="dietRFA">Food allergies</label>
+        <% if (u.user_restrict){ %> 
+            <% let rStr = u.user_restrict; %> 
+            <% if (rStr.includes('lactose intolerance')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance" checked>
+                <label for="dietRLacInt">Lactose intolerance</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance">
+                <label for="dietRLacInt">Lactose intolerance</label>
+            <% } %> 
+            <% if (rStr.includes('gluten intolerance')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance" checked>
+                <label for="dietRGutInt">Gluten intolerance</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance">
+                <label for="dietRGutInt">Gluten intolerance</label>
+            <% } %>
+            <% if (rStr.includes('vegetarianism')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism" checked>
+                <label for="dietRVegetnism">Vegetarianism</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism">
+                <label for="dietRVegetnism">Vegetarianism</label>
+            <% } %>
+            <% if (rStr.includes('veganism')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism" checked>
+                <label for="dietRVeganism">Veganism</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism">
+                <label for="dietRVeganism">Veganism</label>
+            <% } %>
+            <% if (rStr.includes('kosher')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher" checked>
+                <label for="dietRKosher">Kosher</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher">
+                <label for="dietRKosher">Kosher</label>
+            <% } %>
+            <% if (rStr.includes('keto')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto" checked>
+                <label for="dietRKeto">Keto</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto">
+                <label for="dietRKeto">Keto</label>
+            <% } %>
+            <% if (rStr.includes('diabetes')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes" checked>
+                <label for="dietRDiab">Diabetes</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes">
+                <label for="dietRDiab">Diabetes</label>
+            <% } %>
+            <% if (rStr.includes('dairy-free')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free" checked>
+                <label for="dietRDairy">Dairy-free</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
+                <label for="dietRDairy">Dairy-free</label>>
+            <% } %>
+            <% if (rStr.includes('low carb')) { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb" checked>
+                <label for="dietRLowCarb">Low carb</label>
+            <% } else { %>
+                <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
+                <label for="dietRLowCarb">Low carb</label>
+            <% } %>
+
+        <% } else { %>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance">
+            <label for="dietRLacInt">Lactose intolerance</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance">
+            <label for="dietRGutInt">Gluten intolerance</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism">
+            <label for="dietRVegetnism">Vegetarianism</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism">
+            <label for="dietRVeganism">Veganism</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher">
+            <label for="dietRKosher">Kosher</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto">
+            <label for="dietRKeto">Keto</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes">
+            <label for="dietRDiab">Diabetes</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
+            <label for="dietRDairy">Dairy-free</label>
+            <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
+            <label for="dietRLowCarb">Low carb</label>
+        <% } %> 
+        <br><br><label for="faLbl">Food allergies</label>
+        <% if (u.user_allergy) { %>
+            <% let aStr = u.user_allergy; %> 
+            <% if (aStr.includes("cow's milk")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk" checked>
+                <label for="faCow">Cow&rsquo;s milk</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk">
+                <label for="faCow">Cow&rsquo;s milk</label>
+            <% } %>
+            <% if (aStr.includes("eggs")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="eggs" checked>
+                <label for="faEggs">Eggs</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="eggs">
+                <label for="faEggs">Eggs</label>
+            <% } %>
+            <% if (aStr.includes("tree nuts")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="tree nuts" checked>
+                <label for="faTNuts">Tree nuts</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="tree nuts">
+                <label for="faTNuts">Tree nuts</label>
+            <% } %>
+            <% if (aStr.includes("peanuts")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="peanuts" checked>
+                <label for="faTPnuts">Peanuts</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="peanuts">
+                <label for="faTPnuts">Peanuts</label>
+            <% } %>
+            <% if (aStr.includes("shellfish")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="shellfish" checked>
+                <label for="faShllfish">Shellfish</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="shellfish">
+                <label for="faShllfish">Shellfish</label>
+            <% } %>
+            <% if (aStr.includes("wheat")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="wheat" checked>
+                <label for="faWheat">Wheat</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="wheat">
+                <label for="faWheat">Wheat</label>
+            <% } %>
+            <% if (aStr.includes("soy")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="soy" checked>
+                <label for="faSoy">Soy</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="soy">
+                <label for="faSoy">Soy</label>
+            <% } %>
+            <% if (aStr.includes("Fish")) { %>
+                <input type="checkbox" name="faInp" id="faInp" value="Fish" checked>
+                <label for="faFish">Fish</label>
+            <% } else { %>
+                <input type="checkbox" name="faInp" id="faInp" value="Fish">
+                <label for="faFish">Fish</label>
+            <% } %>
+        <% } else { %>
+            <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk">
+            <label for="faCow">Cow&rsquo;s milk</label>
+            <input type="checkbox" name="faInp" id="faInp" value="eggs">
+            <label for="faEggs">Eggs</label>
+            <input type="checkbox" name="faInp" id="faInp" value="tree nuts">
+            <label for="faTNuts">Tree nuts</label>
+            <input type="checkbox" name="faInp" id="faInp" value="peanuts">
+            <label for="faTPnuts">Peanuts</label>
+            <input type="checkbox" name="faInp" id="faInp" value="shellfish">
+            <label for="faShllfish">Shellfish</label>
+            <input type="checkbox" name="faInp" id="faInp" value="wheat">
+            <label for="faWheat">Wheat</label>
+            <input type="checkbox" name="faInp" id="faInp" value="soy">
+            <label for="faSoy">Soy</label>
+            <input type="checkbox" name="faInp" id="faInp" value="Fish">
+            <label for="faFish">Fish</label>
+        <% } %>
 
         <br><br><button type="submit">save changes</button>
         </form>
         
     <% }) %>
 
+
+
+<!-- custom js file link  -->
+<script src="/public/js/script.js"></script>
 </body>
-<script type="text/javascript">
-    function add() {
-        
-    }
-</script>
 </html>

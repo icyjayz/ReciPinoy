@@ -1,8 +1,10 @@
 const User = class {
-    constructor(name, email, password){
+    constructor(name, email, password, allergy, restrict){
         this.name = name;
         this.email = email;
         this.password = password;
+        this.allergy = allergy;
+        this.restrict = restrict;
     }
 
     getUserName(){
@@ -15,6 +17,14 @@ const User = class {
 
     getUserPassword(){
         return this.password;
+    }
+
+    getUserAllergy(){
+        return this.allergy;
+    }
+
+    getUserRestrict(){
+        return this.restrict;
     }
 }
 
@@ -50,25 +60,25 @@ const AdminLogin = class{
 
 }
 
-const Admin = class {
-    constructor(name, email, password){
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+// const Admin = class {
+//     constructor(name, email, password){
+//         this.name = name;
+//         this.email = email;
+//         this.password = password;
+//     }
 
-    getAdminName(){
-        return this.name;
-    }
+//     getAdminName(){
+//         return this.name;
+//     }
 
-    getAdminEmail(){
-        return this.email;
-    }
+//     getAdminEmail(){
+//         return this.email;
+//     }
 
-    getAdminPassword(){
-        return this.password;
-    }
-}
+//     getAdminPassword(){
+//         return this.password;
+//     }
+// }
 
 module.exports = {
     User : User,
