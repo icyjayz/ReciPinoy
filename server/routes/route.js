@@ -29,6 +29,8 @@ router.post('/recommend/search', userController.userRecommAC);
 router.post('/recommend/new', userController.userRecommAdd);
 router.get('/profile', userController.profilePage);
 router.post('/profile', userController.updateProfile);
+router.post('/grocery-list', userController.addGrocery);
+
 
 //admin routes
 router.get('/admin', adminController.adminPage);

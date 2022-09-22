@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List</title>
+</head>
+<body>
+       <!-- guest header -->
+   <%- include('./partials/userNav'); %>
+    <h1>Grocery List</h1>
+    <% for( let index = 0; index < list.length; index++ ) { %>
+        <% let l = list[index]; %> 
+        <input type="checkbox" name="gList" id="gList<%= index + 1 %>" value="<%= l %>">
+        <label for="cbLbl"><%= l %></label>
+    <% } %>
+
+    
+<!-- custom js file link  -->
+<script src="/public/js/script.js"></script>
+</body>
+</html>

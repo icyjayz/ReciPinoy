@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- bootstrap for modal -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <% let i = 0; %> 
     <% let ingArr = []; %> 
     <% let srv = 0; %>
     <% recs.forEach(rec => { %>
     <title><%= rec.rec_name %></title>
 
-        <!-- font awesome cdn link  -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-        <!-- custom css file link  -->
-        <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
      <!-- message -->
@@ -27,7 +35,6 @@
     <% } %>   
 
     <!-- header -->
-    <%#- include('./partials/logoOnlyNav'); %>
     <%- include('./partials/userNav'); %>
     
     <a class="back-btn" onclick="history.back()">>> Back</a>
@@ -59,8 +66,8 @@
                 </li>
                 <li>
                 <% if (rec.rec_serving) { %>
-                    <h3>SERVING </h3>
                     <% if (rec.rec_serving == 1) { %>
+                        <h3>SERVING </h3>
                         <span>
                             <% srv = rec.rec_serving; %> 
                             <button type="button" id="minusButton">-</button>
@@ -68,6 +75,7 @@
                             <button type="button" id="plusButton">+</button>
                         </span>
                     <% } else { %>
+                        <h3>SERVING </h3>
                         <% srv = rec.rec_serving; %> 
                         <button type="button" id="minusButton">-</button>
                         <input type="number" name="servingInp" id="servingInp" value="1" min="1" readonly>
@@ -86,10 +94,16 @@
                 <li>
                 <h3>RATING</h3>
                 <% if (rec.rec_rate) { %>
-                    <span><%= rec.rec_rate %></span>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ -->
+                    <span><%= rec.rec_rate %></span>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ [eka] -->
                 <% } else { %>
                     <span>This recipe hasn't been rated.</span>
                 <% } %>
+                </li>
+                <li>
+                    <form action="/grocery-list" method="post" onsubmit="addGrocery()">
+                        <input type="hidden" name="gList" id="gList" value="">
+                        <button type="submit">add ingredients to grocery list</button>
+                    </form>
                 </li>
         </ul>
         </div>
@@ -100,13 +114,16 @@
             <div id="ings">
                 <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
             <% for( let index = 0; index < recIngs.length; index++ ) { %>
+                <input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>">
                 <% if (srv == 1) { %>
                     <% if (quantArr[index] != 0) { %>
+                        <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
                         <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
-                        <span><%=recIngs[index]%></span></li>
+                        <span><%=recIngs[index]%><%=ins[index] %></span></li>
                     <% } else { %>
+                        <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
                         <li><span id="quantSpan<%= index + 1%>"></span>
-                            <span><%=recIngs[index]%></span></li>
+                            <span><%=recIngs[index]%><%=ins[index] %></span></li>
                     <% } %>
                     
                 <% } else { %>
@@ -115,11 +132,13 @@
                     <% newQuant = newQuant.toFixed(2); %>  
 
                     <% if (quantArr[index] != 0) { %>
+                        <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
                         <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
-                        <span><%=recIngs[index]%></span></li>
+                        <span><%=recIngs[index]%><%=ins[index] %></span></li>
                     <% } else { %>
+                        <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
                         <li><span id="quantSpan<%= index + 1%>"></span>
-                            <span><%=recIngs[index]%></span></li>
+                            <span><%=recIngs[index]%><%=ins[index] %></span></li>
                     <% } %>
                 <% } %>
                 
@@ -162,6 +181,8 @@
 
     
     <script type="text/javascript">
+        let qArr = [];
+
         document.addEventListener('DOMContentLoaded', function(){
             let stars = document.querySelectorAll('.star');
             stars.forEach(function(star){
@@ -173,10 +194,18 @@
             target.dispatchEvent(new MouseEvent('click'));
         });
 
+        jQuery('input[name="q[]"]').each(function() {
+                let q = this.value;
+                if(q){
+                    qArr.push(q);
+                }
+        });
+
         const minusButton = document.getElementById('minusButton');
         const plusButton = document.getElementById('plusButton');
         const srvField = document.getElementById('servingInp').value;
         minusButton.disabled = true;
+
         function btnCntrl(val) {
             if (val != 1) {
                 minusButton.disabled = false;
@@ -187,14 +216,15 @@
         }
 
         minusButton.addEventListener('click', event => {
+            qArr = [];
             event.preventDefault();
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue - 1;
             $('#servingInp').val(currentValue);
             btnCntrl(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
-
-            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+            
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>"><% if (srv == 1) { %><% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %><% newQuant = newQuant.toFixed(2); %>  <% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } %><% } %>';
 
             $("#ings").html(htmlStr);
             for (let index = 1; index <= newIngNum; index++) {
@@ -205,17 +235,25 @@
                     if(Number(spanVal) % 1 === 0){
                         let newVal = parseInt(spanVal) * currentValue;
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     }
                     else{
                         let newVal = parseFloat(spanVal) * currentValue;
-                        newVal = newVal.toFixed(2);
+                        if(newVal % 1 === 0){
+                            newVal = parseInt(newVal);
+                        }
+                        else{
+                            newVal = newVal.toFixed(2);
+                        }
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     } 
                 }
             }
         });
 
         plusButton.addEventListener('click', event => {
+            qArr = [];
             event.preventDefault();
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue + 1;
@@ -223,7 +261,7 @@
             btnCntrl(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
 
-            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>"><% if (srv == 1) { %><% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %><% newQuant = newQuant.toFixed(2); %>  <% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } %><% } %>'
 
             $("#ings").html(htmlStr);
             for (let index = 1; index <= newIngNum; index++) {
@@ -235,11 +273,18 @@
                     if(Number(spanVal) % 1 === 0){
                         let newVal = parseInt(spanVal) * currentValue;
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     }
                     else{
                         let newVal = parseFloat(spanVal) * currentValue;
-                        newVal = newVal.toFixed(2);
+                        if(newVal % 1 === 0){
+                            newVal = parseInt(newVal);
+                        }
+                        else{
+                            newVal = newVal.toFixed(2);
+                        }
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     } 
                 }
             }
@@ -275,6 +320,36 @@
             }
             
         }
+        
+        function addGrocery() {
+            let ingsArr = [];
+            let count = 0;
+            jQuery('input[name="uiInp[]"]').each(function() {
+                let ingstr = this.value;
+                if(ingstr){
+                    let q = qArr[count];
+                    if(q){
+                        if(q == 0){
+                            let finalStr = ingstr;
+                            ingsArr.push(finalStr.trim());
+                        }
+                        else{
+                            let finalStr = q + ingstr;
+                            ingsArr.push(finalStr); 
+                        }
+                    }
+                    else{
+                        let finalStr = ingstr;
+                        ingsArr.push(finalStr.trim());
+                    }
+                }
+                count++;
+            });
+
+            //alert(ingsArr);
+            $('#gList').val(JSON.stringify(ingsArr));
+        }
+    
     </script>
 
     <!-- custom js file link  -->

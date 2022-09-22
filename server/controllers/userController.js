@@ -84,15 +84,12 @@ exports.getRegData = (req,res) => {
                 glEmail = user.getUserEmail();
                 glPassword = user.getUserPassword();
                 let rePassword = req.body.regRePasswordInp;
-                //let categ = 'admin';
                 if(user.getUserPassword().length < 8){
                     req.flash('msg', 'Passwords should be at least 8 characters!');
-                    //alert('Passwords does not match');
                     res.redirect('/register'); 
                 }
                 if(user.getUserPassword() !== rePassword){
                     req.flash('msg', 'Passwords does not match!');
-                    //alert('Passwords does not match');
                     res.redirect('/register');    
                 }
                 else{
@@ -100,12 +97,10 @@ exports.getRegData = (req,res) => {
                         if(err){
                             console.log(err, '\n');
                             conn.release();
-    
                         }
                         else if(row.length > 0)
                         {
                             req.flash('msg', 'Email is already registered!');
-                            //console.log('email is already registered!\n');
                             conn.release();
                             res.redirect('/register');
                         }
@@ -123,8 +118,6 @@ exports.getRegData = (req,res) => {
                                 if (error) {
                                     console.log(error);
                                 }
-                                //console.log('Message sent: %s', info.messageId);
-                                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
                                 res.redirect('/verify');
                             });
@@ -134,9 +127,6 @@ exports.getRegData = (req,res) => {
                     })
                     
                 }
-    
-                
-            
             }
         });
     }
@@ -161,8 +151,6 @@ exports.getLoginData = (req, res) => {
                 let user = new User.UserLogin();
                 user.email = req.body.loginEmailInp;
                 user.password = req.body.loginPasswordInp;
-                //let email = req.body.loginEmailInp;
-                //let password = req.body.loginPasswordInp;
                 conn.query('SELECT * FROM users WHERE user_email = ?', [user.getLoginEmail()], (err, result) =>{
                     if(err){
                         console.log(err, '\n');
@@ -453,6 +441,9 @@ exports.userRecipeView = (req, res) => {
                         let quantArr = [];
                         let recIngs = [];
                         let ingStringArr = [];
+                        let ingI = [];
+                        let insArr = [];
+                        let ingIStr = '';
                         let ingStr = '';
                         let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
                         function getIngs(id){
@@ -466,8 +457,9 @@ exports.userRecipeView = (req, res) => {
                                             let ingq = ing.ingQuant;
                                             let ingu = ing.ingUnit;
                                             let ingi = ing.ingIns;
-                                            if(!ing.ingQuant || ing.ingQuant == 0){
-                                                ingq = '';
+                                            
+                                            if(!ing.ingQuant){
+                                                ingq = 0;
                                             }
                                             if(!ing.ingUnit){
                                                 ingu = '';
@@ -475,25 +467,34 @@ exports.userRecipeView = (req, res) => {
                                             if(!ing.ingIns){
                                                 ingi = '';
                                             }
-                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
+                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name;
+                                            let ii = ' '+ ingi;
                                             ingStringArr.push(temp);
+                                            ingI.push(ii);
                                         });
                                         ingStr = ingStringArr.join('/');
-                                        ingStringArr = []; 
-                                        resolve(ingStr);
+                                        ingIStr = ingI.join('/');
+                                        let strConcat = ingStr.concat('*', ingIStr);
+                                        ingStringArr = [];
+                                        ingI = []; 
+                                        resolve(strConcat);
                                     }
                                 })
                             })
                         }
+                        
                         async function getAllRecIng(r){
                             for(id of r){
                                 ingStr = await getIngs(id.rec_id);
-                                let ingArr = ingStr.split('/');
+                                let strArr = ingStr.split('*');
+                                let qui = strArr[0]
+                                let ins = strArr[1];
+                                insArr = ins.split('/');
+                                let ingArr = qui.split('/');
                                 for (const i of ingArr) {
                                     let quantNum = i.match(regexQuant);
                                     let iStr = i.match(regexStr); 
                                     if(Array.isArray(quantNum)){
-                                        //console.log(quantNum);
                                         quantArr.push(quantNum[0]);
                                     }else{
                                         quantArr.push(quantNum);
@@ -508,14 +509,15 @@ exports.userRecipeView = (req, res) => {
                                     finalStr = '';
                                 }
                             }
+                            //console.log(quantArr);
                             conn.release();
                             let msg = req.flash('msg');
                             session = req.session;
                             if(session.userId){
-                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, quantArr: quantArr, msg, id: session.userName});
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName});
                             }
                             else{
-                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, quantArr: quantArr, msg, id: ''});
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: ''});
                             }
                             
                         }
@@ -1125,20 +1127,19 @@ exports.userSortRecipes = (req, res) =>{
 }
 
 exports.userRecommend = (req,res) =>{
-try {
-    session = req.session;
-    if(session.userId){
-        // res.render('userHome', { title: 'User Home', id: session.userName});
-        let msg = req.flash('msg');
-        res.render('recommend', {title: 'Recipe Recommender', msg, id: session.userName});
+    try {
+        session = req.session;
+        if(session.userId){
+            let msg = req.flash('msg');
+            res.render('recommend', {title: 'Recipe Recommender', msg, id: session.userName});
+        }
+        else{
+            let msg = req.flash('msg');
+            res.render('recommend', {title: 'Recipe Recommender', msg, id: ''});
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message});
     }
-    else{
-        let msg = req.flash('msg');
-        res.render('recommend', {title: 'Recipe Recommender', msg, id: ''});
-    }
-} catch (error) {
-    res.status(500).json({ message: error.message});
-}
 }
 
 exports.userRecommAC = (req,res) =>{
@@ -1171,8 +1172,6 @@ exports.userRecommAdd= (req,res) =>{
         res.status(500).json({ message: error.message});
     }
 }
-
-//test
 
 exports.profilePage = (req,res) => {
     try {
@@ -1246,12 +1245,28 @@ exports.updateProfile = (req,res) => {
                             conn.release();
                             req.flash('msg', 'profile successfully updated!');
                             res.redirect('/profile');
-                            // let msg = req.flash('msg');
-                            // res.render('userProfile', { user: user, id: session.userName, msg})
                         }
                     })
                 }
             })
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+//test
+
+exports.addGrocery = (req,res) => {
+    try {
+        session = req.session;
+        if(session.userId){
+            let gList = JSON.parse(req.body.gList);
+            let msg = req.flash('msg');
+            res.render('grocery', {title: 'Recipe Recommender', msg, id: session.userName, list: gList});
+        }
+        else{
+            req.flash('msg', 'you need to log in first!');
+            res.redirect('/login');
         }
     } catch (error) {
         res.status(500).json({ message: error.message});
