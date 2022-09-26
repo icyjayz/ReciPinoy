@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <% let i = 0; %> 
+    <% let ingArr = []; %>
+    <% let ingSave = []; %> 
+    <% let srv = 0; %>
+    <% save.forEach(saved => { %>
+    <title><%= saved.rec_name %></title>
+
+        <!-- font awesome cdn link  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+        <!-- custom css file link  -->
+        <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+     <!-- message -->
+     <% if (msg != '') { %>
+        <div class="message">
+            <span> <%= msg %> </span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+    <% } %>   
+
+    <!-- header -->
+    <%#- include('./partials/logoOnlyNav'); %>
+    <%- include('./partials/userNav'); %>
+    
+    <a class="back-btn" onclick="history.back()">>> Back</a>
+
+    <section>
+    
+    <div class="userSavedRView">
+        <div class="rec-view">
+        <% if (saved.rec_img) { %>
+            <img src="/images/<%= saved.rec_img%>" alt="<%= saved.rec_name %> Image" class="img-rec">
+        <% } %><br><br>
+        </div>
+
+    <div class="rec-content">
+        <h3 class="rec-name"><%= saved.rec_name %></h3>
+        <h5 class="rec-desc"><%= saved.rec_desc %></h5>
+        
+        <div class="rec-col">
+            <ul class="rec-col-list">
+                <li>
+                    <h3>CATEGORY</h3>
+                    <span><%= saved.rec_categ %></span>
+                </li>
+                <li>
+                <% if (saved.rec_time) { %>
+                    <h3>TOTAL TIME</h3>
+                    <span><%= saved.rec_time %></span>
+                <% } %>
+                </li>
+                <li>
+                <% if (saved.rec_serving) { %>
+                    <h3>SERVING </h3>
+                    <% if (saved.rec_serving == 1) { %>
+                        <span>
+                            <% srv = saved.rec_serving; %> 
+                            <button type="button" id="minusButton">-</button>
+                            <input type="number" name="servingInp" id="servingInp" value="<%= saved.rec_serving %>" min="1" readonly>
+                            <button type="button" id="plusButton">+</button>
+                        </span>
+                    <% } else { %>
+                        <% srv = saved.rec_serving; %> 
+                        <button type="button" id="minusButton">-</button>
+                        <input type="number" name="servingInp" id="servingInp" value="1" min="1" readonly>
+                        <button type="button" id="plusButton">+</button>
+                    <% } %>
+                <% } %>
+                </li>
+                <li>
+                <h3>CALORIES</h3>
+                <% if (saved.rec_cal) { %>
+                    <span><%= saved.rec_cal %></span>
+                <% } else { %>
+                    <span>Calorific value is not available.</span>
+                    <% } %>  
+                </li>
+                <li>
+                <h3>RATING</h3>
+                <% if (saved.rec_rate) { %>
+                    <span><%= saved.rec_rate %></span>  
+                <% } else { %>
+                    <span>This recipe hasn't been rated.</span>
+                <% } %>
+                </li>
+        </ul>
+        </div>
+
+        <div class="rec-ing">
+        <label class="ing-title">Ingredients </label>
+        <ul>
+            <div id="ings">
+                <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
+            <% for( let index = 0; index < recIngs.length; index++ ) { %>
+                <% if (srv == 1) { %>
+                    <% if (quantArr[index] != 0) { %>
+                        <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                        <span><%=recIngs[index]%></span></li>
+                    <% } else { %>
+                        <li><span id="quantSpan<%= index + 1%>"></span>
+                            <span><%=recIngs[index]%></span></li>
+                    <% } %>
+                    
+                <% } else { %>
+                    <% let newQuant = quantArr[index];%>
+                    <% newQuant = newQuant / srv; %>
+                    <% newQuant = newQuant.toFixed(2); %>  
+
+                    <% if (quantArr[index] != 0) { %>
+                        <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                        <span><%=recIngs[index]%></span></li>
+                    <% } else { %>
+                        <li><span id="quantSpan<%= index + 1%>"></span>
+                            <span><%=recIngs[index]%></span></li>
+                    <% } %>
+                <% } %>
+                
+            <% } %>
+            </div>
+        </ul>
+        </div>
+
+        <div class="rec-process">
+        <label class="rproc">Process </label>
+            <textarea name="" id="" cols="30" rows="10" readonly><%= saved.rec_process %></textarea><br>
+        </div>
+
+
+        <!-- <div class="rec-src"><a href="<%= saved.rec_src %>"><strong>Source</strong></a></div> -->
+
+        <div class="rec-vid">
+            <% if (saved.rec_vid) { %>
+            <label class="rvid">Video </label>
+            <iframe src="<%= saved.rec_vid %>"></iframe>
+        <% } %> 
+        </div>
+    </div>
+</div>
+</section>
+
+        <form action="/saved/<%= saved.rec_id%>" method="post">
+            <br><h3>Rate the recipe!</h3><br>
+        <div class="stars" data-rating="0">
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+            <span class="star">&nbsp;</span>
+        </div>
+        <input type="hidden" name="recRating" id="recRating" value="<%= saved.rec_rate %>">
+        <br><br><button type="submit">Submit Rating!</button>
+        </form>
+    <% }) %>
+
+    
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            let stars = document.querySelectorAll('.star');
+            stars.forEach(function(star){
+                star.addEventListener('click', setRating); 
+            });
+            
+            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            let target = stars[rating - 1];
+            target.dispatchEvent(new MouseEvent('click'));
+        });
+
+        const minusButton = document.getElementById('minusButton');
+        const plusButton = document.getElementById('plusButton');
+        const srvField = document.getElementById('servingInp').value;
+        minusButton.disabled = true;
+        function btnCntrl(val) {
+            if (val != 1) {
+                minusButton.disabled = false;
+            }
+            else{
+                minusButton.disabled = true;
+            }
+        }
+
+        minusButton.addEventListener('click', event => {
+            event.preventDefault();
+            let currentValue = parseInt($('#servingInp').val());
+            currentValue = currentValue - 1;
+            $('#servingInp').val(currentValue);
+            btnCntrl(currentValue);
+            let newIngNum = parseInt($('#ingCount').val());
+
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+
+            $("#ings").html(htmlStr);
+            for (let index = 1; index <= newIngNum; index++) {
+                let i = "quantSpan" + index.toString();
+                let span = document.getElementById(i);
+                let spanVal = span.textContent;
+                if(spanVal){
+                    if(Number(spanVal) % 1 === 0){
+                        let newVal = parseInt(spanVal) * currentValue;
+                        span.textContent = newVal.toString();
+                    }
+                    else{
+                        let newVal = parseFloat(spanVal) * currentValue;
+                        newVal = newVal.toFixed(2);
+                        span.textContent = newVal.toString();
+                    } 
+                }
+            }
+        });
+
+        plusButton.addEventListener('click', event => {
+            event.preventDefault();
+            let currentValue = parseInt($('#servingInp').val());
+            currentValue = currentValue + 1;
+            $('#servingInp').val(currentValue);
+            btnCntrl(currentValue);
+            let newIngNum = parseInt($('#ingCount').val());
+
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+
+            $("#ings").html(htmlStr);
+            for (let index = 1; index <= newIngNum; index++) {
+                let i = "quantSpan" + index.toString();
+                let span = document.getElementById(i);
+                let spanVal = span.textContent;
+                
+                if(spanVal){
+                    if(Number(spanVal) % 1 === 0){
+                        let newVal = parseInt(spanVal) * currentValue;
+                        span.textContent = newVal.toString();
+                    }
+                    else{
+                        let newVal = parseFloat(spanVal) * currentValue;
+                        newVal = newVal.toFixed(2);
+                        span.textContent = newVal.toString();
+                    } 
+                }
+            }
+        });
+
+        function setRating(ev){
+            let span = ev.currentTarget;
+            let stars = document.querySelectorAll('.star');
+            let match = false;
+            let num = 0;
+            stars.forEach(function(star, index){
+                if(match){
+                    star.classList.remove('rated');
+                }else{
+                    star.classList.add('rated');
+                }
+                //are we currently looking at the span that was clicked
+                if(star === span){
+                    match = true;
+                    num = index + 1;
+                }
+            });
+            let currentRating = document.getElementById('recRating').value;
+            if ((parseInt(currentRating)) != 0) {
+                let newRating = (num + parseInt(currentRating))/2;
+                document.getElementById('recRating').value = Math.round(newRating);
+                document.querySelector('.stars').setAttribute('data-rating', num);
+            }
+            else{
+                let newRating = (num + parseInt(currentRating));
+                document.getElementById('recRating').value = Math.round(newRating);
+                document.querySelector('.stars').setAttribute('data-rating', num);
+            }
+            
+        }
+    </script>
+</body>
+</html>

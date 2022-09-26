@@ -20,6 +20,7 @@ router.get('/reset-password', userController.userResetPwd);
 router.post('/reset-password', userController.userUpdatePwd);
 router.post('/search', userController.userSearch);
 router.get('/recipes/:id', userController.userRecipeView);
+router.post('/recipes/:id', userController.userSaveRec);
 router.post('/recipes/:id', userController.userRateRec);
 router.get('/recommend', userController.userRecommend);
 router.post('/recommend', userController.userRecommendRecipe);
@@ -31,7 +32,9 @@ router.get('/profile', userController.profilePage);
 router.post('/profile', userController.updateProfile);
 router.get('/grocery-list', userController.groceryPage);
 router.post('/grocery-list', userController.addGrocery);
-router.post('/grocery-list/add', userController.addItem);
+router.get('/saved', userController.userSavedRecipes);
+router.get('/saved/:id', userController.userSavedRView);
+router.get('/saved/delete/:id', userController.userSavedDelete);
 
 
 //admin routes

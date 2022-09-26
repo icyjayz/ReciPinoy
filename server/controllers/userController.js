@@ -1021,6 +1021,200 @@ exports.userRateRec = (req, res) =>{
     }
 }
 
+exports.userSaveRec = (req, res) =>{
+    try {
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn)=>{
+                let userid = req.session.userId;
+                let id = req.body.recID;
+                let name = req.body.recName;
+                let desc = req.body.recDesc;
+                let categ = req.body.recCateg;
+                let time = req.body.recTime;
+                let serving = req.body.recServing;
+                let src = req.body.recSrc;
+                let vid = req.body.recVid;
+                let cal = req.body.recCal;
+                let pr = req.body.recProcess;
+                let mealTime = req.body.recMealtime;
+                let img = req.body.recImg;
+                let rate = req.body.recRate;
+                // console.log(rec_id);
+                conn.query('INSERT INTO saved(user_id, rec_id, rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_img, rec_rate) VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [userid, id, name, desc, pr, categ, time, serving, src, vid, cal, mealTime, img, rate], (err, row) => {
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        req.flash('msg', 'Recipe successfully saved!');
+                        res.redirect('/recipes/' + id);
+                    }
+                })
+                conn.release();
+                conn.query("")
+            })
+        }else{
+            req.flash('msg', 'You need to login to save the recipe!')
+            res.redirect('/login');
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userSavedRecipes = (req, res) =>{
+    try {
+        session = req.session;
+        function getRec(conn, name) {
+            conn.query('SELECT * FROM saved', (err, save) => {
+                if (err) {
+                    console.log(err);   
+                } else {
+                    res.render('saved', { title: 'Recipes', save: save, id: name});
+                }
+            })
+        }
+        if(session.userId){
+            pool.getConnection((err, conn)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        getRec(conn, session.userName);
+                    }})
+        }else{
+            req.flash('msg', 'You need to login to view saved recipes!')
+            res.redirect('/login');
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userSavedRView = (req, res) => {
+    try {
+        pool.getConnection((err, conn) => {
+            if(err){
+                console.log('error in user recipes...\n');
+            }
+            else{
+                let rId = req.params.id;
+                conn.query('SELECT * FROM saved WHERE rec_id = ?',[rId], (err, save) => {
+                    if(err){
+                        console.log('cannot fetch recipes in db...\n');
+                    }
+                    else{
+                        let regexQuant = /[+-]?\d+(\.\d+)?/g;
+                        let regexStr = /\b(\w+)\b/g;
+                        let finalStr = '';
+                        let quantArr = [];
+                        let recIngs = [];
+                        let ingStringArr = [];
+                        let ingStr = '';
+                        let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
+                        function getIngs(id){
+                            return new Promise((resolve, reject) => {
+                                conn.query(qStr, [id], (err, ings) => {
+                                    if(err){
+                                        console.log(err, '\n');
+                                    }
+                                    else{
+                                        ings.forEach(ing => {
+                                            let ingq = ing.ingQuant;
+                                            let ingu = ing.ingUnit;
+                                            let ingi = ing.ingIns;
+                                            if(!ing.ingQuant || ing.ingQuant == 0){
+                                                ingq = '';
+                                            }
+                                            if(!ing.ingUnit){
+                                                ingu = '';
+                                            }
+                                            if(!ing.ingIns){
+                                                ingi = '';
+                                            }
+                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
+                                            ingStringArr.push(temp);
+                                        });
+                                        ingStr = ingStringArr.join('/');
+                                        ingStringArr = []; 
+                                        resolve(ingStr);
+                                    }
+                                })
+                            })
+                        }
+                        async function getAllRecIng(r){
+                            for(id of r){
+                                ingStr = await getIngs(id.rec_id);
+                                let ingArr = ingStr.split('/');
+                                for (const i of ingArr) {
+                                    let quantNum = i.match(regexQuant);
+                                    let iStr = i.match(regexStr); 
+                                    if(Array.isArray(quantNum)){
+                                        //console.log(quantNum);
+                                        quantArr.push(quantNum[0]);
+                                    }else{
+                                        quantArr.push(quantNum);
+                                    }
+                                    for (let index = 0; index < iStr.length; index++) {
+                                        const element = iStr[index];
+                                        if (isNaN(element)) {
+                                            finalStr += ' ' + element;
+                                        }
+                                    }
+                                    recIngs.push(finalStr);
+                                    finalStr = '';
+                                }
+                            }
+                            conn.release();
+                            let msg = req.flash('msg');
+                            session = req.session;
+                            if(session.userId){
+                                res.render('userSavedRView', { save: save, recIngs: recIngs, quantArr: quantArr, msg, id: session.userName});
+                            }
+                            else{
+                                res.render('userSavedRView', { save: save, recIngs: recIngs, quantArr: quantArr, msg, id: ''});
+                            }
+                            
+                        }
+                        getAllRecIng(save);
+                    }
+                })
+
+            }
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userSavedDelete = (req, res) => {
+    try{
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn) => {
+                let id = req.params.id;
+                conn.query('DELETE FROM saved where rec_id =?', [id], (err, result) => {
+                    if(err){
+                        console.log('not deleted');
+                        res.redirect('/saved'); 
+                        conn.release();
+                    }
+                    else{
+                        conn.release();
+                        res.redirect('/saved'); 
+                    }
+                })
+            })
+        }
+    }
+    catch(error){
+        res.status(500).json({ message: error.message });
+
+    }
+}
+
 exports.userRecipes = (req, res) =>{
     try {
         function getRec(conn, name) {
