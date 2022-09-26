@@ -1046,8 +1046,16 @@ exports.userSaveRec = (req, res) =>{
                         console.log(err);
                     }
                     else{
-                        req.flash('msg', 'Recipe successfully saved!');
-                        res.redirect('/recipes/' + id);
+                        conn.query('INSERT IGNORE INTO saved_recing(rec_id, ingId, ingQuant, ingUnit, ingIns) SELECT recId, ingId, ingQuant, ingUnit, ingIns FROM recing WHERE recId = ?', [id], (err, row) => {
+                            if(err){
+                                console.log(err);
+                            } else{
+                                req.flash('msg', 'Recipe successfully saved!');
+                            res.redirect('/recipes/' + id); 
+                            }
+                        })
+
+                       
                     }
                 })
                 conn.release();
@@ -1113,7 +1121,7 @@ exports.userSavedRView = (req, res) => {
                         let recIngs = [];
                         let ingStringArr = [];
                         let ingStr = '';
-                        let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
+                        let qStr = 'SELECT saved_recing.*, ing_name FROM `saved_recing` INNER JOIN ing ON saved_recing.ingId=ing.ing_id WHERE saved_recing.rec_id = ?';
                         function getIngs(id){
                             return new Promise((resolve, reject) => {
                                 conn.query(qStr, [id], (err, ings) => {
@@ -1202,6 +1210,7 @@ exports.userSavedDelete = (req, res) => {
                         conn.release();
                     }
                     else{
+                        conn.query('DELETE FROM saved_recing WHERE rec_id =?', [id])
                         conn.release();
                         res.redirect('/saved'); 
                     }
