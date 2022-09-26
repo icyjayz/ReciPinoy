@@ -4,19 +4,147 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <title>Grocery List</title>
 </head>
 <body>
-       <!-- guest header -->
+       <!-- header -->
    <%- include('./partials/userNav'); %>
     <h1>Grocery List</h1>
-    <% for( let index = 0; index < list.length; index++ ) { %>
-        <% let l = list[index]; %> 
-        <input type="checkbox" name="gList" id="gList<%= index + 1 %>" value="<%= l %>">
-        <label for="cbLbl"><%= l %></label>
-    <% } %>
+    <div id="cont">
+        <form action="/grocery-list/add" method="post" id="gForm"> 
+            <input type="text" name="newItem" id="newItem">
+            <input type="hidden" name="itemVal" value="" id="itemVal">
+            <button type="button" id="gFormBtn">add item</button><br><br>
+        </form>
+        <% if (list.length === 0 || list[0] === '') { %> 
+            <h3>Your grocery list is empty!</h3>
+        <% } else { %>
+            <div id="list">
+                <h3>List</h3>
+            <% for( let index = 0; index < list.length; index++ ) { %>
+                <% let l = list[index]; %>
+                <% if (l != '') { %>
+                    <div class="item">
+                        <input type="text" name="item[]" value="<%= l %>" readonly><span class="delete" style="color: red;">delete</span><br><br>
+                    </div>
+                <% } %>
+            <% } %>
+            <button type="button" onclick="deleteAll()">Delete All</button>
+        <% } %>
+            </div>
+    </div>
 
-    
+
+
+<script type="text/javascript">
+    $('#gFormBtn').on('click', addItem);
+    let gArr = [];
+    let objArr = [];
+
+    $( document ).ready(function() {
+        // let divCount = $('.item').length;
+        let itemDiv = document.querySelectorAll('.item');
+        let count = 0;
+        jQuery('input[name="item[]"]').each(function() {
+            let val = this.value;
+            console.log(val);
+            if(val){
+                let str = checkStorage();
+                console.log('str: ' + str);
+                if(str.includes(val)){
+                    console.log(val);
+                }
+                else{
+                    let d = Date.now();
+                    itemDiv[count].setAttribute("data-id", d);
+                    addIngToListObj(val, d);
+                    count++;
+                    
+                }
+                
+            }
+        })  
+    });
+
+    function checkStorage() {
+        let values = [],
+            keys = Object.keys(localStorage),
+            i = keys.length;
+
+        while ( i-- ) {
+            values.push( localStorage.getItem(keys[i]) );
+        }
+
+        return values;
+    }
+
+    function addItem() {
+        gArr = [];
+        jQuery('input[name="item[]"]').each(function() {
+            let val = this.value;
+            if(val){
+                gArr.push(val);
+            }
+        })
+
+        let newItem = document.querySelector("#newItem").value;
+        if(newItem){
+            gArr.push(newItem);
+        }
+
+        $('#itemVal').val(JSON.stringify(gArr));
+        document.getElementById("gForm").submit();
+
+    }
+
+    function addToLocalStorage(arr){
+        window.localStorage.setItem("lists", JSON.stringify(arr));
+    }
+
+    function addIngToListObj(ing, d) {
+        const item = {
+            id : d,
+            title : ing,
+        };
+        objArr.push(item);
+        addToLocalStorage(objArr);
+    }
+
+    function deleteAll() {
+        $("#list").html('<h3>Your grocery list is empty!</h3>');
+        window.localStorage.removeItem("lists")
+
+        $('#itemVal').val(JSON.stringify(''));
+        document.getElementById("gForm").submit();
+    }
+
+    let div = document.querySelector('#list');
+    div.onclick = ((e) => {
+        if (e.target.classList.contains("delete")) {
+            e.target.parentElement.remove();
+            deleteFromLocalStorage(e.target.parentElement.getAttribute("data-id"));
+        }
+    })
+
+    function deleteFromLocalStorage(id) {
+        gArr = [];
+
+        objArr = objArr.filter((list) => list.id != id);
+        addToLocalStorage(objArr);
+
+        jQuery('input[name="item[]"]').each(function() {
+            let val = this.value;
+            if(val){
+                gArr.push(val);
+            }
+        })
+
+        $('#itemVal').val(JSON.stringify(gArr));
+        document.getElementById("gForm").submit();
+    }
+</script>
+
 <!-- custom js file link  -->
 <script src="/public/js/script.js"></script>
 </body>

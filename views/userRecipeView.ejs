@@ -100,10 +100,22 @@
                 <% } %>
                 </li>
                 <li>
-                    <form action="/grocery-list" method="post" onsubmit="addGrocery()">
-                        <input type="hidden" name="gList" id="gList" value="">
-                        <button type="submit">add ingredients to grocery list</button>
-                    </form>
+                    <button type="button" id="openModal">add to grocery list</button>
+                    <!-- The Modal -->
+                    <div id="glModal" class="modal">
+                        <!-- Modal content --> 
+                        <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <!-- <p>Some text in the Modal..</p> -->
+                        <form action="/grocery-list" method="post" onsubmit="addGrocery()">
+                            <input type="hidden" name="recId" value="<%= rec.rec_id %>">
+                            <input type="hidden" name="gList" id="gList" value="">
+                            <div id="ingList"></div>
+                            <br><br><button type="submit">add ingredients to grocery list</button>
+                        </form>
+                        </div>
+                    
+                    </div>
                 </li>
         </ul>
         </div>
@@ -179,9 +191,9 @@
         </form>
     <% }) %>
 
-    
     <script type="text/javascript">
         let qArr = [];
+        let ingsArr = [];
 
         document.addEventListener('DOMContentLoaded', function(){
             let stars = document.querySelectorAll('.star');
@@ -321,10 +333,10 @@
             
         }
         
-        function addGrocery() {
-            let ingsArr = [];
+        function getIngs() {
             let count = 0;
-            jQuery('input[name="uiInp[]"]').each(function() {
+            if(ingsArr.length === 0){
+                jQuery('input[name="uiInp[]"]').each(function() {
                 let ingstr = this.value;
                 if(ingstr){
                     let q = qArr[count];
@@ -344,12 +356,53 @@
                     }
                 }
                 count++;
+                });
+            }
+            
+
+            //$('#gList').val(JSON.stringify(ingsArr));
+        }
+
+        function addGrocery() {
+            let gListArr = [];
+            let cont = document.querySelector('#ingList');
+            let ingChecked = cont.querySelectorAll('input[name="ingsCb[]"]');
+            ingChecked.forEach(ic => {
+                if(ic.checked){
+                    gListArr.push(ic.value);
+                }
             });
 
-            //alert(ingsArr);
-            $('#gList').val(JSON.stringify(ingsArr));
+            $('#gList').val(JSON.stringify(gListArr));
         }
     
+        let modal = document.getElementById("glModal");
+        let btn = document.getElementById("openModal");
+        let span = document.getElementsByClassName("close")[0];
+
+        //open the modal
+        btn.onclick = function() {
+            getIngs();
+            ingsArr.forEach(ia => {
+                let input = '<input type="checkbox" name="ingsCb[]" value="'+ ia +'">&nbsp;&nbsp;&nbsp;<label for="ingCheckbox">'+ ia +'</label><br>';
+                $("#ingList").append(input);
+            });
+            modal.style.display = "block";
+        }
+
+        //close the modal
+        span.onclick = function() {
+            $("#ingList").empty();
+            modal.style.display = "none";
+        }
+
+        //close it
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            $("#ingList").empty();
+            modal.style.display = "none";
+        }
+        }
     </script>
 
     <!-- custom js file link  -->

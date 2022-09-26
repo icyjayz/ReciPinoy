@@ -7,6 +7,7 @@ const Recipe = require('../classes/recipe');
 
 
 
+
 let otp = Math.random();
 otp = otp * 1000000;
 otp = parseInt(otp);
@@ -1254,15 +1255,152 @@ exports.updateProfile = (req,res) => {
         res.status(500).json({ message: error.message});
     }
 }
-//test
 
+exports.groceryPage = (req, res) => {
+    try {
+        session = req.session;
+        if(session.userId){
+            function getGList() {
+                return new Promise((resolve, reject) => {
+                    pool.getConnection((err, conn) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT user_grocery FROM users WHERE user_id = ?', [session.userId], (err, rows) => {
+                                if (err) {
+                                    console.log(err);       
+                                } else {
+                                    let gListStr = rows[0].user_grocery;
+                                    resolve(gListStr);
+                                }
+                            })
+                        }
+                    })
+                })
+            }
+            async function renderPage() {
+                let gListArr = [];
+                let str = await getGList();
+                gListArr = str.split('/');
+
+                let msg = req.flash('msg');
+                res.render('grocery', {msg, id: session.userName, list: gListArr});
+            }
+
+            renderPage();
+        }
+        else{
+            req.flash('msg', 'you need to log in first!');
+            res.redirect('/login');
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
 exports.addGrocery = (req,res) => {
     try {
         session = req.session;
         if(session.userId){
+            let recId = req.body.recId;
             let gList = JSON.parse(req.body.gList);
-            let msg = req.flash('msg');
-            res.render('grocery', {title: 'Recipe Recommender', msg, id: session.userName, list: gList});
+            let gListStr = '';
+            if(Array.isArray(gList)){
+                gList.forEach(g => {
+                    gListStr += g + '/';
+                });
+            }
+            else{
+                gListStr = gList;
+            }
+            pool.getConnection((err, conn) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    conn.query('SELECT user_grocery FROM users WHERE user_id = ?', [session.userId], (err, row) =>{
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            let listStr = row[0].user_grocery;
+                            if(listStr){
+                                listStr += gListStr + '/';
+                                updateGList(listStr);
+                            }
+                            else{
+                                updateGList(gListStr);
+                            }
+                        }
+                    })
+                    function updateGList(str){
+                        conn.query('UPDATE `users` SET `user_grocery`= ? WHERE user_id = ?', [str, session.userId], (err, row) =>{
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                conn.release();
+                                req.flash('msg', 'ingredients added to your grocery list!');
+                                res.redirect('/recipes/' + recId);
+                            }
+                        })
+                    }
+                }
+            })
+        }
+        else{
+            req.flash('msg', 'you need to log in first!');
+            res.redirect('/login');
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+
+exports.addItem = (req, res) => {
+    try {
+        session = req.session;
+        if(session.userId){
+            console.log('here in addItem');
+            pool.getConnection((err, conn) => {
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    if(req.body.itemVal){
+                        let newListArr = JSON.parse(req.body.itemVal);
+                        console.log(newListArr);
+                        let newListStr = '';
+                        if(Array.isArray(newListArr)){
+                            newListArr.forEach(i => {
+                                newListStr += i + '/';
+                            });
+                        }
+                        else{
+                            newListStr = newListArr;
+                        }
+
+                        conn.query('UPDATE `users` SET `user_grocery`= ? WHERE user_id = ?', [newListStr, session.userId], (err, row) =>{
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                conn.release();
+                                res.redirect('/grocery-list');
+                            }
+                        })
+
+                    }
+                    else{
+                        conn.query('UPDATE `users` SET `user_grocery`= ? WHERE user_id = ?', [null, session.userId], (err, row) =>{
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                conn.release();
+                                res.redirect('/grocery-list');
+                            }
+                        })
+                    }
+
+
+                }
+
+            })
         }
         else{
             req.flash('msg', 'you need to log in first!');
