@@ -510,15 +510,31 @@ exports.userRecipeView = (req, res) => {
                                     finalStr = '';
                                 }
                             }
-                            //console.log(quantArr);
-                            conn.release();
                             let msg = req.flash('msg');
                             session = req.session;
+                            let isRated = false;
+                            // let ratedArr = [];
                             if(session.userId){
-                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName});
+                                conn.query('SELECT user_ratedRecs FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        let getRated = rated[0].user_ratedRecs;
+                                        if(getRated){
+                                            let ratedArr = getRated.split('/');
+                                            if(ratedArr.includes(rId)){
+                                                isRated = true;
+                                            }
+                                        }
+                                        res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated});
+                                    }
+                                })
+                                
+
                             }
                             else{
-                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: ''});
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated});
                             }
                             
                         }
@@ -997,19 +1013,48 @@ exports.userRateRec = (req, res) =>{
         session = req.session;
         if(session.userId){
             pool.getConnection((err, conn)=>{
-                let rate = req.body.recRating;
-                // console.log(rate);
-                let id = req.params.id;
-                // console.log(id);
-                conn.query('UPDATE rec SET rec_rate = ? WHERE rec_id = ?', [rate, id], (err, row) => {
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
-                        req.flash('msg', 'Recipe successfully rated!');
-                        res.redirect('/recipes/' + id);
-                    }
-                })
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    let id = req.params.id;
+                    conn.query('SELECT user_ratedRecs FROM users WHERE user_id = ?', [session.userId], (err, rated) =>{
+                        if (err) {
+                            console.log(err);   
+                        } else {
+                            let getRated = rated[0].user_ratedRecs;
+                            if(getRated === null){
+                                getRated = '';
+                            }
+                            getRated += id.toString() + '/';
+
+                            conn.query('UPDATE users SET user_ratedRecs = ? WHERE user_id = ?', [getRated, session.userId], (err, row) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let rate = req.body.recRating;
+                                    let recCount = req.body.ratingCount
+                                    if(recCount === null){
+                                        recCount = 0;
+                                    }
+                                    recCount += 1;
+                                    conn.query('UPDATE rec SET rec_rate = ?, rec_rateCount = ? WHERE rec_id = ?', [rate, recCount, id], (err, row) => {
+                                        if(err){
+                                            console.log(err);
+                                        }
+                                        else{
+                                            req.flash('msg', 'Recipe successfully rated!');
+                                            res.redirect('/recipes/' + id);
+                                        }
+                                    })
+                                }
+                            })
+
+                        }
+                    })
+                    
+                }
             })
         }else{
             req.flash('msg', 'You need to login to rate the recipe!')

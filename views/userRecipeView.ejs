@@ -194,18 +194,25 @@
 </div>
 </section>
 
-        <form action="/recipes/<%= rec.rec_id%>" method="post">
-            <br><h3>Rate the recipe!</h3><br>
-        <div class="stars" data-rating="0">
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-        </div>
+    <form action="/recipes/rate/<%= rec.rec_id%>" method="post">
+        <br><h3>Rate the recipe!</h3><br>
+    <div class="stars" data-rating="0">
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+    </div>
+    <% if (isRated) { %>
+        <h5>You've rated this recipe already!</h5>
+        <br><br><button type="submit" disabled>Submit Rating!</button>
+    <% } else { %>
+        <input type="hidden" name="ratingCount" value="<%= rec.rec_rateCount %>">
         <input type="hidden" name="recRating" id="recRating" value="<%= rec.rec_rate %>">
         <br><br><button type="submit">Submit Rating!</button>
-        </form>
+    <% } %> 
+
+    </form>
     <% }) %>
 
     <script type="text/javascript">
