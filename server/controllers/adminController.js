@@ -854,3 +854,145 @@ exports.adminUsers = (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+exports.getFilter = (req,res) => {
+    try{
+        let dishType = req.body.recDishInp;
+        let categoryRec = req.body.recCateg;
+        let mealTime = req.body.recTimeInp;
+        let calorie = req.body.recCal;
+        console.log('filtering..');
+        console.log(mealTime);
+        pool.getConnection((err,conn) =>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                if (mealTime == 30){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (0,15, 16, 17, 18 ,19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)  ORDER BY rec_time ASC LIMIT 35;', [mealTime],(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.adminId){
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime == 31){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (40, 45,47,48,49,50,55,56,57,58,59, "1 hr%")  ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.adminId){
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime =="1 hr and 30 minutes"){
+                    conn.query('SELECT * FROM rec WHERE rec_time LIKE "%1 h%" ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.adminId){
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }else{
+                    conn.query('SELECT * FROM rec WHERE rec_mealTime LIKE ? OR rec_categ LIKE ? OR rec_time LIKE ?', ['%' +req.body.recDishInp + '%', req.body.recCateg, '%' +req.body.recTimeInp + '%'], (err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(dishType);
+                            console.log(categoryRec);
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.adminId){
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: session.admin});
+                            }
+                            else{
+                                conn.release();
+                                res.render('adminSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    })
+                }
+                
+                //diko pa to maayos T^T
+                /*if (mealTime == 30){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (0,15, 16, 17, 18 ,19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)  ORDER BY rec_time ASC LIMIT 35;', [mealTime],(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime == 31){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (40, 45,47,48,49,50,55,56,57,58,59, "1 hr%")  ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime =="1 hr and 30 minutes"){
+                    conn.query('SELECT * FROM rec WHERE rec_time LIKE "%1 h%" ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }*/
+            }
+        })
+    }catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+};

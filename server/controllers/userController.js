@@ -1197,8 +1197,8 @@ exports.userSavedRView = (req, res) => {
                                 })
                             })
                         }
-                        async function getAllRecIng(r){
-                            for(id of r){
+                        async function getAllRecIng(save){
+                            for(id of save){
                                 ingStr = await getIngs(id.rec_id);
                                 let ingArr = ingStr.split('/');
                                 for (const i of ingArr) {
@@ -1239,6 +1239,161 @@ exports.userSavedRView = (req, res) => {
         })
     } catch (error) {
         res.status(500).json({ message: error.message});
+    }
+}
+
+exports.userSavedEdit = (req, res) => {
+    try {
+        let rId = req.params.id;
+        pool.getConnection((err, conn) => {
+            if(err){
+                console.log(err, '\n');
+                conn.release();   
+            }
+            else{
+                conn.query('SELECT * FROM saved WHERE rec_id = ?', [rId], (err, row) =>{
+                    if(err){
+                        console.log(err, '\n');
+                        conn.release();  
+                    }
+                    else{
+                        //console.log(row);
+                        conn.query('SELECT saved_recing.*, ing_name FROM `saved_recing` INNER JOIN ing ON saved_recing.ingId=ing.ing_id WHERE rec_id = ?',[rId], (err, ingRow) =>{
+                            if(err){
+                                console.log(err, '\n');
+                                conn.release();  
+                            }
+                            else{
+                                res.render('userSavedEdit', {title: 'Edit Recipe', save: row, ing: ingRow});
+                                conn.release();  
+                            }
+                        }) 
+                    }  
+                })
+            }
+        })
+        }
+     catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+exports.userSavedSubEdit = (req,res) => { 
+    try {
+        session = req.session;
+        pool.getConnection((err, conn)=>{
+            if(err){
+                console.log(err, '\n');
+            }
+            else{
+                let rId = req.params.id;
+                let rec = new Recipe.Recipe();
+                rec.name = req.body.recNameInp;
+                rec.desc = req.body.recDescInp;
+                rec.prc = req.body.recPrcInp;
+                rec.categ = req.body.recCateg;
+                rec.time = req.body.recTimeInp;
+                rec.srv = req.body.recSrvInp;
+                rec.src = req.body.recSrcInp;
+                rec.vid = req.body.recVidInp;
+                rec.cal = req.body.recCalInp;
+                rec.mTime = req.body.recMTimeInp;
+                let mString = '';
+                if(Array.isArray(rec.getRecMTime())){
+                    rec.getRecMTime().forEach(time => {
+                        mString += time + ', ';
+                    });
+                }else{
+                    mString = rec.getRecMTime();
+                }
+                conn.query('UPDATE `saved` SET `rec_name`= ?,`rec_desc`= ?,`rec_process`= ?,`rec_categ`= ?,`rec_time`= ? ,`rec_serving`= ?,`rec_src`= ?,`rec_vid`= ?,`rec_cal`= ?,`rec_mealTime`= ? WHERE rec_id = ?', [rec.getRecName(), rec.getRecDesc(), rec.getRecPrc(), rec.getRecCateg(), rec.getRecTime(), rec.getRecSrv(), rec.getRecSrc(), rec.getRecVid(), rec.getRecCal(), mString, rId], (err, save) => {
+                    if(err){
+                        console.log(err, '\n');
+                    }
+                    else{
+                        conn.query('DELETE FROM saved_recing WHERE rec_id = ?', [rId], (err, row) =>{
+                            if(err){
+                                console.log(err, '\n');
+                            }
+                            else{ 
+
+                        let ing = new Recipe.Ing();
+                        let ingNum = req.body.ingNum;
+                        ing.quant = JSON.parse(req.body.qval);
+                        ing.name = JSON.parse(req.body.idval);
+                        ing.unit = JSON.parse(req.body.uval);
+                        ing.ins = JSON.parse(req.body.insval);
+
+                        function insertNewIng(ingName){
+                            return new Promise((resolve, reject) => {
+                                conn.query('INSERT INTO ing(ing_name) VALUES (?)', [ingName],(err, ins) =>{
+                                    if(err){
+                                        console.log(err, '\n');
+                                    } else{
+                                        let ii = ins.insertId;
+                                        resolve(ii);
+                                    }
+                                });
+                            })
+                        }
+                        async function insertRecIng(ingName, qf, ingUnit, ingIns){
+                            const ii = await insertNewIng(ingName);
+                            conn.query('INSERT INTO saved_recing(rec_id, ingId, ingQuant, ingUnit, ingIns) VALUES (?, ?, ?, ?, ?)', [rId, ii, qf, ingUnit, ingIns], (err, row) => {
+                                if(err){
+                                    console.log(err, '\n');
+                                    conn.release();
+                                }
+                                else{
+                                    console.log('new ing added + recing inserted...\n');
+                                }
+                            })
+                            
+                        }
+
+                        for(let z = 0; z < ingNum; z++){
+                            let ingQuant = ing.getIngQuant()[z];
+                            let ingUnit = ing.getIngUnit()[z];
+                            let ingName = ing.getIngName()[z];
+                            let ingIns = ing.getIngIns()[z];
+                            let qf; 
+                            if(parseFloat(ingQuant)){
+                                qf = parseFloat(ingQuant);
+                            }
+                            else{
+                                qf = 0;
+                            }
+
+                            conn.query('SELECT * FROM ing WHERE ing_name = ?', [ingName], (err, rows) =>{
+                                if(err){
+                                    console.log(err, '\n');
+                                }
+                                else if(rows[0]){
+                                    let ii = rows[0].ing_id;
+                                    conn.query('INSERT INTO saved_recing(rec_id, ingId, ingQuant, ingUnit, ingIns) VALUES (?, ?, ?, ?, ?)', [rId, ii, qf, ingUnit, ingIns], (err, row) => {
+                                        if(err){
+                                            console.log(err, '\n');
+                                            conn.release();
+                                        }
+                                        else{
+                                            console.log('recing added...\n');
+                                        }
+                                    })
+                                }
+                                else{
+                                    insertRecIng(ingName, qf, ingUnit, ingIns);
+                                }
+                            })
+                        }
+                        
+                        res.redirect('/saved');
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    } catch (error) {
+        res.json({ message: error.message });
     }
 }
 
@@ -1655,6 +1810,147 @@ exports.addItem = (req, res) => {
             res.redirect('/login');
         }
     } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+exports.getFilter = (req,res) => {
+    try{
+        let dishType = req.body.recDishInp;
+        let categoryRec = req.body.recCateg;
+        let mealTime = req.body.recTimeInp;
+        let calorie = req.body.recCal;
+        console.log('filtering..');
+        console.log(mealTime);
+        pool.getConnection((err,conn) =>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                if (mealTime == 30){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (0,15, 16, 17, 18 ,19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)  ORDER BY rec_time ASC LIMIT 35;', [mealTime],(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime == 31){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (40, 45,47,48,49,50,55,56,57,58,59, "1 hr%")  ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime =="1 hr and 30 minutes"){
+                    conn.query('SELECT * FROM rec WHERE rec_time LIKE "%1 h%" ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }else{
+                    conn.query('SELECT * FROM rec WHERE rec_mealTime LIKE ? OR rec_categ LIKE ? OR rec_time LIKE ?', ['%' +req.body.recDishInp + '%', req.body.recCateg, '%' +req.body.recTimeInp + '%'], (err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(dishType);
+                            console.log(categoryRec);
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    })
+                }
+                
+                //diko pa to maayos T^T
+                /*if (mealTime == 30){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (0,15, 16, 17, 18 ,19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)  ORDER BY rec_time ASC LIMIT 35;', [mealTime],(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime == 31){
+                    conn.query('SELECT * FROM rec WHERE rec_time IN (40, 45,47,48,49,50,55,56,57,58,59, "1 hr%")  ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }
+                else if(mealTime =="1 hr and 30 minutes"){
+                    conn.query('SELECT * FROM rec WHERE rec_time LIKE "%1 h%" ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(mealTime);
+                            session = req.session;
+                            if(session.userId){
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            }
+                            else{
+                                conn.release();
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                        }}
+                    }) 
+                }*/
+            }
+        })
+    }catch (error) {
         res.status(500).json({ message: error.message});
     }
 }

@@ -19,6 +19,7 @@ router.post('/forgot-password', userController.userSendPwdEmail);
 router.get('/reset-password', userController.userResetPwd);
 router.post('/reset-password', userController.userUpdatePwd);
 router.post('/search', userController.userSearch);
+router.post('/search/filter', userController.getFilter);
 router.get('/recipes/:id', userController.userRecipeView);
 router.post('/recipes/:id', userController.userSaveRec);
 router.post('/recipes/rate/:id', userController.userRateRec);
@@ -34,6 +35,7 @@ router.get('/grocery-list', userController.groceryPage);
 router.post('/grocery-list', userController.addGrocery);
 router.get('/saved', userController.userSavedRecipes);
 router.get('/saved/:id', userController.userSavedRView);
+router.post('/saved/edit/:id', userController.userSavedSubEdit);
 router.get('/saved/delete/:id', userController.userSavedDelete);
 
 
@@ -49,6 +51,7 @@ router.get('/admin/recipes/edit/:id', adminController.adminRecipeEdit);
 router.get('/admin/recipes/delete/:id', adminController.adminRecipeDelete);
 router.post('/admin/recipes/edit/:id', adminController.adminRecipeSubmitEdit);
 router.post('/admin/recipes/search', adminController.adminSearch);
+router.post('/admin/recipes/search/filter', adminController.getFilter);
 router.get('/admin/recipes/:id', adminController.adminRecipeView);
 router.get('/admin/users', adminController.adminUsers);
 router.post('/admin/recipes/create/ing', adminController.updateIng);

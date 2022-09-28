@@ -22,6 +22,46 @@
     
     <h1 class="heading">Search Results</h1>
 
+    <section>
+        <div class="getFilter">
+            <button id="btn">Reset</button>
+            <br><br>
+            <form action="/admin/recipes/search/filter" method="post">
+            <label for="recDish" class="addRecLabel">Dish Type:</label>
+                <input type="radio" id="recDishInp" name="recDishInp" value="Breakfast">
+                    <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                <input type="radio" id="recDishInp" name="recDishInp" value="Lunch">
+                    <label for="mtLunch" class="addRecLabel">Lunch</label>
+                <input type="radio" id="recDishInp" name="recDishInp" value="Meryenda">
+                    <label for="mtMeryenda" class="addRecLabel">Meryenda</label>
+                <input type="radio" id="recDishInp" name="recDishInp" value="Dinner">
+                    <label for="mtDinner" class="addRecLabel">Dinner</label>
+                    <br><br>
+            <label for="recCategory" class="addRecLabel">Category: </label>
+                <input type="radio" id="recCateg" name="recCateg" value="Luzon">
+                    <label for="recCLuzon" class="addRecLabel">Luzon</label>
+                <input type="radio" id="recCateg" name="recCateg" value="Visayan">
+                    <label for="recCVisayas" class="addRecLabel">Visayan</label>
+                <input type="radio" id="recCateg" name="recCateg" value="Mindanaoan">
+                    <label for="recCMindanao" class="addRecLabel">Mindanaoan</label>
+                <input type="radio" id="recCateg" name="recCateg" value="Popular">
+                    <label for="recCPopular" class="addRecLabel">Popular</label>
+                    <br><br>
+            <label for="recTime" class="addRecLabel">Cooking Time: </label>
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="30">
+                    <label for="t30" class="addRecLabel">30 minutes</label>
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="31">
+                    <label for="t1hr" class="addRecLabel">Between 30 minutes and 1 hour</label>
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 30 minutes">
+                    <label for="t130" class="addRecLabel">Between 1 hour and 1 hr 30 minutes</label>
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 31 minutes">
+                    <label for="t131" class="addRecLabel">More than 1 hour and 30 minutes </label>
+                    <br><br>
+                <input id = "bt" type="submit" value="Filter" class="save-btn">
+               </form> 
+        </div>
+    </section>
+
     <div class="box-container">
         <% if (recs.length > 0) { %>
             <%#recs.forEach(rec => { %>
