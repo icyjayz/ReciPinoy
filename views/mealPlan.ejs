@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+ 
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- custom js file link  -->
+    <script src="/public/js/script.js"></script>
+    <title>Recipes</title>
+</head>
+<body>
+   <!-- guest header -->
+   <%- include('./partials/userNav'); %>
+   <%#- include('./partials/guestNav'); %>
+
+    <form action="/mealPlan" method="get">
+        <!--<div id="sortResults">
+            <select name="recent" id="recent" onchange="this.form.submit()">
+                <option value="" disabled selected>sort to newest</option>
+                <option value="newest">newest</option>
+                <option value="oldest">oldest</option>
+            </select>-->
+        <table>
+            <tbody>
+                <% rec.forEach( rec => { %>
+                    <tr>
+                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150"></td>
+                        <td><a href="/mealPlan/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
+                        <td><% if (rec.rec_rating != 0) { %>
+                            <span>Rating: <%=rec.rec_rate  %> </span>
+                        <% } %></td>
+                        <td>
+                            <a href="/mealPlan/<%= rec.rec_id%>" class="recview-btn">View Recipe</a>
+                            <a href="/mealPlan/delete/<%= rec.rec_id %>" class="recdelete-btn">Delete</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+     </form>   
+     
+     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="/public/js/script.js"></script>
+</body>
+</html>

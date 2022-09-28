@@ -16,7 +16,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <% let i = 0; %> 
     <% let ingArr = []; %> 
     <% let srv = 0; %>
@@ -38,28 +42,10 @@
     <%- include('./partials/userNav'); %>
     
     <a class="back-btn" onclick="history.back()">>> Back</a>
-
-    <form action="/recipes/<%= rec.rec_id%>" method="post">
-        <input type="hidden" name="recID" id="recID" value="<%= rec.rec_id %>">
-        <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
-        <input type="hidden" name="recDesc" id="recDesc" value="<%= rec.rec_desc %>">
-        <input type="hidden" name="recProcess" id="recProcess" value="<%= rec.rec_process %>">
-        <input type="hidden" name="recCateg" id="recCateg" value="<%= rec.rec_categ %>">
-        <input type="hidden" name="recTime" id="recTime" value="<%= rec.rec_time %>">
-        <input type="hidden" name="recServing" id="recServing" value="<%= rec.rec_serving %>">
-        <input type="hidden" name="recSrc" id="recSrc" value="<%= rec.rec_src %>">
-        <input type="hidden" name="recVid" id="recVid" value="<%= rec.rec_vid %>">
-        <input type="hidden" name="recCal" id="recCal" value="<%= rec.rec_cal %>">
-        <input type="hidden" name="recMealtime" id="recMealtime" value="<%= rec.rec_mealTime %>">
-        <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
-        <input type="hidden" name="recRate" id="recRate" value="<%= rec.rec_rate %>">
-        <br><br><input type="submit" value="Add to Saved Recipes" class="save-btn">
-    </form>
-    <button type="button" id="add_data">Add to Meal Plan</button>
     
     <section>
     
-    <div class="userRecipeView">
+    <div class="mealPlanRecView">
         <div class="rec-view">
         <% if (rec.rec_image) { %>
             <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" class="img-rec">
@@ -136,14 +122,13 @@
                     </div>
                 </li>
                 <li>
-                    <button type="button" id="mealPlanBut">Add to Meal Plan</button>
+                    <button type="button" type ="hidden"id="mealPlanBut" disabled>Add to Meal Plan</button>
                     <div id="mealPlan" class="modal">
                         <div class="modal-content">
                         <span class="closeBut">&times;</span>
                         <div id="cont">
                             <form action="/mealPlan" method="post"> 
                                 <input type="text" name="datetimes"/>
-                                <input type="text" name="birthday" value="10/24/1984" />
                                 <label for="recMTime" class="addRecLabel">Meal Time: </label>
                                     <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
                                         <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
@@ -237,11 +222,43 @@
         <input type="hidden" name="recRating" id="recRating" value="<%= rec.rec_rate %>">
         <br><br><button type="submit">Submit Rating!</button>
     <% } %> 
-
     </form>
     <% }) %>
 
     <script type="text/javascript">
+        $(function() {
+         $('input[name="datetimes"]').daterangepicker({
+            singleDatePicker: true,
+            timePicker: true,
+            minYear: 2022,
+            startDate: moment().startOf('hour'),
+            locale: {
+            cancelLabel: 'Clear',
+            format: 'M/DD hh:mm A'
+            }
+        });
+        });
+        let mealModal = document.getElementById("mealPlan");
+        let button = document.getElementById("mealPlanBut");
+        let cls = document.getElementsByClassName("closeBut")[0];
+
+        //open the modal
+        button.onclick = function() {
+            mealModal.style.display = "block";
+        }
+
+        //close the modal
+        cls.onclick = function() {
+
+            modal.style.display = "none";
+        }
+
+        //close it
+        window.onclick = function(event) {
+        if (event.target == mealModal) {
+            mealModal.style.display = "none";
+        }
+        }
         let qArr = [];
         let ingsArr = [];
 
@@ -451,46 +468,6 @@
         if (event.target == modal) {
             $("#ingList").empty();
             modal.style.display = "none";
-        }
-        }
-
-        $(function() {
-         $('input[name="datetimes"]').daterangepicker({
-            singleDatePicker: true,
-            timePicker: true,
-            minYear: 2022,
-            startDate: moment().startOf('hour'),
-            locale: {
-            cancelLabel: 'Clear',
-            format: 'M/DD hh:mm A'
-            },
-            onClose: function(datetimes, inst) {
-            $('#year').val(datetimes.split('/')[2]);
-            $('#month').val(datetimes.split('/')[0]);
-            $('#day').val(datetimes.split('/')[1]);
-            console.log(year, month,day);
-        }
-        });
-        });
-    let mealModal = document.getElementById("mealPlan");
-        let button = document.getElementById("mealPlanBut");
-        let cls = document.getElementsByClassName("closeBut")[0];
-
-        //open the modal
-        button.onclick = function() {
-            mealModal.style.display = "block";
-        }
-
-        //close the modal
-        cls.onclick = function() {
-
-            modal.style.display = "none";
-        }
-
-        //close it
-        window.onclick = function(event) {
-        if (event.target == mealModal) {
-            mealModal.style.display = "none";
         }
         }
     </script>
