@@ -8,7 +8,8 @@ exports.adminPage = (req, res) => {
     try{
         session = req.session;
         if(session.adminId){
-            res.render('adminHome', { title: 'Admin HomePage', id: session.adminName});
+            // res.render('adminHome', { title: 'Admin HomePage', id: session.adminName});
+            res.redirect('/admin/home');
         }
         else{
             console.log('admin not logged in...\n');
