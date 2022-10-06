@@ -33,6 +33,7 @@ router.get('/profile', userController.profilePage);
 router.post('/profile', userController.updateProfile);
 router.get('/grocery-list', userController.groceryPage);
 router.post('/grocery-list', userController.addGrocery);
+router.post('/grocery-list/add', userController.addItem);
 router.get('/saved', userController.userSavedRecipes);
 router.get('/saved/:id', userController.userSavedRView);
 router.post('/saved/edit/:id', userController.userSavedSubEdit);
