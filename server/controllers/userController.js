@@ -1959,35 +1959,79 @@ exports.mealPlan = (req, res) =>{
     try {
         session = req.session;
         if(session.userId){
+            
             pool.getConnection((err, conn)=>{
-                let rec = new Recipe.Recipe();
-                    let userid = req.session.userId;
+                if(err){
+                    console.log(err);
+                }
+                else{
                     let id = req.body.recID;
-                    let dateTime = req.body.datetimes;
-                    rec.mTime = req.body.recMTimeInp;
-                    let mString = '';
-                // console.log(rec_id);
-                if(Array.isArray(rec.getRecMTime())){
-                    rec.getRecMTime().forEach(time => {
-                        mString += time + ', ';
-                    });
-                }else{
-                    mString = rec.getRecMTime();}
+                    conn.query('SELECT user_mealPlan FROM users WHERE user_id = ?', [session.userId], (err, mealPlan) =>{
+                        if (err) {
+                            console.log(err);   
+                        } else {
+                            let getmeal = mealPlan[0].user_mealPlan;
+                            if(getmeal === null){
+                                getmeal = '';
+                            }
+                            getmeal += id + '/';
 
-                let month= dateTime.split('/')[0];
-                let day = dateTime.split('/')[1];
-                let time = dateTime.split('')[2];
-                console.log(month, day, time);
-                conn.query('INSERT INTO mealPlan(user_id, rec_id, month, day, time, rec_mealTime, dateTime) VALUE(?,?,?,?,?,?,?)', [req.session.userId, id, month, day, time, mString, dateTime], (err, row) => {
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
-                        req.flash('msg', 'Recipe successfully saved to meal plan!');
-                        res.redirect('/recipes/' + id); 
-                    }
-                })
-                conn.release();
+                            conn.query('UPDATE users SET user_mealPlan = ? WHERE user_id = ?', [getmeal, session.userId], (err, row) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let rec = new Recipe.Recipe();
+                                    let userid = req.session.userId;
+                                    let id = req.body.recID;
+                                    let name = req.body.recName;
+                                    let img = req.body.recImg;
+                                    let dateTime = req.body.datetimes;
+                                    rec.mTime = req.body.recMTimeInp;
+                                    let mString = '';
+                                    // console.log(rec_id);
+                                    if(Array.isArray(rec.getRecMTime())){
+                                        rec.getRecMTime().forEach(time => {
+                                            mString += time + ', ';
+                                        });
+                                    }else{
+                                    mString = rec.getRecMTime();}
+
+                                    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                                    let date = new Date(dateTime);
+                                    let month = months[date.getMonth()];
+                                    let day = date.getDate();
+                                    let sDay = days[date.getDay()];
+                                    let hr = date.getHours();
+                                    let ampm = "am";
+                                    if( hr > 12 ) {
+                                        hr -= 12;
+                                        ampm = "pm";
+                                    }
+                                    let min = date.getMinutes();
+                                    if (min < 10) {
+                                        min = "0" + min;
+                                    }
+                                    let time = hr + ":" + min + ampm;
+                                    console.log(month, day, sDay, time, date, week);
+                                    conn.query('INSERT INTO mealPlan(user_id, rec_id, rec_name, rec_img, month, day, time, sDay, rec_mealTime, dateTime) VALUE(?,?,?,?,?,?,?,?,?,?)', [req.session.userId, id, name, img, month, day, time, sDay, mString, dateTime], (err, row) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        req.flash('msg', 'Recipe successfully saved to meal plan!');
+                                        res.redirect('/recipes/' + id); 
+                                    }
+                                    })
+                                    conn.release();
+                                }
+                            })
+
+                        }
+                    })
+                    
+                }
             })
         }else{
             req.flash('msg', 'You need to login to add the recipe to meal plan!')
@@ -2003,11 +2047,12 @@ exports.mealPlanRec = (req, res) =>{
     try {
         session = req.session;
         function getRec(conn, name) {
-            conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC', (err, mealPlan) => {
+            //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC'
+            conn.query('SELECT * FROM mealPlan GROUP BY month ORDER BY dateTime DESC ', (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
                 } else {
-                    res.render('mealPlan', { title: 'Recipes', rec: mealPlan, id: name});
+                    res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: name});
                 }
             })
         }

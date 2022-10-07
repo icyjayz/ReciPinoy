@@ -13,7 +13,7 @@
 
     <!-- custom js file link  -->
     <script src="/public/js/script.js"></script>
-    <title>Recipes</title>
+    <title><%= title %></title>
 </head>
 <body>
    <!-- guest header -->
@@ -29,16 +29,16 @@
             </select>-->
         <table>
             <tbody>
-                <% rec.forEach( rec => { %>
+                <% mealPlan.forEach( mealPlan => { %>
                     <tr>
-                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150"></td>
-                        <td><a href="/mealPlan/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
-                        <td><% if (rec.rec_rating != 0) { %>
-                            <span>Rating: <%=rec.rec_rate  %> </span>
-                        <% } %></td>
+                        <div>
+                            <td><%= mealPlan.sDay %> </td>
+                        </div>
+                        <td><img src="/images/<%= mealPlan.rec_img%>" alt="<%= mealPlan.rec_name %> Image" height="150"></td>
+                        <td><a href="/mealPlan/<%= mealPlan.rec_id%>"><%= mealPlan.rec_name %></a></td>
                         <td>
-                            <a href="/mealPlan/<%= rec.rec_id%>" class="recview-btn">View Recipe</a>
-                            <a href="/mealPlan/delete/<%= rec.rec_id %>" class="recdelete-btn">Delete</a>
+                            <a href="/mealPlan/<%= mealPlan.rec_id%>" class="recview-btn">View Recipe</a>
+                            <a href="/mealPlan/delete/<%= mealPlan.rec_id %>" class="recdelete-btn">Delete</a>
                         </td>
                     </tr>
                 <% }) %>
