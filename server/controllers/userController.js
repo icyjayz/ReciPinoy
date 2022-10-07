@@ -2003,7 +2003,7 @@ exports.mealPlanRec = (req, res) =>{
     try {
         session = req.session;
         function getRec(conn, name) {
-            conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC GROUP BY month', (err, mealPlan) => {
+            conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC', (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
                 } else {
