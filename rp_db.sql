@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2022 at 11:53 PM
+-- Generation Time: Oct 09, 2022 at 05:32 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -404,9 +404,12 @@ CREATE TABLE `mealplan` (
   `mealPlan_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `rec_id` int(11) NOT NULL,
-  `month` int(12) NOT NULL,
+  `rec_name` varchar(50) NOT NULL,
+  `rec_img` varchar(50) NOT NULL,
+  `month` varchar(12) NOT NULL,
   `day` int(31) NOT NULL,
   `time` varchar(20) DEFAULT NULL,
+  `sDay` varchar(50) NOT NULL,
   `rec_mealTime` varchar(50) NOT NULL,
   `dateTime` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -415,11 +418,8 @@ CREATE TABLE `mealplan` (
 -- Dumping data for table `mealplan`
 --
 
-INSERT INTO `mealplan` (`mealPlan_id`, `user_id`, `rec_id`, `month`, `day`, `time`, `rec_mealTime`, `dateTime`) VALUES
-(1, 5, 1, 9, 30, '3', 'Breakfast', '9/30 05:00 AM'),
-(2, 5, 9, 10, 1, '/', 'Breakfast', '10/01 05:00 PM'),
-(3, 5, 3, 9, 29, '2', 'Lunch', '9/29 02:00 PM'),
-(4, 5, 8, 10, 1, '/', 'Breakfast', '10/01 01:00 AM');
+INSERT INTO `mealplan` (`mealPlan_id`, `user_id`, `rec_id`, `rec_name`, `rec_img`, `month`, `day`, `time`, `sDay`, `rec_mealTime`, `dateTime`) VALUES
+(14, 5, 8, 'Bicol Express', 'bicol_express.jpg', 'Oct', 15, '4:00am', 'Saturday', 'Breakfast', '10/15/2022 04:00 AM');
 
 -- --------------------------------------------------------
 
@@ -1842,25 +1842,26 @@ CREATE TABLE `users` (
   `user_allergy` varchar(500) DEFAULT NULL,
   `user_restrict` varchar(500) DEFAULT NULL,
   `user_grocery` varchar(10000) DEFAULT NULL,
-  `user_ratedRecs` varchar(500) DEFAULT NULL
+  `user_ratedRecs` varchar(500) DEFAULT NULL,
+  `user_mealPlan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_email`, `user_password`, `user_token`, `user_allergy`, `user_restrict`, `user_grocery`, `user_ratedRecs`) VALUES
-(1, 'Junkyu', 'junkyu@email.com', '$2b$10$6cQDSGfj.RbpdPLjKhYEfOKDwjzpH9dNldjGbdhO4IaRcq3PflN7S', NULL, NULL, NULL, '', NULL),
-(2, 'Hyunsuk', 'hyunsuk@email.com', '$2b$10$Frr5a1gA6W97g2o4mPhYqulRC2S/QkokiJv7sUwJqdiotyNvnE5U6', NULL, 'shellfish', 'lactose intolerance', '0.11 kg pork face/28 g pork brain/banana/', '1/2/3/'),
-(3, 'Haruto', 'haruto@email.com', '$2b$10$bl/3C8eyIiEEiZVSagPQQOMBkAbmPQ6CDOroIj0y9AFiO9ZW5Xg6.', NULL, NULL, NULL, '', '2/1/'),
-(5, 'Jayziol', 'jayziol@email.com', '$2b$10$Skif0FMup80y0BZtEgKl.uh/mcLY.RvqgiCIJ4LZwh4/AuS9Cusdy', NULL, NULL, NULL, 'oil/8 snow peas/8 pcs large shrimps/113.4 g fish ball/170.1 g hamonado longganisa/1 onion/113.4 g pork butt/113.4 g chicken breast/1 carrot/0.5 bunch kinchay/1 head napa cabbage/940 g chicken broth/2 tbsp oyster sauce/2 tbsp soy sauce/2 pack pancit canton/', NULL),
-(6, 'Asahi', 'asahi@email.com', '$2b$10$GoB.2x12SSY1/2P0n1FOEueTjARWLymsY49IASOuLRqVXG.3/Od7a', NULL, NULL, NULL, '', NULL),
-(7, 'Trulufridae', 'bruxebesuze-4055@yopmail.com', '$2b$10$R41s4WztVHXdffzbQ4Ih5u3syw3a3uLuTltx2t35STZFRkM6X53zG', NULL, NULL, NULL, '', NULL),
-(8, 'plapla', 'yappaucaweve-9348@yopmail.com', '$2b$10$NcpC4d417xp8e/bxqeTJ/.NbPpvLxujRQHuFjcs4cxrNQkJNamGkq', NULL, NULL, NULL, '', NULL),
-(9, 'ledu', 'ledujeunaye-8272@yopmail.com', '$2b$10$zQbOL7rUU.FRMl2U5T0AL.Z.4seBJxb2B0AtDR5wv4I1ZAx8Z5b.K', NULL, NULL, NULL, '', NULL),
-(10, 'tigire', 'tigirehawu-4087@yopmail.com', '$2b$10$CV/78MJG/2Kgts33y4MbmOwi/C.fOu4XEQcYz.mXzTpfCpNXj/DyO', NULL, NULL, NULL, '', NULL),
-(11, 'Greffellene', 'quogreffellene-9712@yopmail.com', '$2b$10$reJbbumF6S8ph91L/gpH6Ot14aOaDvo6U6GSUjqWZFDLm9Sk2m702', NULL, NULL, NULL, '', NULL),
-(13, 'Grog', 'grogrocrutteco-1189@yopmail.com', '$2b$10$SzMxO25D/WziH6rfJWzWxuqBWuvX7KSYT5kTgQyZlszYjPO4zxyXa', 'i9IIQqrTkLR8YeAPeQGy', NULL, NULL, '', NULL);
+INSERT INTO `users` (`user_id`, `user_name`, `user_email`, `user_password`, `user_token`, `user_allergy`, `user_restrict`, `user_grocery`, `user_ratedRecs`, `user_mealPlan`) VALUES
+(1, 'Junkyu', 'junkyu@email.com', '$2b$10$6cQDSGfj.RbpdPLjKhYEfOKDwjzpH9dNldjGbdhO4IaRcq3PflN7S', NULL, NULL, NULL, '', NULL, '0'),
+(2, 'Hyunsuk', 'hyunsuk@email.com', '$2b$10$Frr5a1gA6W97g2o4mPhYqulRC2S/QkokiJv7sUwJqdiotyNvnE5U6', NULL, 'shellfish', 'lactose intolerance', '0.11 kg pork face/28 g pork brain/banana/', '1/2/3/', '0'),
+(3, 'Haruto', 'haruto@email.com', '$2b$10$bl/3C8eyIiEEiZVSagPQQOMBkAbmPQ6CDOroIj0y9AFiO9ZW5Xg6.', NULL, NULL, NULL, '', '2/1/', '0'),
+(5, 'Jayziol', 'jayziol@email.com', '$2b$10$Skif0FMup80y0BZtEgKl.uh/mcLY.RvqgiCIJ4LZwh4/AuS9Cusdy', NULL, NULL, NULL, 'oil/8 snow peas/8 pcs large shrimps/113.4 g fish ball/170.1 g hamonado longganisa/1 onion/113.4 g pork butt/113.4 g chicken breast/1 carrot/0.5 bunch kinchay/1 head napa cabbage/940 g chicken broth/2 tbsp oyster sauce/2 tbsp soy sauce/2 pack pancit canton/', NULL, '08/3/3/'),
+(6, 'Asahi', 'asahi@email.com', '$2b$10$GoB.2x12SSY1/2P0n1FOEueTjARWLymsY49IASOuLRqVXG.3/Od7a', NULL, NULL, NULL, '', NULL, '0'),
+(7, 'Trulufridae', 'bruxebesuze-4055@yopmail.com', '$2b$10$R41s4WztVHXdffzbQ4Ih5u3syw3a3uLuTltx2t35STZFRkM6X53zG', NULL, NULL, NULL, '', NULL, '0'),
+(8, 'plapla', 'yappaucaweve-9348@yopmail.com', '$2b$10$NcpC4d417xp8e/bxqeTJ/.NbPpvLxujRQHuFjcs4cxrNQkJNamGkq', NULL, NULL, NULL, '', NULL, '0'),
+(9, 'ledu', 'ledujeunaye-8272@yopmail.com', '$2b$10$zQbOL7rUU.FRMl2U5T0AL.Z.4seBJxb2B0AtDR5wv4I1ZAx8Z5b.K', NULL, NULL, NULL, '', NULL, '0'),
+(10, 'tigire', 'tigirehawu-4087@yopmail.com', '$2b$10$CV/78MJG/2Kgts33y4MbmOwi/C.fOu4XEQcYz.mXzTpfCpNXj/DyO', NULL, NULL, NULL, '', NULL, '0'),
+(11, 'Greffellene', 'quogreffellene-9712@yopmail.com', '$2b$10$reJbbumF6S8ph91L/gpH6Ot14aOaDvo6U6GSUjqWZFDLm9Sk2m702', NULL, NULL, NULL, '', NULL, '0'),
+(13, 'Grog', 'grogrocrutteco-1189@yopmail.com', '$2b$10$SzMxO25D/WziH6rfJWzWxuqBWuvX7KSYT5kTgQyZlszYjPO4zxyXa', 'i9IIQqrTkLR8YeAPeQGy', NULL, NULL, '', NULL, '0');
 
 --
 -- Indexes for dumped tables
@@ -1916,7 +1917,7 @@ ALTER TABLE `ing`
 -- AUTO_INCREMENT for table `mealplan`
 --
 ALTER TABLE `mealplan`
-  MODIFY `mealPlan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `mealPlan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `rec`
