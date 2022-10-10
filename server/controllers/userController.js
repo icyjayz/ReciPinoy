@@ -1672,9 +1672,16 @@ exports.groceryPage = (req, res) => {
                             conn.query('SELECT user_grocery FROM users WHERE user_id = ?', [session.userId], (err, rows) => {
                                 if (err) {
                                     console.log(err);       
-                                } else {
+                                } 
+                                else {
                                     let gListStr = rows[0].user_grocery;
-                                    resolve(gListStr);
+                                    if(gListStr){
+                                        resolve(gListStr);
+                                    }
+                                    else{
+                                        resolve('');
+                                    }
+                                    
                                 }
                             })
                         }
