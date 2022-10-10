@@ -1956,10 +1956,19 @@ exports.getFilter = (req,res) => {
 }
 
 exports.mealPlan = (req, res) =>{
+    Date.prototype.getWeek = function() {
+        var date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        // Thursday in current week decides the year.
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        // January 4 is always in week 1.
+        var week1 = new Date(date.getFullYear(), 0, 4);
+        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+      };
     try {
         session = req.session;
         if(session.userId){
-            
             pool.getConnection((err, conn)=>{
                 if(err){
                     console.log(err);
@@ -2003,6 +2012,7 @@ exports.mealPlan = (req, res) =>{
                                     let month = months[date.getMonth()];
                                     let day = date.getDate();
                                     let sDay = days[date.getDay()];
+                                    let week = date.getWeek();
                                     let hr = date.getHours();
                                     let ampm = "am";
                                     if( hr > 12 ) {
@@ -2015,7 +2025,7 @@ exports.mealPlan = (req, res) =>{
                                     }
                                     let time = hr + ":" + min + ampm;
                                     console.log(month, day, sDay, time, date, week);
-                                    conn.query('INSERT INTO mealPlan(user_id, rec_id, rec_name, rec_img, month, day, time, sDay, rec_mealTime, dateTime) VALUE(?,?,?,?,?,?,?,?,?,?)', [req.session.userId, id, name, img, month, day, time, sDay, mString, dateTime], (err, row) => {
+                                    conn.query('INSERT INTO mealPlan(user_id, rec_id, rec_name, rec_img, month, day, time, sDay, weekCount, rec_mealTime, dateTime) VALUE(?,?,?,?,?,?,?,?,?,?,?)', [req.session.userId, id, name, img, month, day, time, sDay, week, mString, dateTime], (err, row) => {
                                     if(err){
                                         console.log(err);
                                     }
@@ -2077,112 +2087,129 @@ exports.mealPlanRec = (req, res) =>{
 exports.mealPlanRecView = (req, res) => {
     try {
         pool.getConnection((err, conn) => {
-        if(err){
-            console.log('error in user recipes...\n');
-        }
-        else{
-            let rId = req.params.id;
-            conn.query('SELECT * FROM rec WHERE rec_id = ?',[rId], (err, recs) => {
-                if(err){
-                    console.log('cannot fetch recipes in db...\n');
-                }
-                else{
-                    let regexQuant = /[+-]?\d+(\.\d+)?/g;
-                    let regexStr = /\b(\w+)\b/g;
-                    let finalStr = '';
-                    let quantArr = [];
-                    let recIngs = [];
-                    let ingStringArr = [];
-                    let ingI = [];
-                    let insArr = [];
-                    let ingIStr = '';
-                    let ingStr = '';
-                    let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
-                    function getIngs(id){
-                        return new Promise((resolve, reject) => {
-                            conn.query(qStr, [id], (err, ings) => {
-                                if(err){
-                                    console.log(err, '\n');
-                                }
-                                else{
-                                    ings.forEach(ing => {
-                                        let ingq = ing.ingQuant;
-                                        let ingu = ing.ingUnit;
-                                        let ingi = ing.ingIns;
-                                        
-                                        if(!ing.ingQuant){
-                                            ingq = 0;
-                                        }
-                                        if(!ing.ingUnit){
-                                            ingu = '';
-                                        }
-                                        if(!ing.ingIns){
-                                            ingi = '';
-                                        }
-                                        let temp = ingq + ' ' + ingu + ' ' + ing.ing_name;
-                                        let ii = ' '+ ingi;
-                                        ingStringArr.push(temp);
-                                        ingI.push(ii);
-                                    });
-                                    ingStr = ingStringArr.join('/');
-                                    ingIStr = ingI.join('/');
-                                    let strConcat = ingStr.concat('*', ingIStr);
-                                    ingStringArr = [];
-                                    ingI = []; 
-                                    resolve(strConcat);
-                                }
-                            })
-                        })
+            if(err){
+                console.log('error in user recipes...\n');
+            }
+            else{
+                let rId = req.params.id;
+                conn.query('SELECT * FROM rec WHERE rec_id = ?',[rId], (err, recs) => {
+                    if(err){
+                        console.log('cannot fetch recipes in db...\n');
                     }
-                    
-                    async function getAllRecIng(r){
-                        for(id of r){
-                            ingStr = await getIngs(id.rec_id);
-                            let strArr = ingStr.split('*');
-                            let qui = strArr[0]
-                            let ins = strArr[1];
-                            insArr = ins.split('/');
-                            let ingArr = qui.split('/');
-                            for (const i of ingArr) {
-                                let quantNum = i.match(regexQuant);
-                                let iStr = i.match(regexStr); 
-                                if(Array.isArray(quantNum)){
-                                    quantArr.push(quantNum[0]);
-                                }else{
-                                    quantArr.push(quantNum);
-                                }
-                                for (let index = 0; index < iStr.length; index++) {
-                                    const element = iStr[index];
-                                    if (isNaN(element)) {
-                                        finalStr += ' ' + element;
+                    else{
+                        let regexQuant = /[+-]?\d+(\.\d+)?/g;
+                        let regexStr = /\b(\w+)\b/g;
+                        let finalStr = '';
+                        let quantArr = [];
+                        let recIngs = [];
+                        let ingStringArr = [];
+                        let ingI = [];
+                        let insArr = [];
+                        let ingIStr = '';
+                        let ingStr = '';
+                        let qStr = 'SELECT recing.*, ing_name FROM `recing` INNER JOIN ing ON recing.ingId=ing.ing_id WHERE recing.recId = ?';
+                        function getIngs(id){
+                            return new Promise((resolve, reject) => {
+                                conn.query(qStr, [id], (err, ings) => {
+                                    if(err){
+                                        console.log(err, '\n');
                                     }
-                                }
-                                recIngs.push(finalStr);
-                                finalStr = '';
-                            }
-                        }
-                        //console.log(quantArr);
-                        conn.release();
-                        let msg = req.flash('msg');
-                        session = req.session;
-                        if(session.userId){
-                            res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName});
-                        }
-                        else{
-                            res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: ''});
+                                    else{
+                                        ings.forEach(ing => {
+                                            let ingq = ing.ingQuant;
+                                            let ingu = ing.ingUnit;
+                                            let ingi = ing.ingIns;
+                                            
+                                            if(!ing.ingQuant){
+                                                ingq = 0;
+                                            }
+                                            if(!ing.ingUnit){
+                                                ingu = '';
+                                            }
+                                            if(!ing.ingIns){
+                                                ingi = '';
+                                            }
+                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name;
+                                            let ii = ' '+ ingi;
+                                            ingStringArr.push(temp);
+                                            ingI.push(ii);
+                                        });
+                                        ingStr = ingStringArr.join('/');
+                                        ingIStr = ingI.join('/');
+                                        let strConcat = ingStr.concat('*', ingIStr);
+                                        ingStringArr = [];
+                                        ingI = []; 
+                                        resolve(strConcat);
+                                    }
+                                })
+                            })
                         }
                         
-                    }
-                    getAllRecIng(recs);
-                }
-            })
+                        async function getAllRecIng(r){
+                            for(id of r){
+                                ingStr = await getIngs(id.rec_id);
+                                let strArr = ingStr.split('*');
+                                let qui = strArr[0]
+                                let ins = strArr[1];
+                                insArr = ins.split('/');
+                                let ingArr = qui.split('/');
+                                for (const i of ingArr) {
+                                    let quantNum = i.match(regexQuant);
+                                    let iStr = i.match(regexStr); 
+                                    if(Array.isArray(quantNum)){
+                                        quantArr.push(quantNum[0]);
+                                    }else{
+                                        quantArr.push(quantNum);
+                                    }
+                                    for (let index = 0; index < iStr.length; index++) {
+                                        const element = iStr[index];
+                                        if (isNaN(element)) {
+                                            finalStr += ' ' + element;
+                                        }
+                                    }
+                                    recIngs.push(finalStr);
+                                    finalStr = '';
+                                }
+                            }
+                            let msg = req.flash('msg');
+                            session = req.session;
+                            let isRated = false;
+                            // let ratedArr = [];
+                            if(session.userId){
+                                conn.query('SELECT user_ratedRecs FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        let getRated = rated[0].user_ratedRecs;
+                                        if(getRated){
+                                            let ratedArr = getRated.split('/');
+                                            if(ratedArr.includes(rId)){
+                                                isRated = true;
+                                            }
+                                        }
+                                        res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated});
+                                    }
+                                })
+                                
 
-        }
-    })
-} catch (error) {
-    res.status(500).json({ message: error.message});
+                            }
+                            else{
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated});
+                            }
+                            
+                        }
+                        getAllRecIng(recs);
+                    }
+                })
+                         
+            }
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
 }
-}
+
 exports.mealPlanRecDelete = (req, res) => {
     try{
         session = req.session;
@@ -2204,6 +2231,50 @@ exports.mealPlanRecDelete = (req, res) => {
         }
     }
     catch(error){
+        res.status(500).json({ message: error.message });
+
+    }
+}
+
+exports.mealPlanViewSort = (req, res) => {
+    try{
+        function weekChecker(){
+            let dateNow = Date.now().getWeek();
+            conn.query('SELECT * FROM mealPlan WHERE weekCOUNT = ?', [dateNow], (err, mealPlan) => {
+                if (err){
+                    console.log(err);
+                } else {
+                    conn.release();
+                    res.render('mealPlan', { title: 'MealPlan' , mealPlan: mealPlan, id: name});
+                }
+            })
+        }
+        pool.getConnection((err, conn) => {
+            if (err) {
+                console.log(err);
+            } else{
+                let viewR = req.body.sortMp;
+                console.log(viewR);
+                session = req.session;
+                if (session.userId) {
+                    if(viewR == 'Current Week'){
+                        weekChecker(conn, session.userName);
+                    }
+                    else if(viewR == 'Past Week'){
+                        let pastdate = Date.now().getweek() - 1 ;
+                        conn.query('SELECT * FROM mealPlan WHERE weekCount = ?', [pastdate], (err, mealPlan) => {
+                            if (err){
+                                console.log(err);
+                            } else {
+                                conn.release();
+                                res.render('mealPlan', { title: 'MealPlan' , mealPlan: mealPlan, id: name});
+                            }
+                        })
+                    }
+                }
+        }
+    })
+    }catch(error){
         res.status(500).json({ message: error.message });
 
     }

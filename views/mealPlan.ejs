@@ -13,6 +13,9 @@
 
     <!-- custom js file link  -->
     <script src="/public/js/script.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title><%= title %></title>
 </head>
 <body>
@@ -21,19 +24,23 @@
    <%#- include('./partials/guestNav'); %>
 
     <form action="/mealPlan" method="get">
-        <!--<div id="sortResults">
-            <select name="recent" id="recent" onchange="this.form.submit()">
-                <option value="" disabled selected>sort to newest</option>
-                <option value="newest">newest</option>
-                <option value="oldest">oldest</option>
-            </select>-->
+        <div id="mealPlanView">
+            <div class="wrapper">
+                <div class="toggle_radio">
+                  <input type="radio" class="toggle_option" id="first_toggle" name="toggle_option" value ="Past Week">
+                  <input type="radio" checked class="toggle_option" id="second_toggle" name="toggle_option" value ="Current Week">
+                  <input type="radio" class="toggle_option" id="third_toggle" name="toggle_option" value ="Next Week">
+                  <label for="first_toggle"><p>Past Week</p></label>
+                  <label for="second_toggle"><p>Current Week</p></label>
+                  <label for="third_toggle"><p>Next Week</p></label>
+                  <div class="toggle_option_slider">
+                  </div>
+                </div>
+        </div>
         <table>
             <tbody>
                 <% mealPlan.forEach( mealPlan => { %>
                     <tr>
-                        <div>
-                            <td><%= mealPlan.sDay %> </td>
-                        </div>
                         <td><img src="/images/<%= mealPlan.rec_img%>" alt="<%= mealPlan.rec_name %> Image" height="150"></td>
                         <td><a href="/mealPlan/<%= mealPlan.rec_id%>"><%= mealPlan.rec_name %></a></td>
                         <td>
@@ -50,5 +57,10 @@
 
     <!-- custom js file link  -->
     <script src="/public/js/script.js"></script>
+     <script>
+        
+        let sortMp = toggle_option;
+        console.log(sortMp);
+     </script>
 </body>
 </html>

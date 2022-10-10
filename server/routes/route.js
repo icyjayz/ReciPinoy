@@ -39,6 +39,7 @@ router.get('/saved/:id', userController.userSavedRView);
 router.post('/saved/edit/:id', userController.userSavedSubEdit);
 router.get('/saved/delete/:id', userController.userSavedDelete);
 router.post('/mealPlan', userController.mealPlan);
+router.post('/mealPlan', userController.mealPlanViewSort);
 router.get('/mealPlan', userController.mealPlanRec);
 router.get('/mealPlan/:id', userController.mealPlanRecView);
 router.get('/mealPlan/delete/:id', userController.mealPlanRecDelete);
