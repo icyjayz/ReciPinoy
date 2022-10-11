@@ -24,40 +24,49 @@
 
     <section>
         <div class="getFilter">
-            <button id="btn">Reset</button>
+            <h1>Filter: </h1>
             <br><br>
             <form action="/admin/recipes/search/filter" method="post">
-            <label for="recDish" class="addRecLabel">Dish Type:</label>
-                <input type="radio" id="recDishInp" name="recDishInp" value="Breakfast">
+                <label for="recDish" class="addRecLabel">Dish Type:</label>
+                <input type="radio" id="recDishInp" name="recDishInp" value="Breakfast" onchange="this.form.submit()" >
                     <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
-                <input type="radio" id="recDishInp" name="recDishInp" value="Lunch">
+                <input type="radio" id="recDishInp" name="recDishInp" value="Lunch" onchange="this.form.submit()">
                     <label for="mtLunch" class="addRecLabel">Lunch</label>
-                <input type="radio" id="recDishInp" name="recDishInp" value="Meryenda">
+                <input type="radio" id="recDishInp" name="recDishInp" value="Meryenda" onchange="this.form.submit()">
                     <label for="mtMeryenda" class="addRecLabel">Meryenda</label>
-                <input type="radio" id="recDishInp" name="recDishInp" value="Dinner">
+                <input type="radio" id="recDishInp" name="recDishInp" value="Dinner" onchange="this.form.submit()">
                     <label for="mtDinner" class="addRecLabel">Dinner</label>
                     <br><br>
             <label for="recCategory" class="addRecLabel">Category: </label>
-                <input type="radio" id="recCateg" name="recCateg" value="Luzon">
+                <input type="radio" id="recCateg" name="recCateg" value="Luzon" onchange="this.form.submit()">
                     <label for="recCLuzon" class="addRecLabel">Luzon</label>
-                <input type="radio" id="recCateg" name="recCateg" value="Visayan">
+                <input type="radio" id="recCateg" name="recCateg" value="Visayan" onchange="this.form.submit()">
                     <label for="recCVisayas" class="addRecLabel">Visayan</label>
-                <input type="radio" id="recCateg" name="recCateg" value="Mindanaoan">
+                <input type="radio" id="recCateg" name="recCateg" value="Mindanaoan" onchange="this.form.submit()">
                     <label for="recCMindanao" class="addRecLabel">Mindanaoan</label>
-                <input type="radio" id="recCateg" name="recCateg" value="Popular">
+                <input type="radio" id="recCateg" name="recCateg" value="Popular" onchange="this.form.submit()">
                     <label for="recCPopular" class="addRecLabel">Popular</label>
                     <br><br>
             <label for="recTime" class="addRecLabel">Cooking Time: </label>
-                <input type="radio" id="recTimeInp" name="recTimeInp" value="30">
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="30" onchange="this.form.submit()">
                     <label for="t30" class="addRecLabel">30 minutes</label>
-                <input type="radio" id="recTimeInp" name="recTimeInp" value="31">
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="31" onchange="this.form.submit()">
                     <label for="t1hr" class="addRecLabel">Between 30 minutes and 1 hour</label>
-                <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 30 minutes">
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 30 minutes" onchange="this.form.submit()">
                     <label for="t130" class="addRecLabel">Between 1 hour and 1 hr 30 minutes</label>
-                <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 31 minutes">
+                <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 31 minutes" onchange="this.form.submit()">
                     <label for="t131" class="addRecLabel">More than 1 hour and 30 minutes </label>
                     <br><br>
-                <input id = "bt" type="submit" value="Filter" class="save-btn">
+            <label for="recTime" class="addRecLabel">Preferred Calorie: </label>
+                <input type="radio" id="recCal" name="recCal" value="400" onchange="this.form.submit()">
+                    <label for="C400" class="addRecLabel">Below 400 calories</label>
+                <input type="radio" id="recCal" name="recCal" value="800" onchange="this.form.submit()">
+                    <label for="C401" class="addRecLabel">401 - 800 calories</label>
+                <input type="radio" id="recCal" name="recCal" value="801" onchange="this.form.submit()">
+                    <label for="C801" class="addRecLabel">801- 1200</label>
+                <input type="radio" id="recCal" name="recCal" value="1201" onchange="this.form.submit()">
+                    <label for="C1201" class="addRecLabel">More than 1200 calories </label>
+                    <br><br>
                </form> 
         </div>
     </section>
