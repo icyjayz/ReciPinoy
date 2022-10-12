@@ -513,28 +513,46 @@ exports.userRecipeView = (req, res) => {
                             let msg = req.flash('msg');
                             session = req.session;
                             let isRated = false;
+                            let isSaved = false;
+                            let isMeal = false;
                             // let ratedArr = [];
                             if(session.userId){
-                                conn.query('SELECT user_ratedRecs FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                conn.query('SELECT user_ratedRecs, user_Saved, user_mealPlan FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
                                     if(err){
                                         console.log(err);
                                     }
                                     else{
                                         let getRated = rated[0].user_ratedRecs;
+                                        let getSaved = rated[0].user_Saved;
+                                        let getMeal = rated[0].user_mealPlan;
                                         if(getRated){
                                             let ratedArr = getRated.split('/');
                                             if(ratedArr.includes(rId)){
                                                 isRated = true;
                                             }
                                         }
-                                        res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated});
+                                        if(getSaved){
+                                            let savedArr = getSaved.split('/');
+                                            if(savedArr.includes(rId)){
+                                                isSaved= true;
+                                                console.log('isSaved');
+                                            }
+                                        }
+                                        if(getMeal){
+                                            let mealArr = getMeal.split('/');
+                                            if(mealArr.includes(rId)){
+                                                isMeal= true;
+                                                console.log('isMeal');
+                                            }
+                                        }
+                                        res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated, isSaved: isSaved, isMeal: isMeal});
                                     }
                                 })
                                 
 
                             }
                             else{
-                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated});
+                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated, isSaved: '', isMeal: ''});
                             }
                             
                         }
@@ -546,6 +564,55 @@ exports.userRecipeView = (req, res) => {
         })
     } catch (error) {
         res.status(500).json({ message: error.message});
+    }
+}
+
+exports.UnsavedButton = (req, res) =>{
+    try{
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn) => {
+                let id = req.params.id;
+                conn.query('DELETE FROM saved where rec_id =?', [id], (err, result) => {
+                    if(err){
+                        console.log('not deleted');
+                        res.redirect('/recipes/' + id); 
+                        conn.release();
+                    }
+                    else{
+                        conn.query('DELETE FROM saved_recing WHERE rec_id =?', [id]);
+                        conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, saved) => {
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                let getSaved = saved[0].user_Saved;
+                                if(getSaved){
+                                    let savedArr = getSaved.split('/');
+                                    if (savedArr.includes(id)) {
+                                        for(let i = 0; i < savedArr.length; i++){ 
+                                            if (savedArr[i] === id) { 
+                                                savedArr.splice(i, 1); 
+                                            }
+                                        }
+                                    }
+                                    conn.query('UPDATE users SET user_Saved = ?', [savedArr]);
+                                    console.log(id);
+                                    console.log('deleted');
+                                }
+                            }
+                        })
+                        conn.release();
+                        req.flash('msg', 'Recipe successfully unsaved!');
+                        res.redirect('/recipes/' + id); 
+                    }
+                })
+            })
+        }
+    }
+    catch(error){
+        res.status(500).json({ message: error.message });
+
     }
 }
 
@@ -1086,28 +1153,53 @@ exports.userSaveRec = (req, res) =>{
                 let img = req.body.recImg;
                 let rate = req.body.recRate;
                 // console.log(rec_id);
-                conn.query('INSERT INTO saved(user_id, rec_id, rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_img, rec_rate) VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [userid, id, name, desc, pr, categ, time, serving, src, vid, cal, mealTime, img, rate], (err, row) => {
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
-                        conn.query('INSERT IGNORE INTO saved_recing(rec_id, ingId, ingQuant, ingUnit, ingIns) SELECT recId, ingId, ingQuant, ingUnit, ingIns FROM recing WHERE recId = ?', [id], (err, row) => {
-                            if(err){
-                                console.log(err);
-                            } else{
-                                req.flash('msg', 'Recipe successfully saved!');
-                            res.redirect('/recipes/' + id); 
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, saved) =>{
+                        if (err) {
+                            console.log(err);   
+                        } else {
+                            let getSaved = saved[0].user_Saved;
+                            if(getSaved === null){
+                                getSaved = '';
                             }
-                        })
+                            getSaved += id.toString() + '/';
+
+                            conn.query('UPDATE users SET user_Saved = ? WHERE user_id = ?', [getSaved, session.userId], (err, row) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    // console.log(rec_id);
+                                    conn.query('INSERT INTO saved(user_id, rec_id, rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_img, rec_rate) VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [userid, id, name, desc, pr, categ, time, serving, src, vid, cal, mealTime, img, rate], (err, row) => {
+                                        if(err){
+                                            console.log(err);
+                                        }
+                                         else{
+                                            conn.query('INSERT IGNORE INTO saved_recing(rec_id, ingId, ingQuant, ingUnit, ingIns) SELECT recId, ingId, ingQuant, ingUnit, ingIns FROM recing WHERE recId = ?', [id], (err, row) => {
+                                                if(err){
+                                                    console.log(err);
+                                                } else{
+                                                    req.flash('msg', 'Recipe successfully saved!');
+                                                    res.redirect('/recipes/' + id); 
+                                                }
+                                            })
 
                        
-                    }
-                })
-                conn.release();
-                conn.query("")
+                                        }
+                                    })
+                                }
+                            })
+
+                        }
+                    })
+                    
+                }
             })
         }else{
-            req.flash('msg', 'You need to login to save the recipe!')
+            req.flash('msg', 'You need to login to rate the recipe!')
             res.redirect('/login');
         }
         
@@ -1410,7 +1502,8 @@ exports.userSavedDelete = (req, res) => {
                         conn.release();
                     }
                     else{
-                        conn.query('DELETE FROM saved_recing WHERE rec_id =?', [id])
+                        conn.query('DELETE FROM saved_recing WHERE rec_id =?', [id]);
+                        conn.query('DELETE user_Saved FROM user WHERE rec_id LIKE ?', [id]);
                         conn.release();
                         res.redirect('/saved'); 
                     }
@@ -2108,7 +2201,7 @@ exports.mealPlanRec = (req, res) =>{
         session = req.session;
         function getRec(conn, name) {
             //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC'
-            conn.query('SELECT * FROM mealPlan GROUP BY month ORDER BY dateTime DESC ', (err, mealPlan) => {
+            conn.query('SELECT * FROM mealPlan ORDER BY dateTime', (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
                 } else {
@@ -2238,14 +2331,14 @@ exports.mealPlanRecView = (req, res) => {
                                                 isRated = true;
                                             }
                                         }
-                                        res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated});
+                                        res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated});
                                     }
                                 })
                                 
 
                             }
                             else{
-                                res.render('userRecipeView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated});
+                                res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated});
                             }
                             
                         }
@@ -2287,45 +2380,148 @@ exports.mealPlanRecDelete = (req, res) => {
 }
 
 exports.mealPlanViewSort = (req, res) => {
+    Date.prototype.getWeek = function() {
+        var date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        // Thursday in current week decides the year.
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        // January 4 is always in week 1.
+        var week1 = new Date(date.getFullYear(), 0, 4);
+        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+      };
     try{
-        function weekChecker(){
-            let dateNow = Date.now().getWeek();
-            conn.query('SELECT * FROM mealPlan WHERE weekCOUNT = ?', [dateNow], (err, mealPlan) => {
-                if (err){
-                    console.log(err);
-                } else {
-                    conn.release();
-                    res.render('mealPlan', { title: 'MealPlan' , mealPlan: mealPlan, id: name});
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn) => {
+                let weekView = req.body.weekViewInp;
+                console.log(weekView);
+                if (weekView == 'Past Week'){
+                    let date = new Date();
+                    let dateC = date.getWeek()-1;
+                    console.log(dateC);
+                    conn.query('SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime', [dateC], (err, mealPlan) => {
+                        if(err){
+                            console.log(err);  
+                        }else{
+                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
+                        }
+                    })
+                }
+                else if (weekView == 'Current Week'){
+                    let date = new Date();
+                    let dateC = date.getWeek();
+                    console.log(dateC);
+                    conn.query('SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime', [dateC], (err, mealPlan) => {
+                        if(err){
+                            console.log(err);  
+                        }else{
+                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
+                        }
+                    })
+                } else if (weekView == 'Next Week'){
+                    let date = new Date();
+                    let dateC = date.getWeek() + 1;
+                    console.log(dateC);
+                    conn.query('SELECT * FROM mealPlan where weekCount = ? ORDER by dateTime', [dateC], (err, mealPlan) => {
+                        if(err){
+                            console.log(err);  
+                        }else{
+                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
+                        }
+                    })
                 }
             })
         }
-        pool.getConnection((err, conn) => {
-            if (err) {
-                console.log(err);
-            } else{
-                let viewR = req.body.sortMp;
-                console.log(viewR);
-                session = req.session;
-                if (session.userId) {
-                    if(viewR == 'Current Week'){
-                        weekChecker(conn, session.userName);
-                    }
-                    else if(viewR == 'Past Week'){
-                        let pastdate = Date.now().getweek() - 1 ;
-                        conn.query('SELECT * FROM mealPlan WHERE weekCount = ?', [pastdate], (err, mealPlan) => {
-                            if (err){
-                                console.log(err);
-                            } else {
-                                conn.release();
-                                res.render('mealPlan', { title: 'MealPlan' , mealPlan: mealPlan, id: name});
-                            }
-                        })
-                    }
-                }
-        }
-    })
+        
     }catch(error){
         res.status(500).json({ message: error.message });
 
+    }
+}
+exports.mealPlanEditButton = (req, res) => {
+    Date.prototype.getWeek = function() {
+        var date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        // Thursday in current week decides the year.
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        // January 4 is always in week 1.
+        var week1 = new Date(date.getFullYear(), 0, 4);
+        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+      };
+    try {
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    let id = req.body.recID;
+                            conn.query('SELECT * FROM mealPlan WHERE rec_id = ?', [id], (err, row) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let rec = new Recipe.Recipe();
+                                    let userid = req.session.userId;
+                                    let id = req.body.recID;
+                                    let name = req.body.recName;
+                                    let img = req.body.recImg;
+                                    let dateTime = req.body.datetimes;
+                                    rec.mTime = req.body.recMTimeInp;
+                                    let mString = '';
+                                    // console.log(rec_id);
+                                    if(Array.isArray(rec.getRecMTime())){
+                                        rec.getRecMTime().forEach(time => {
+                                            mString += time + ', ';
+                                        });
+                                    }else{
+                                    mString = rec.getRecMTime();}
+
+                                    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                                    let date = new Date(dateTime);
+                                    let month = months[date.getMonth()];
+                                    let day = date.getDate();
+                                    let sDay = days[date.getDay()];
+                                    let week = date.getWeek();
+                                    let hr = date.getHours();
+                                    let ampm = "am";
+                                    if( hr > 12 ) {
+                                        hr -= 12;
+                                        ampm = "pm";
+                                    }
+                                    let min = date.getMinutes();
+                                    if (min < 10) {
+                                        min = "0" + min;
+                                    }
+                                    let time = hr + ":" + min + ampm;
+                                    console.log(month, day, sDay, time, date, week);
+                                    conn.query('UPDATE mealPlan SET user_id = ?, rec_id = ?, rec_name = ?, rec_img = ?, month = ?, day = ?, time = ?, sDay = ?, weekCount = ?, rec_mealTime = ?, dateTime = ?', [req.session.userId, id, name, img, month, day, time, sDay, week, mString, dateTime], (err, row) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        req.flash('msg', 'Successfully rescheduled the meal plan!');
+                                        res.redirect('/recipes/' + id); 
+                                    }
+                                    })
+                                    conn.release();
+                                }
+                            })
+
+                        }
+
+                    
+            })
+        }else{
+            req.flash('msg', 'You need to login to add the recipe to meal plan!')
+            res.redirect('/login');
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
     }
 }

@@ -22,36 +22,31 @@
    <!-- guest header -->
    <%- include('./partials/userNav'); %>
    <%#- include('./partials/guestNav'); %>
-
-    <form action="/mealPlan" method="get">
-        <div id="mealPlanView">
-            <div class="wrapper">
-                <div class="toggle_radio">
-                  <input type="radio" class="toggle_option" id="first_toggle" name="toggle_option" value ="Past Week">
-                  <input type="radio" checked class="toggle_option" id="second_toggle" name="toggle_option" value ="Current Week">
-                  <input type="radio" class="toggle_option" id="third_toggle" name="toggle_option" value ="Next Week">
-                  <label for="first_toggle"><p>Past Week</p></label>
-                  <label for="second_toggle"><p>Current Week</p></label>
-                  <label for="third_toggle"><p>Next Week</p></label>
-                  <div class="toggle_option_slider">
-                  </div>
-                </div>
-        </div>
-        <table>
-            <tbody>
-                <% mealPlan.forEach( mealPlan => { %>
-                    <tr>
-                        <td><img src="/images/<%= mealPlan.rec_img%>" alt="<%= mealPlan.rec_name %> Image" height="150"></td>
-                        <td><a href="/mealPlan/<%= mealPlan.rec_id%>"><%= mealPlan.rec_name %></a></td>
-                        <td>
-                            <a href="/mealPlan/<%= mealPlan.rec_id%>" class="recview-btn">View Recipe</a>
-                            <a href="/mealPlan/delete/<%= mealPlan.rec_id %>" class="recdelete-btn">Delete</a>
-                        </td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-     </form>   
+    <form action="/mealPlan/weekview" method="post">
+        <label for="weekView" class="addWeekLabel">Week:</label>
+                    <input type="radio" id="weekViewInp" name="weekViewInp" value="Past Week" onchange="this.form.submit()" >
+                        <label for="wvPast" class="addWeekLabel">Past Week</label>
+                    <input type="radio" id="weekViewInp" name="weekViewInp" value="Current Week" onchange="this.form.submit()">
+                        <label for="wvCurrent" class="addWeekLabel">Current Week</label>
+                    <input type="radio" id="weekViewInp" name="weekViewInp" value="Next Week" onchange="this.form.submit()">
+                        <label for="wvNext" class="addWeekLabel">Next Week</label>
+                        <br><br>
+    </form>
+    <table>
+        <tbody>
+            <% mealPlan.forEach( mealPlan => { %>
+                <tr> 
+                    <td><img src="/images/<%= mealPlan.rec_img%>" alt="<%= mealPlan.rec_name %> Image" height="150"></td>
+                    <td><a href="/mealPlan/<%= mealPlan.rec_id%>"><%= mealPlan.rec_name %></a></td>
+                    <td><%= mealPlan.sDay %></td>
+                    <td>
+                        <a href="/mealPlan/<%= mealPlan.rec_id%>" class="recview-btn">View Recipe</a>
+                        <a href="/mealPlan/delete/<%= mealPlan.rec_id %>" class="recdelete-btn">Delete</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
      
      <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
