@@ -49,6 +49,9 @@ html{
    stop-opacity: 7rem;
 }
 
+body {
+   background-color: #f9f9fa;
+}
 section{
    margin:0 auto;
    max-width: 1200px;
@@ -528,7 +531,7 @@ section{
 
 /*--------------------------------------------------------------
 # Recipe View
---------------------------------------------------------------*/
+--------------------------------------------------------------
 
 .userRecipeView .rec-view{
    margin-left: 5%;
@@ -602,7 +605,7 @@ section{
    margin-bottom: 2em;
 }
 
-/* copy pasted lang to xd */
+/* copy pasted lang to xd 
 .userRecipeView .rec-content .rec-process textarea{
    -webkit-box-sizing: border-box;
    -moz-box-sizing: border-box;
@@ -626,7 +629,146 @@ section{
   
   width: 100%;
   height: 100%;
+} */
+
+
+/*--------------------------------------------------------------
+# Grocery List
+--------------------------------------------------------------*/
+.grocery-cont{
+   background-color: #f9f9fa;
+   height: 50%;
+   width: 70%;
+   padding: 0 0 1em;
+   margin: 30px auto 30px;
+   border-radius: 7px;
 }
+
+.grocery-header {
+   background-color: #fff;
+   margin:  auto;
+   padding: 10px 10px 10px;
+}
+
+.gl-name {
+   float: left;
+   margin: 10px 10px 0;
+   font-weight: normal;
+   text-transform: uppercase;
+}
+
+.del-all::before {
+   background-color: #fff;
+   content: "\f2ed";
+   display: inline-block;
+   float: left;
+   margin: auto;
+   color: rgb(27, 27, 27);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.del-all{
+   background-color: #fff;
+   font-size: 1.4em;
+   padding: 1em 0 0;
+}
+
+.gForm{
+   float: right;
+}
+
+.newItem{
+   padding: 5px 12px;
+   font-size: 14px;
+   line-height: 20px;
+   color: #24292e;
+   vertical-align: middle;
+   background-color: #ffffff;
+   background-repeat: no-repeat;
+   background-position: right 8px center;
+   border: 1px solid #e1e4e8;
+   border-radius: 6px;
+   outline: none;
+   box-shadow: rgba(225, 228, 232, 0.2) 0px 1px 0px 0px inset;
+}
+
+.newItem:focus{
+   border-color: var(--green);
+   outline: none;
+   box-shadow: var(--green) 0px 0px 0px 2px;
+}
+
+.gFormBtn{
+   margin: 10px 0 0;
+   font-size: 15px;
+   background: none;
+   color: #888;
+   width: 60px;
+}
+
+.gFormBtn:hover{
+   color: var(--green);
+}
+
+hr {
+   clear: both;
+   background-color: #fff;
+   padding: 10px 0 0;
+   border-top: 3px solid var(--green);
+}
+
+.glist-cont {
+   clear: both;
+   margin: 0 0 20px;
+}
+
+
+.gl-empty{
+   background: white;
+   /* margin: 20% auto 20%; */
+   padding: 20% 0 20%;
+   font-weight: 500;
+   font-size: 24px;
+   line-height: 34px;
+   text-align: center;
+}
+
+
+#list {
+   background-color: #fff;
+   padding: 0 10px 0;
+}
+
+.gl-item{
+   font-size: 1.35em;
+   border-bottom: 1px solid #f4f4f4;
+}
+
+.gl-txt{
+   background-color: #fff;
+   padding: 1em; /* make it 0.5em sa media query 300px */
+}
+
+.delete::before {
+   content: "\f2ed";
+   display: inline-block;
+   float: right;
+   padding: 1em;
+   color: rgb(239, 100, 100);
+   font: var(--fa-font-regular);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+/* .itm-txt {
+   border-top: 1px solid #f5f5f5;
+   /* margin:10px 0 10px; 
+} */
+
 
 
 
@@ -638,6 +780,10 @@ section{
    html{
       font-size: 55%;
    }
+
+   .del-all{
+      padding: 1.15em 0 0;
+   } 
 
 }
 
@@ -664,6 +810,10 @@ section{
 
    .header .flex .navbar.active{
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+   }
+
+   .gForm{
+      display: inline-block;
    }
 
 }
@@ -722,6 +872,10 @@ section{
       object-position: bottom;
    }
 }
+
+
+
+
 
 /* eka */
 .star{
