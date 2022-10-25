@@ -269,6 +269,7 @@
     <% } else { %>
         <input type="hidden" name="ratingCount" value="<%= rec.rec_rateCount %>">
         <input type="hidden" name="recRating" id="recRating" value="<%= rec.rec_rate %>">
+        <input type="hidden" name="userRate" id="userRate" value="">
         <br><br><button type="submit">Submit Rating!</button>
     <% } %> 
 
@@ -390,7 +391,7 @@
             let span = ev.currentTarget;
             let stars = document.querySelectorAll('.star');
             let match = false;
-            let num = 0;
+            let num, newRating = 0;
             stars.forEach(function(star, index){
                 if(match){
                     star.classList.remove('rated');
@@ -405,13 +406,15 @@
             });
             let currentRating = document.getElementById('recRating').value;
             if ((parseInt(currentRating)) != 0) {
-                let newRating = (num + parseInt(currentRating))/2;
-                document.getElementById('recRating').value = Math.round(newRating);
+                newRating = (num + parseInt(currentRating))/2;
+                newRating = Math.round(newRating);
+                document.getElementById('userRate').value = newRating.toString();                
                 document.querySelector('.stars').setAttribute('data-rating', num);
             }
             else{
-                let newRating = (num + parseInt(currentRating));
-                document.getElementById('recRating').value = Math.round(newRating);
+                newRating = (num + parseInt(currentRating));
+                newRating = Math.round(newRating);
+                document.getElementById('userRate').value = newRating.toString();
                 document.querySelector('.stars').setAttribute('data-rating', num);
             }
             

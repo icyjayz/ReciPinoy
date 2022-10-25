@@ -1100,7 +1100,7 @@ exports.userRateRec = (req, res) =>{
                                     console.log(err);
                                 }
                                 else{
-                                    let rate = req.body.recRating;
+                                    let rate = req.body.userRate;
                                     let recCount = req.body.ratingCount
                                     if(recCount === null){
                                         recCount = 0;
