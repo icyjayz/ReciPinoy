@@ -535,18 +535,38 @@ section{
 
 .userRecipeView{
    /* background-color: #f0f0f6; */
-   height: 50%;
-   width: 70%;
-   padding: 0 0 1em;
-   margin: 30px auto 30px;
+   margin: 5rem auto;
+   padding: 4rem;
+   width: min(90%, 110rem);
    border: 1px solid goldenrod;
-   
 }
 
-.urv-upper-content, .urv-upper-details, .rec-ing-title {
+.urv-upper-content {
+   display: grid;
+   grid-template-columns: 3fr 2fr 1fr;
+   grid-template-rows: auto auto;
+   gap: 15px;
+
+}
+
+.urv-title, .urv-saved-btn {
+   margin: 2em auto;
+}
+
+.rec-categ {
+   text-transform: uppercase;
+}
+
+.rec-desc {
+   display: grid;
+}
+
+.urv-upper-details, .rec-ing-title {
    display: flex;
    flex-wrap: wrap;
 }
+
+
 
 
 
@@ -561,11 +581,8 @@ section{
 --------------------------------------------------------------*/
 .grocery-cont{
    background-color: #f9f9fa;
-   height: 50%;
-   width: 70%;
-   padding: 0 0 1em;
-   margin: 30px auto 30px;
-   border-radius: 7px;
+   margin: 5rem auto;
+   width: min(90%, 110rem);
 }
 
 .grocery-header {
@@ -794,7 +811,7 @@ hr {
    }
 }
 
-@media (max-width: 630px){
+@media (max-width: 473px){
    .grocery-header{
       display: flex;
       flex-wrap: wrap;
@@ -803,7 +820,7 @@ hr {
 
    .del-all::before{
       float: none;
-   }
+   } 
 
    .del-all{
       padding: 0.80em 0 0;
