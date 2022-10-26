@@ -38,132 +38,135 @@
     <%- include('./partials/userNav'); %>
  
     <div class="userRecipeView">
+         <!-- back button -->
+         <a class="back-btn" onclick="history.back()"> <<< </a>
         <div class="urv-upper-content">
-            <!-- back button -->
-            <a class="back-btn" onclick="history.back()"> <<< </a>
-    
             <!-- # image # -->
             <div class="urv-img">
                 <% if (rec.rec_image) { %>
                     <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" class="img-rec">
-                <% } %><br><br>
-            </div>
-
-            <div class="urv-title">
-                <!-- category -->
-                <span><%= rec.rec_categ %></span>
-                <!-- recipe name -->
-                <h1 class="rec-name"><%= rec.rec_name %></h1>
-                <% if (rec.rec_rate) { %>
-                    <span><%= rec.rec_rate %></span>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ [eka] 
-                                                        lagyan ng star icon smth [euni]-->
-                <% } else { %>
-                    <span>This recipe hasn't been rated.</span>
                 <% } %>
             </div>
 
-             <!-- # add to saved recipe # -->
-             <div class="urv-saved-btn">
-                <% if (isSaved) { %>
-                    <form action="/recipes/unsave/<%= rec.rec_id%>" method="post">
-                        <br><br><input type="submit" value ="Unsave Recipe"></input>
-                    </form>
-                <% } else { %>
-                    <form action="/recipes/<%= rec.rec_id%>" method="post">
-                        <input type="hidden" name="recID" id="recID" value="<%= rec.rec_id %>">
-                        <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
-                        <input type="hidden" name="recDesc" id="recDesc" value="<%= rec.rec_desc %>">
-                        <input type="hidden" name="recProcess" id="recProcess" value="<%= rec.rec_process %>">
-                        <input type="hidden" name="recCateg" id="recCateg" value="<%= rec.rec_categ %>">
-                        <input type="hidden" name="recTime" id="recTime" value="<%= rec.rec_time %>">
-                        <input type="hidden" name="recServing" id="recServing" value="<%= rec.rec_serving %>">
-                        <input type="hidden" name="recSrc" id="recSrc" value="<%= rec.rec_src %>">
-                        <input type="hidden" name="recVid" id="recVid" value="<%= rec.rec_vid %>">
-                        <input type="hidden" name="recCal" id="recCal" value="<%= rec.rec_cal %>">
-                        <input type="hidden" name="recMealtime" id="recMealtime" value="<%= rec.rec_mealTime %>">
-                        <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
-                        <input type="hidden" name="recRate" id="recRate" value="<%= rec.rec_rate %>">
-                        <input type="submit" value="Add to Saved Recipes" class="save-btn">
-                    </form>
-                <% } %> 
-            </div>
+            <div class="urv-grid">
+                <div class="urv-grid-header">
+                    <div class="urv-title">
+                        <!-- category -->
+                        <span class="rec-categ"><%= rec.rec_categ %></span>
+                        <!-- recipe name -->
+                        <h1 class="rec-name"><%= rec.rec_name %></h1>
+                        <% if (rec.rec_rate) { %>
+                            <span><%= rec.rec_rate %></span>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ [eka] 
+                                                                lagyan ng star icon smth [euni]-->
+                        <% } else { %>
+                            <span>This recipe hasn't been rated.</span>
+                        <% } %>
+                    </div>
 
-            <!-- recipe desc -->
-            <p class="rec-desc"><%= rec.rec_desc %></p>
-        
-            <!-- recipe details -->
-            <div class="urv-upper-details">
-                <!-- total time -->
-                <div class="urv-time">
-                    <p>TOTAL TIME</p>
-                    <% if (rec.rec_time) { %>
-                        <span><%= rec.rec_time %></span>
-                    <% } %>
+                    <!-- # add to saved recipe # -->
+                    <div class="urv-saved-btn">
+                        <% if (isSaved) { %>
+                            <form action="/recipes/unsave/<%= rec.rec_id%>" method="post">
+                                <br><br><input type="submit" value ="Unsave Recipe"></input>
+                            </form>
+                        <% } else { %>
+                            <form action="/recipes/<%= rec.rec_id%>" method="post">
+                                <input type="hidden" name="recID" id="recID" value="<%= rec.rec_id %>">
+                                <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
+                                <input type="hidden" name="recDesc" id="recDesc" value="<%= rec.rec_desc %>">
+                                <input type="hidden" name="recProcess" id="recProcess" value="<%= rec.rec_process %>">
+                                <input type="hidden" name="recCateg" id="recCateg" value="<%= rec.rec_categ %>">
+                                <input type="hidden" name="recTime" id="recTime" value="<%= rec.rec_time %>">
+                                <input type="hidden" name="recServing" id="recServing" value="<%= rec.rec_serving %>">
+                                <input type="hidden" name="recSrc" id="recSrc" value="<%= rec.rec_src %>">
+                                <input type="hidden" name="recVid" id="recVid" value="<%= rec.rec_vid %>">
+                                <input type="hidden" name="recCal" id="recCal" value="<%= rec.rec_cal %>">
+                                <input type="hidden" name="recMealtime" id="recMealtime" value="<%= rec.rec_mealTime %>">
+                                <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
+                                <input type="hidden" name="recRate" id="recRate" value="<%= rec.rec_rate %>">
+                                <input type="submit" value="+" class="save-btn">
+                            </form>
+                        <% } %> 
+                    </div>
                 </div>
 
-                <!-- calories -->
-                <div class="urv-cal">
-                    <p>CALORIES</p>
-                    <% if (rec.rec_cal) { %>
-                        <span><%= rec.rec_cal %></span>
-                    <% } else { %>
-                        <span>Calorific value is not available.</span>
-                    <% } %> 
-                </div> 
-                
-                <!-- add to meal plan -->
-                <div class="urv-add-mp">
-                    <% if (isMeal) { %>
-                        <button type="button" id="mealPlanBut">Edit Schedule:</button>
-                        <div id="mealPlan" class="modal">
-                            <div class="modal-content">
-                                <span class="closeBut">&times;</span>
-                                <div id="cont">
-                                    <form action="/mealPlan/edit" method="post"> 
-                                        <input type="text" name="datetimes" />
-                                            <label for="recMTime" class="addRecLabel">Meal Time: </label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
-                                            <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
-                                            <label for="mtLunch" class="addRecLabel">Lunch</label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
-                                            <label for="mtLunch" class="addRecLabel">Meryenda</label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
-                                            <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
-                                        <input type="hidden" name="recID" value="<%= rec.rec_id %>">
-                                        <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
-                                        <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
-                                        <br><br><button type="submit">Edit Schedule</button>
-                                    </form>
+                <!-- recipe desc -->
+                <p class="rec-desc"><%= rec.rec_desc %></p>
+            
+                <!-- recipe details -->
+                <div class="urv-upper-details">
+                    <!-- total time -->
+                    <div class="urv-time">
+                        <p>TOTAL TIME</p>
+                        <% if (rec.rec_time) { %>
+                            <span><%= rec.rec_time %></span>
+                        <% } %>
+                    </div>
+
+                    <!-- calories -->
+                    <div class="urv-cal">
+                        <p>CALORIES</p>
+                        <% if (rec.rec_cal) { %>
+                            <span><%= rec.rec_cal %></span>
+                        <% } else { %>
+                            <span>Calorific value is not available.</span>
+                        <% } %> 
+                    </div> 
+                    
+                    <!-- add to meal plan -->
+                    <div class="urv-add-mp">
+                        <% if (isMeal) { %>
+                            <button type="button" id="mealPlanBut">Edit Schedule:</button>
+                            <div id="mealPlan" class="modal">
+                                <div class="modal-content">
+                                    <span class="closeBut">&times;</span>
+                                    <div id="cont">
+                                        <form action="/mealPlan/edit" method="post"> 
+                                            <input type="text" name="datetimes" />
+                                                <label for="recMTime" class="addRecLabel">Meal Time: </label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                                                <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                                                <label for="mtLunch" class="addRecLabel">Lunch</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+                                                <label for="mtLunch" class="addRecLabel">Meryenda</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                                                <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
+                                            <input type="hidden" name="recID" value="<%= rec.rec_id %>">
+                                            <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
+                                            <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
+                                            <br><br><button type="submit">Edit Schedule</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <% } else { %>
-                        <button type="button" id="mealPlanBut">Add to Meal Plan</button>
-                        <div id="mealPlan" class="modal">
-                            <div class="modal-content">
-                                <span class="closeBut">&times;</span>
-                                <div id="cont">
-                                    <form action="/mealPlan" method="post"> 
-                                        <input type="text" name="datetimes" />
-                                            <label for="recMTime" class="addRecLabel">Meal Time: </label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
-                                            <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
-                                            <label for="mtLunch" class="addRecLabel">Lunch</label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
-                                            <label for="mtLunch" class="addRecLabel">Meryenda</label>
-                                        <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
-                                            <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
-                                        <input type="hidden" name="recID" value="<%= rec.rec_id %>">
-                                        <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
-                                        <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
-                                        <br><br><button type="submit">Add to Meal Plan</button>
-                                    </form>
+                        <% } else { %>
+                            <button type="button" id="mealPlanBut">Add to Meal Plan</button>
+                            <div id="mealPlan" class="modal">
+                                <div class="modal-content">
+                                    <span class="closeBut">&times;</span>
+                                    <div id="cont">
+                                        <form action="/mealPlan" method="post"> 
+                                            <input type="text" name="datetimes" />
+                                                <label for="recMTime" class="addRecLabel">Meal Time: </label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                                                <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                                                <label for="mtLunch" class="addRecLabel">Lunch</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+                                                <label for="mtLunch" class="addRecLabel">Meryenda</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                                                <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
+                                            <input type="hidden" name="recID" value="<%= rec.rec_id %>">
+                                            <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
+                                            <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
+                                            <br><br><button type="submit">Add to Meal Plan</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <% } %>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
