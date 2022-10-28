@@ -465,13 +465,10 @@ CREATE TABLE `mealplan` (
   `mealPlan_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `rec_id` int(11) NOT NULL,
-  `rec_name` varchar(50) NOT NULL,
-  `rec_img` varchar(50) NOT NULL,
   `month` varchar(12) NOT NULL,
   `day` int(31) NOT NULL,
   `time` varchar(20) DEFAULT NULL,
   `sDay` varchar(50) NOT NULL,
-  `rec_mealTime` varchar(50) NOT NULL,
   `dateTime` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -479,8 +476,8 @@ CREATE TABLE `mealplan` (
 -- Dumping data for table `mealplan`
 --
 
-INSERT INTO `mealplan` (`mealPlan_id`, `user_id`, `rec_id`, `rec_name`, `rec_img`, `month`, `day`, `time`, `sDay`, `rec_mealTime`, `dateTime`) VALUES
-(14, 5, 8, 'Bicol Express', 'bicol_express.jpg', 'Oct', 15, '4:00am', 'Saturday', 'Breakfast', '10/15/2022 04:00 AM');
+INSERT INTO `mealplan` (`mealPlan_id`, `user_id`, `rec_id`, `month`, `day`, `time`, `sDay`, `dateTime`) VALUES
+(14, 5, 8, 'Oct', 15, '4:00am', 'Saturday', '10/15/2022 04:00 AM');
 
 -- --------------------------------------------------------
 

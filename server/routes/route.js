@@ -41,8 +41,10 @@ router.post('/saved/edit/:id', userController.userSavedSubEdit);
 router.get('/saved/delete/:id', userController.userSavedDelete);
 router.post('/mealPlan', userController.mealPlan);
 router.post('/mealPlan/edit', userController.mealPlanEditButton);
-router.post('/mealPlan/weekview', userController.mealPlanViewSort);
 router.get('/mealPlan', userController.mealPlanRec);
+router.post('/mealPlan/past', userController.mealPlanPastBut);
+router.post('/mealPlan/current', userController.mealPlanCurrentBut);
+router.post('/mealPlan/next', userController.mealPlanNextBut);
 router.get('/mealPlan/:id', userController.mealPlanRecView);
 router.get('/mealPlan/delete/:id', userController.mealPlanRecDelete);
 

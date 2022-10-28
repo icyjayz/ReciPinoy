@@ -1035,3 +1035,10 @@ hr {
   background: rgba(255,255,255,.3);
   left: 215px;
 }
+/* added*/
+.btn span.glyphicon {    			
+	opacity: 0;				
+}
+.btn.active span.glyphicon {				
+	opacity: 1;				
+}
