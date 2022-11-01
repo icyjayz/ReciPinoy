@@ -38,15 +38,15 @@
     <%- include('./partials/userNav'); %>
  
     <div class="userRecipeView">
-         <!-- back button -->
-         <a class="back-btn" onclick="history.back()"> <<< </a>
+        <!-- back button -->
+        <a class="back-btn" onclick="history.back()"> <<< </a>
         <div class="urv-upper-content">
             <!-- # image # -->
-            <div class="urv-img">
+            <!-- <div class="urv-img">
                 <% if (rec.rec_image) { %>
                     <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" class="img-rec">
                 <% } %>
-            </div>
+            </div> -->
 
             <div class="urv-grid">
                 <div class="urv-grid-header">
@@ -168,18 +168,30 @@
                         <% } %>
                     </div>
                 </div>
+
+                <!-- recipe source -->
+                <!-- <div class="rec-src"> -->
+                <a href="<%= rec.rec_src %>" class="r-source">
+                    <span class="src">This recipe was excepted from this source.</span>
+                </a>
+                <!-- </div> -->
             </div>
         </div>
 
-        <hr>
+        <!-- border line -->
+        <span class="section-line"></span>
 
         <div class="urv-lower-content">
             <!-- recipe ingredients -->
             <div class="rec-ing">
-                <div class="rec-ing-title">
-                    <label>Ingredients </label>
-                
-                    <!-- serving -->
+                <!-- title part details-->
+                <div class="ing-details">
+                    <!-- ingredient title -->
+                    <div class="rec-ing-title">
+                        <label>Ingredients </label>
+                    </div>
+                    
+                     <!-- serving -->
                     <div class="rec-ing-serving">
                         <% if (rec.rec_serving) { %>
                             <% if (rec.rec_serving == 1) { %>
@@ -197,7 +209,7 @@
                             <% } %>
                         <% } %>
                     </div>
-                    
+                        
                     <!-- add to grocery list button -->
                     <div class="ing-gl-btn">
                         <button type="button" id="openModal">add to grocery list</button>
@@ -213,7 +225,7 @@
                                     <div id="ingList"></div>
                                     <br><br><button type="submit">add ingredients to grocery list</button>
                                 </form>
-                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -253,46 +265,51 @@
                 </div>
             </div>
 
+
             <!-- ingredients process -->
-            <label class="rproc">Process </label>
             <div class="rec-process">
-                <textarea name="" id="" cols="30" rows="10" readonly><%= rec.rec_process %></textarea><br>
+                <span class="rproc">Process </span>
+                <textarea name="" id="" cols="30" rows="20" class="txt-area" readonly><%= rec.rec_process %></textarea><br>
             </div>
 
-            <!-- recipe source -->
-            <div class="rec-src">
-                <a href="<%= rec.rec_src %>">
-                    <strong>Source</strong>
-                </a>
+            <!-- line -->
+            <div class="section-header">
+                <h3 class="vid-title">Watch</h3>
             </div>
 
-            <!-- recipe video -->
-            <label class="rvid">Video </label>
+
+            <!-- recipe video with source-->
             <div class="rec-vid">
                 <% if (rec.rec_vid) { %>
-                    <iframe src="<%= rec.rec_vid %>"></iframe>
+                    <iframe src="<%= rec.rec_vid %>" 
+                        title="YouTube video player" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen></iframe>
                 <% } %> 
             </div>
+
+            <!-- border line -->
+            <span class="section-line"></span>
 
             <!-- recipe ratings -->
             <div class="rec-rating">
                 <form action="/recipes/rate/<%= rec.rec_id%>" method="post">
-                    <br><h3>What do you think of this recipe?</h3><br>
+                    <label class="rating-title">What do you think of this recipe?</label>
                     <div class="stars" data-rating="0">
-                        <span class="star">&nbsp;</span>
-                        <span class="star">&nbsp;</span>
-                        <span class="star">&nbsp;</span>
-                        <span class="star">&nbsp;</span>
-                        <span class="star">&nbsp;</span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
                     </div>
                     <% if (isRated) { %>
-                        <h5>You've rated this recipe already!</h5>
-                        <br><br><button type="submit" disabled>Submit Rating!</button>
+                        <label class="rated-lbl">You've rated this recipe already!</label>
+                        <!-- <br><br><button type="submit" disabled>Submit Rating!</button> -->
                     <% } else { %>
                         <input type="hidden" name="ratingCount" value="<%= rec.rec_rateCount %>">
                         <input type="hidden" name="recRating" id="recRating" value="<%= rec.rec_rate %>">
                         <input type="hidden" name="userRate" id="userRate" value="">
-                        <br><br><button type="submit">Submit Rating!</button>
+                        <button type="submit" class="rating-btn">Submit Rating</button>
                     <% } %> 
                 </form>
             </div>
@@ -582,6 +599,23 @@
             mealModal.style.display = "none";
         }
         }
+
+        //textarea
+        var textarea = document.querySelector('textarea');
+
+        textarea.addEventListener('keydown', autosize);
+             
+        function autosize(){
+        var el = this;
+        setTimeout(function(){
+            el.style.cssText = 'height:auto; padding:0';
+            // for box-sizing other than "content-box" use:
+            // el.style.cssText = '-moz-box-sizing:content-box';
+            el.style.cssText = 'height:' + el.scrollHeight + 'px';
+        },0);
+        }
+
+
     </script>
 
     <!-- custom js file link  -->

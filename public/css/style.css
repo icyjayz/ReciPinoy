@@ -534,12 +534,13 @@ section{
 --------------------------------------------------------------*/
 
 .userRecipeView{
-   /* background-color: #f0f0f6; */
+   background-color: #fff;
    margin: 5rem auto;
-   padding: 4rem;
+   padding: 0 4rem 4rem;
    width: min(90%, 110rem);
-   border: 1px solid goldenrod;
 }
+
+
 
 /* urv-img, urv-grid (urv-title, urv-saved-btn, rec-desc, urv-upper-details) */
 .urv-upper-content {
@@ -556,15 +557,12 @@ section{
 }
 
 /* img src */
-.img-rec{
+/* .img-rec{
    width: 500px;
    height: 400px; 
-   /* background-color: #e1e4e8; */
-   
    object-fit: cover;
    object-position: center center;
-   /* PROB KO RN LINTEK NA IMG TOH */
-}
+} */
 
 .urv-grid{
    height: 400px; 
@@ -603,16 +601,180 @@ section{
 .urv-upper-details{
    display: flex;
    flex: wrap;
-   justify-content:space-evenly;
-   
+   justify-content: flex-start;
+}
+
+/* recipe source */
+.src{
+   font-style: italic;
+   color:rgb(27, 27, 27) !important;
+   cursor: pointer;
+   text-decoration: none;
+ } 
+
+/* border lines */
+.section-line{
+   border-top: 1px solid black;
+   display: block;
+   height: 1px;
+   content: " ";
+   width: 100%; /* full-width ;)*/
+   top: 1.2em;
+   margin: 2em 0;
+   opacity: 0.1;
+}
+
+.urv-lower-content{
+   display: grid;
+   grid-auto-rows: auto;
+   gap: 10px;
+}
+
+.ing-details{
+   display: flex;
+   flex: wrap;
+   justify-content: space-around;
+}
+
+/* video */
+.rec-vid{
+   margin: 1em auto;
+   max-width: 50em;
+   width: 100%;
+}
+
+.rec-vid iframe{
+   width: 100%;
+   height: 100%;
+   aspect-ratio: 16 / 9;
+}
+
+/* process */
+.rec-process {
+   margin: 1em auto;
+   /* padding: 3em 0; */
+   /* max-width: 150em; */
+   width: 100%;
+}
+
+.rproc{
+   display: block;
+   align-items: flex-start;
+}
+
+/* .txt-area{
+   max-height: 150%;
+   height: 150%; 
+   width: 100%;
+   padding: 1.5em;
+   resize: none;
+   line-height: 1.7em;
+   text-align: justify;
+   overflow: hidden;
+} */
+
+textarea{
+   height: auto;
+   width: 100%;
+   padding: 1.5em;
+   resize: none;
+   line-height: 1.7em;
+   text-align: justify;
+   overflow: hidden;
+
 }
 
 
+/* line border between source & video */
+.section-header {
+   position: relative;
+   display: flex; /* sets a flex container */
+   align-items: center; /* aligns vertically */
+ }
+ 
+ .section-header .vid-title {
+   text-transform: uppercase;
+   padding: 0.3em 0.8em;
+   display: inline-block;
+   margin: 0 0.2em; /* space between h3 and line if needed */
+ }
+ 
+ .section-header::before,
+ .section-header::after {
+   border-top: 1.5px solid var(--green);
+   display: block;
+   height: 1px;
+   content: " ";
+   width: 100%; /* full-width ;)*/
+   top: 1.2em;
+ }
 
 
+ /* ratings */
+.rec-rating{
+   margin-top: 5px;
+   display: flex;
+   /* flex: wrap; */
+   justify-content: center;
+   text-align: center;
+}
+
+.rating-title{
+   font-size: 1.5em;
+}
+
+/* star rating design */
+.star{
+   color:rgb(61, 61, 61);
+   font-size: 5.0rem;
+   padding: 2rem; /* space out the stars */
+ }
+
+ .star::before{
+   content: '\2606';    /* star outline */
+   cursor: pointer;
+ }
+
+ .star.rated::before{
+   /* the style for a selected star */
+   content: '\2605';  /* filled star */
+   color: goldenrod;
+ }
+ 
+ .stars{
+     counter-reset: rateme 0;   
+     font-size: 1.75rem;
+     font-weight: 150;
+     margin: 1.5em 0 0 1.5em;
+ }
+
+ .star:hover {
+   color: goldenrod;
+   transition: 0.2s ease;
+ }
+ .star.rated{
+     counter-increment: rateme 1;
+ }
+
+ .stars::after{
+     content: counter(rateme) '/5';
+ }
+
+ .rated-lbl{
+   margin-top: 2em;
+   font-size: 1em;
+ }
 
 
-
+/* submit rating button */
+.rating-btn{
+   margin-top: 2em;
+   padding:1rem 2rem;
+   cursor: pointer;
+   background-color: #404040;
+   color:var(--white);
+   border-radius: 10px;
+}
 
 
 
@@ -761,7 +923,9 @@ hr {
 
 
 
-/* media queries  */
+/*--------------------------------------------------------------
+# MEDIA QUERIES
+--------------------------------------------------------------*/
 
 @media (max-width:991px) {
    
@@ -799,6 +963,13 @@ hr {
    .header .flex .navbar.active{
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
    }
+
+   .userRecipeView, .grocery-cont {
+      background-color: #fff;
+      margin: 0;
+      width:auto;
+   }
+
 
 }
 
@@ -895,32 +1066,6 @@ hr {
 
 
 
-/* eka */
-.star{
-   color: goldenrod;
-   font-size: 5.0rem;
-   padding: 0 1rem; /* space out the stars */
- }
- .star::before{
-   content: '\2606';    /* star outline */
-   cursor: pointer;
- }
- .star.rated::before{
-   /* the style for a selected star */
-   content: '\2605';  /* filled star */
- }
- 
- .stars{
-     counter-reset: rateme 0;   
-     font-size: 2.0rem;
-     font-weight: 900;
- }
- .star.rated{
-     counter-increment: rateme 1;
- }
- .stars::after{
-     content: counter(rateme) '/5';
- }
 
  /* eka modal */
  /* The Modal (background) */
