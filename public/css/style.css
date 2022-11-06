@@ -540,41 +540,30 @@ section{
    width: min(90%, 110rem);
 }
 
-
-
 /* urv-img, urv-grid (urv-title, urv-saved-btn, rec-desc, urv-upper-details) */
 .urv-upper-content {
    display: grid;
-   grid-template-columns: 1fr 1fr;
+   grid-template-columns: repeat(2, fit-content(500px));
    gap: 15px;
 }
 
-/* div img */
-.urv-img{
-   display: flex;
-   grid-row: 1 / span 2;
-   grid-column: span 1;
-}
 
 /* img src */
-/* .img-rec{
-   width: 500px;
-   height: 400px; 
+.img-rec{
+   width: 450px;
+   height: 450px;
    object-fit: cover;
    object-position: center center;
-} */
-
-.urv-grid{
-   height: 400px; 
 }
 
 .urv-grid-header{
    display: flex;
+   justify-content: space-between;
 }
 
-/* div ng categ and name and rating */
+/* div ng categ and name and rating & div ng saved btn */
 .urv-title {
-   margin: 2em 0; /* 2em both kapag maliit na screen */
+   margin: 2em 2em 2em 0; /* 2em both kapag maliit na screen */
 }
 
 .rec-categ {
@@ -587,9 +576,40 @@ section{
    margin: 10px 0;
 }
 
+/* star ulet sa ratings */
+.str::before{
+   content: "\f005";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: goldenrod;
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+}
+
 /* div ng saved button */
-.urv-saved-btn {
-   display: flex;
+.urv-saved-btn{
+   margin: 2em 0 2em 2em;
+}
+
+.save-btn::before{
+   content: "\f02e";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(27, 27, 27);
+   font: var(--fa-font-regular);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.save-btn {
+   background-color: #fff;
+   font-size: 1.4em;
+}
+
+.svd-title{
+   display: none;
 }
 
 /* class ng desc */
@@ -600,13 +620,72 @@ section{
 /* div with total time, cal, add to meal plan button */
 .urv-upper-details{
    display: flex;
-   flex: wrap;
-   justify-content: flex-start;
+   /* flex-wrap: wrap; */
+   font-size: 1.1rem;
+   justify-content: space-around;
+   margin: 1em 0.5em 1.5em;
 }
+
+.urv-time, .urv-cal, .urv-add-mp {
+   margin: 1em;
+}
+
+/* back button, total time and calories title */
+.tt-time, .tt-cal{
+   font-weight: lighter;
+   text-transform: uppercase;
+}
+
+/* total time and calories value */
+.tot-time, .cal{
+   font-weight: 500;
+   font-size: 12px;
+   text-transform: uppercase;
+}
+
+/* if no calorific value */
+.calv{
+   font-weight: 500;
+}
+
+/* line between time/calories & mp button */
+.bdr-line{
+   border-left: 1px solid black;
+   display: block;
+   height: 50px;
+   content: " ";
+   top: 1.2em;
+   margin: 0.9em 0 0.5em;
+   opacity: 0.1;
+}
+
+/* add to meal plan button */
+.add-mp::before{
+   content: "\f133";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(27, 27, 27);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.add-mp{
+   margin-top: 0.5rem;
+   padding: 1rem;
+   cursor: pointer;
+   background-color: var(--green);
+   color:var(--white);
+   font-size: 0.9rem;
+   text-transform: uppercase;
+}
+
 
 /* recipe source */
 .src{
    font-style: italic;
+   font-size: 12px;
    color:rgb(27, 27, 27) !important;
    cursor: pointer;
    text-decoration: none;
@@ -630,24 +709,111 @@ section{
    gap: 10px;
 }
 
+/* ingredients */
 .ing-details{
    display: flex;
-   flex: wrap;
-   justify-content: space-around;
 }
 
-/* video */
-.rec-vid{
-   margin: 1em auto;
-   max-width: 50em;
-   width: 100%;
+/* titles for ingredients & process */
+.rec-ing-title, .rproc{ 
+   display: block;
+   font-size: 1.5em;
+   font-weight: bolder;
+   margin: 0.5em 0 0.5em 1.3em;
 }
 
-.rec-vid iframe{
-   width: 100%;
-   height: 100%;
-   aspect-ratio: 16 / 9;
+/* add to grocery list button */
+.ing-gl-btn{
+   margin: 0 1em 0 1em;
 }
+
+.gl-btn::before{
+   content: "\f46d";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(27, 27, 27);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.gl-btn{
+   margin-top: 0.5rem;
+   padding:1rem 1.2rem;
+   cursor: pointer;
+   background-color: var(--green);
+   color:var(--white);
+   font-size: 1.2rem;
+   text-transform: uppercase;
+}
+
+/* serving button */
+.rec-ing-serving{
+   margin-left: 1em;
+   
+}
+
+.serving-btn, .srv-title{
+   margin: 0.5rem 1.7rem 2.5rem;
+   
+}
+
+.srv-title {
+   color: var(--light-color);
+   text-transform: uppercase;
+}
+
+.minus-btn::before{
+   content: "\f068";
+   display: inline-block;
+   margin: auto;
+   color: rgb(255, 255, 255);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.num-srv{
+   width: 90px;
+   border: 1px solid #adadad;
+   border-radius: 3px;
+   text-align: center;
+}
+
+.add-btn::before{
+   content: "\2b";
+   display: inline-block;
+   margin: auto;
+   color: rgb(255, 255, 255);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.minus-btn, .add-btn {
+   width: 20px;
+   border-radius: 3px;
+   background-color: var(--light-color);
+}
+
+
+
+/* ingredient list */
+#ing-list{
+   margin-left: 2.2em;
+   margin-right: 1.5em;
+   line-height: 2em;
+   text-align: justify;
+   font-size: 16px;
+}
+
+::marker{
+   color: var(--light-color);
+}
+
 
 /* process */
 .rec-process {
@@ -657,10 +823,6 @@ section{
    width: 100%;
 }
 
-.rproc{
-   display: block;
-   align-items: flex-start;
-}
 
 /* .txt-area{
    max-height: 150%;
@@ -684,8 +846,7 @@ textarea{
 
 }
 
-
-/* line border between source & video */
+/* line border between ingredients & video */
 .section-header {
    position: relative;
    display: flex; /* sets a flex container */
@@ -709,6 +870,20 @@ textarea{
    top: 1.2em;
  }
 
+/* video */
+.rec-vid{
+   margin: 1em auto;
+   max-width: 50em;
+   width: 100%;
+}
+
+.rec-vid iframe{
+   margin: 1em auto 0;
+   width: 100%;
+   height: 90%;
+   aspect-ratio: 16 / 9;
+   
+}
 
  /* ratings */
 .rec-rating{
@@ -927,7 +1102,16 @@ hr {
 # MEDIA QUERIES
 --------------------------------------------------------------*/
 
-@media (max-width:991px) {
+/* @media only screen and (max-width: 1200px) {
+   .img-rec{
+      width: 100%;
+      object-fit: cover;
+      object-position: bottom;
+   }
+} */
+
+
+@media only screen and (max-width:991px) {
    
    html{
       font-size: 55%;
@@ -937,9 +1121,54 @@ hr {
       padding: 1.15em 0 0;
    } 
 
+   .urv-upper-content{
+      grid-template-columns: repeat(1, 100%);
+   }
+
+   .urv-img{
+      max-width: 100%;
+   }
+
+   .img-rec{
+      width: 82vw;
+   }
+
+   .save-btn{
+      font-size: 2em;
+   }
+
+   .urv-upper-details{
+      justify-content: flex-start;
+   }
+
+   .urv-time{
+      margin: 1em 3em 1em 0;
+   }
+
+   .urv-cal, .urv-add-mp{
+      margin: 1em 3em 1em;
+   }
+
+   .add-mp{
+      font-size: 1em;
+   }
+
+   .rec-ing-title, .rproc{
+      margin: 0.5em 0 0.5em 0;
+   }
+
+   .rec-ing-serving{
+      margin: 0;
+   }
+   
+   #ing-list{
+      margin: 1em;
+   }
+
+
 }
 
-@media (max-width:768px){
+@media only screen and (max-width:768px){
 
    #menu-btn{
       display: inline-block;
@@ -970,10 +1199,50 @@ hr {
       width:auto;
    }
 
+   .img-rec{
+      width: 90vw;
+   }
+
+   .star{
+      font-size: 2.3em;
+      padding: 1rem;
+   }
 
 }
 
-@media (max-width:450px) {
+@media only screen and (max-width: 473px){
+   .img-rec{
+      width: 85vw;
+   }
+
+   .rating-title{
+      font-size: 1.2em;
+   }
+   
+
+   .grocery-header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+   } 
+
+   .del-all::before{
+      float: none;
+   } 
+
+   .del-all{
+      padding: 0.80em 0 0;
+   }
+
+   .gForm{
+      float: none;
+      display: block;
+      margin: auto 0 auto 20px;
+   }
+ 
+}
+
+@media only screen and (max-width:450px) {
    
    html{
       font-size: 50%;
@@ -1016,54 +1285,39 @@ hr {
    .flex-btn{
       flex-flow: column;
       gap:0;
-   }   
-}
-
-/* @media only screen and (max-width: 1200px) {
+   } 
+   
    .img-rec{
-      width: 100%;
-      object-fit: cover;
-      object-position: bottom;
-   }
-} */
-
-@media (max-width: 473px){
-   .grocery-header{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-   } 
-
-   .del-all::before{
-      float: none;
-   } 
-
-   .del-all{
-      padding: 0.80em 0 0;
+      width: 85vw;
    }
 
-   .gForm{
-      float: none;
-      display: block;
-      margin: auto 0 auto 20px;
-   }
- 
+
+
 }
 
-@media (max-width: 396px){
+@media only screen and (max-width: 396px){
    .gForm{
       margin: auto 0 auto 10px;
    }
 }
 
-@media (max-width: 322px) {
+@media only screen and (max-width: 354px){
+   .ing-details{
+      flex-direction: column;
+   }
+
+   .ing-gl-btn{
+      margin: 0 0 1.3em 1em;
+   }
+}
+
+
+@media only screen and (max-width: 322px) { 
    #list {
       background-color: #fff;
       padding: 0 2px 0;
    }
 }
-
-
 
 
 
