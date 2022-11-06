@@ -128,11 +128,12 @@
                             <button type="button" id="mealPlanBut">Edit Schedule:</button>
                             <div id="mealPlan" class="modal">
                                 <div class="modal-content">
-                                    <span class="closeBut">&times;</span>
                                     <div id="cont">
+                                        <span class="closeBut">&times;</span>
+                                        <p class="mp-mdl">Choose Day & Meal Time</p>
                                         <form action="/mealPlan/edit" method="post"> 
-                                            <input type="text" name="datetimes" />
-                                                <label for="recMTime" class="addRecLabel">Meal Time: </label>
+                                            <input type="text" class="mp-date" name="datetimes" />
+                                                <!-- <label for="recMTime" class="addRecLabel">Meal Time: </label> -->
                                             <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
                                                 <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
                                             <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
@@ -153,23 +154,26 @@
                             <button type="button" id="mealPlanBut" class="add-mp">Add to Meal Plan</button>
                             <div id="mealPlan" class="modal">
                                 <div class="modal-content">
-                                    <span class="closeBut">&times;</span>
                                     <div id="cont">
+                                        <span class="closeBut">&times;</span>
+                                        <p class="mp-mdl">Choose Day & Meal Time</p>
                                         <form action="/mealPlan" method="post"> 
-                                            <input type="text" name="datetimes" />
-                                                <label for="recMTime" class="addRecLabel">Meal Time: </label>
-                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
-                                                <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
-                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
-                                                <label for="mtLunch" class="addRecLabel">Lunch</label>
-                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
-                                                <label for="mtLunch" class="addRecLabel">Meryenda</label>
-                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
-                                                <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
+                                            <input type="text" class="mp-date" name="datetimes" />
+                                                <!-- <label for="recMTime" class="addRecLabel">Meal Time: </label> -->
+                                            <div class="meal-time">
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                                                    <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                                                    <label for="mtLunch" class="addRecLabel">Lunch</label>
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+                                                    <label for="mtLunch" class="addRecLabel">Meryenda</label>
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                                                    <label for="mtDinner" class="addRecLabel">Dinner</label>
+                                            </div>
                                             <input type="hidden" name="recID" value="<%= rec.rec_id %>">
                                             <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
                                             <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
-                                            <br><br><button type="submit" class="add-mp">Add to Meal Plan</button>
+                                            <button type="submit" class="mp-add">Add to Meal Plan</button>
                                         </form>
                                     </div>
                                 </div>
@@ -208,12 +212,15 @@
                             <!-- Modal content -->
                             <div class="modal-content">
                                 <span class="close">&times;</span>
-                                <h1 class="rec-name"><%= rec.rec_name %></h1>
+                                <p class="rec-name-mdl"><%= rec.rec_name %></p>
+                                <p class="ing-mdl">Ingredients</p>
+                                <!-- border line -->
+                                <span class="line-mdl"></span>
                                 <form action="/grocery-list" method="post" onsubmit="addGrocery()">
                                     <input type="hidden" name="recId" value="<%= rec.rec_id %>">
                                     <input type="hidden" name="gList" id="gList" value="">
                                     <div id="ingList"></div>
-                                    <br><br><button type="submit">add ingredients to grocery list</button>
+                                    <button type="submit" class="add-mdl">add ingredients</button>
                                 </form>
                             </div>
                         </div>
@@ -241,7 +248,7 @@
                 </div>
     
                 <!-- ingredients list -->
-                <div id="ing-list">
+                <div id="ings">
                     <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
                     <% for( let index = 0; index < recIngs.length; index++ ) { %>
                         <input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>">
@@ -522,7 +529,9 @@
         btn.onclick = function() {
             getIngs();
             ingsArr.forEach(ia => {
-                let input = '<input type="checkbox" name="ingsCb[]" value="'+ ia +'">&nbsp;&nbsp;&nbsp;<label for="ingCheckbox">'+ ia +'</label><br>';
+                let input = '<div class="list-mdl" style="font-size: 1.3em; margin:0.7em auto 0.7em;"><input type="checkbox" name="ingsCb[]"value="'
+                    + ia +'">&nbsp;&nbsp;&nbsp;<label for="ingCheckbox" style="font-weight: normal;">'
+                    + ia +'</label><br></div><span class="bdr-mdl" style="display: block; border-top: 1px solid black; height: 1px; width: 100%; margin: 0 auto; opacity: 0.1;"></span>';
                 $("#ingList").append(input);
             });
             modal.style.display = "block";
@@ -598,13 +607,14 @@
 
         //close the modal
         cls.onclick = function() {
-
-            modal.style.display = "none";
+            // $("#cont").empty();
+            mealModal.style.display = "none";
         }
 
         //close it
         window.onclick = function(event) {
         if (event.target == mealModal) {
+            $("#cont").empty();
             mealModal.style.display = "none";
         }
         }
