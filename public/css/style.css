@@ -838,12 +838,12 @@ section{
 textarea{
    height: auto;
    width: 100%;
+   margin: 0 1em;
    padding: 1.5em;
    resize: none;
    line-height: 1.7em;
    text-align: justify;
    overflow: auto;
-
 }
 
 /* line border between ingredients & video */
