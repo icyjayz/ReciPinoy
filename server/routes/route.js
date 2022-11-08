@@ -37,6 +37,7 @@ router.post('/grocery-list', userController.addGrocery);
 router.post('/grocery-list/add', userController.addItem);
 router.get('/saved', userController.userSavedRecipes);
 router.get('/saved/:id', userController.userSavedRView);
+router.get('/saved/edit/:id', userController.userSavedEdit);
 router.post('/saved/edit/:id', userController.userSavedSubEdit);
 router.get('/saved/delete/:id', userController.userSavedDelete);
 router.post('/mealPlan', userController.mealPlan);

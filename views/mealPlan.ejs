@@ -71,9 +71,9 @@
                     </thead>-->
                     <tbody>
                         <% mealPlan.forEach( mealPlan => { %>
-                        <tr class ="align-middle">
-                            <td class="align-middle">
-                                <div class="card-text-center" style="width: 80rem; align-items: center;">
+                        <tr class="align-middle">
+                            <!--<td>style="width: 80rem; align-items: center;">-->
+                                <div class="card-text-center" style="width: 30rem; align-items: center;">
                                     <div class="card-header">
                                         <%= mealPlan.sDay%><br> <%= mealPlan.dateTime%>
                                       </div>
@@ -83,8 +83,8 @@
                                       <a href="/mealPlan/<%= mealPlan.rec_id%>" class="btn btn-primary">View Recipe</a>
                                     </div>
                                 </div>   
-                            </td>
-                        </tr>    
+                            <!--</td>-->  
+                        </tr>  
                         <% }) %>
                     </tbody>
                 </table>

@@ -201,8 +201,56 @@
         
     <% }) %>
 
+    <button  
+      id="notify-me"
+      onclick="notifyMe()"> Notify Me
+    </button>
 
 
+
+<script>
+     /*// Bind function to onclick event for checkbox
+document.getElementById('pushNotif').onclick = function() {
+    // access properties using this keyword
+    if ( this.checked ) {
+        // Returns true if checked
+        //alert( this.value );
+        // (A) OBTAIN USER PERMISSION
+        // (A1) ASK FOR PERMISSION
+        if (Notification.permission === "default") {
+            Notification.requestPermission().then((perm) => {
+                if (Notification.permission === "granted") {
+                regWorker().catch((err) => { console.error(err); } );
+                }
+                else { alert("Please allow notifications."); }
+            });
+        }
+    } else {
+        // Returns false if not checked
+    }
+};*/
+    /*addEventListener('load', async () =>{
+        let sw = await navigator.serviceWorker.register('./controllers/sw.js')
+        console.log(sw)
+    })
+
+    async function notifyMe() {
+        let sw = await navigator.serviceWorker.ready;
+        let push = await sw.pushManager.notifyMe({
+            userVisibleOnly: true,
+            applicationServerKey: 'BAjsC077dFVN4--_-Tp87Vh-WJ8i7xjr1qpx3ZnmfB8uMgLU9nFjjwmVsUeBBDg5S-GWKuCwQQGydn3r5yJRC9k'
+        })
+        console.log(JSON.stringtify(push))
+    }*/
+let button = document.querySelector('button');
+button.addEventListener('click', () =>{
+    if(window.Notification) return;
+
+    Notification
+    .requestPermission()
+    .then(console.log('notification on'))
+});
+</script>
 <!-- custom js file link  -->
 <script src="/public/js/script.js"></script>
 </body>

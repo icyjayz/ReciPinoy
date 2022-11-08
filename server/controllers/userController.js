@@ -5,7 +5,6 @@ const User = require('../classes/user');
 const randToken = require('rand-token');
 const Recipe = require('../classes/recipe');
 const { json } = require('express');
-const { DayTableModel } = require('fullcalendar');
 
 
 
@@ -2223,7 +2222,7 @@ exports.mealPlanRec = (req, res) =>{
             let date = new Date();
             let dateC = date.getWeek();
             //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
-            conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime DESC',[dateC], (err, mealPlan) => {
+            conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.day',[dateC], (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
                 } else {
@@ -2511,7 +2510,7 @@ exports.mealPlanPastBut = (req, res) => {
     }
 }
 exports.mealPlanNextBut = (req, res) => {
-    function getFirstDay(){
+    /*function getFirstDay(){
         let curr = new Date; // get current date
         let first = curr.getDate() + curr.getDay()-4; // First day is the day of the month - the day of the week
         console.log(first);
@@ -2552,6 +2551,39 @@ exports.mealPlanNextBut = (req, res) => {
                 });
             })
         }
+    }catch(error){
+        res.status(500).json({ message: error.message });
+
+    }*/
+    Date.prototype.getWeek = function() {
+        var date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        // Thursday in current week decides the year.
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        // January 4 is always in week 1.
+        var week1 = new Date(date.getFullYear(), 0, 4);
+        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+      };
+    try{
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn) => {
+                let weekView = req.body.weekViewInp;
+                console.log(weekView);
+                let date = new Date();
+                let dateC = date.getWeek() + 1;
+                console.log(dateC);
+                conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime', [dateC], (err, mealPlan) => {
+                    if(err){
+                        console.log(err);  
+                    }else{
+                        res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
+                    }
+                })
+            })
+        }
+        
     }catch(error){
         res.status(500).json({ message: error.message });
 
@@ -2640,51 +2672,50 @@ exports.mealPlanEditButton = (req, res) => {
                 }
                 else{
                     let id = req.body.recID;
-                            conn.query('SELECT * FROM mealPlan WHERE rec_id = ?', [id], (err, row) => {
-                                if(err){
-                                    console.log(err);
-                                }
-                                else{
-                                    let dateTime = req.body.datetimes;
-                                    let date = new Date(dateTime);
-                                    let rec = new Recipe.Recipe();
-                                    let userid = req.session.userId;
-                                    let id = req.body.recID;
-                                    let mon = String(date.getMonth());
-                                    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                                    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                                    let month = months[date.getMonth()];
-                                    let day = date.getDate();
-                                    let day1 = String(date.getDate());
-                                    let dayMonth = day1 + mon;
-                                    let sDay = days[date.getDay()];
-                                    let week = date.getWeek();
-                                    let hr = date.getHours();
-                                    let ampm = "am";
-                                    if( hr > 12 ) {
-                                        hr -= 12;
-                                        ampm = "pm";
-                                    }
-                                    let min = date.getMinutes();
-                                    if (min < 10) {
-                                        min = "0" + min;
-                                    }
-                                    let time = hr + ":" + min + ampm;
-                                    console.log(month, day, sDay, time, date, week, dayMonth);
-                                    conn.query('UPDATE mealPlan SET user_id = ?, rec_id = ?, month = ?, day = ?, time = ?, sDay = ?, weekCount = ?, dateTime = ?, dayMonth = ?', [req.session.userId, id, month, day, time, sDay, week, dateTime, dayMonth], (err, row) => {
-                                    if(err){
-                                        console.log(err);
-                                    }
-                                    else{
-                                        req.flash('msg', 'Successfully rescheduled the meal plan!');
-                                        res.redirect('/recipes/' + id); 
-                                    }
-                                    })
-                                    conn.release();
-                                }
-                            })
-
+                    conn.query('SELECT * FROM mealPlan WHERE rec_id = ?', [id], (err, row) => {
+                        if(err){
+                            console.log(err);
                         }
+                        else{
+                            let dateTime = req.body.datetimes;
+                            let date = new Date(dateTime);
+                            let rec = new Recipe.Recipe();
+                            let userid = req.session.userId;
+                            let id = req.body.recID;
+                            let mon = String(date.getMonth());
+                            let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                            let month = months[date.getMonth()];
+                            let day = date.getDate();
+                            let day1 = String(date.getDate());
+                            let dayMonth = day1 + mon;
+                            let sDay = days[date.getDay()];
+                            let week = date.getWeek();
+                            let hr = date.getHours();
+                            let ampm = "am";
+                            if( hr > 12 ) {
+                                hr -= 12;
+                                ampm = "pm";
+                            }
+                            let min = date.getMinutes();
+                            if (min < 10) {
+                                min = "0" + min;
+                            }
+                            let time = hr + ":" + min + ampm;
+                            console.log(month, day, sDay, time, date, week, dayMonth);
+                            conn.query('UPDATE mealPlan SET user_id = ?, rec_id = ?, month = ?, day = ?, time = ?, sDay = ?, weekCount = ?, dateTime = ?, dayMonth = ? WHERE rec_id =?', [req.session.userId, id, month, day, time, sDay, week, dateTime, dayMonth, id], (err, row) => {
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                req.flash('msg', 'Successfully rescheduled the meal plan!');
+                                res.redirect('/recipes/' + id); 
+                            }
+                            })
+                            conn.release();
+                        }
+                    })
+                }
 
                     
             })
