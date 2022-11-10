@@ -72,14 +72,32 @@
             </div>
         </section>
 
+        <!-- search grid -->
         <div class="box-container">
             <% if (recs.length > 0) { %>
                 <% recs.forEach(rec => { %>
-                    <form action="" method="post" class="box">
-                        <a href="/recipes/<%= rec.rec_id%>" class="fas fa-eye"></a>
-                        <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150">
-                        <div class="cat"><%= rec.rec_categ %></div>
-                        <div class="name"><%= rec.rec_name %></div>
+                    <form action="" method="post" class="box-card">
+                        <div class="box-header">
+                            <!-- <a href="/recipes/<%= rec.rec_id%>" class="rec-eye"></a> -->
+                            <img src="/images/<%= rec.rec_image%>"  class="box-img" alt="<%= rec.rec_name %> Image">
+                        </div>
+                        <div class="box-details">
+                            <!-- category -->
+                            <span class="box-categ"><%= rec.rec_categ %></span>
+                            <!-- recipe name -->
+                            <h1 class="box-name"><%= rec.rec_name %></h1>
+                            <!-- rating -->
+                            <% if (rec.rec_rate) { %>
+                                <div class="box-rate">
+                                    <%= rec.rec_rate %>
+                                    <span class="str"></span>
+                                </div>
+                            <% } else { %>
+                                <span class="box-not">This recipe hasn't been rated.</span>
+                            <% } %>
+
+                            <!-- add saved recipe button -->
+                        </div>
                     </form>
                 <% }) %>
             <% } else { %>

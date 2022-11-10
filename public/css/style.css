@@ -460,6 +460,14 @@ section{
 /*--------------------------------------------------------------
 # Recipe Search Results
 --------------------------------------------------------------*/
+.recipeResults{
+   background-color: #fff;
+   margin: 5rem auto;
+   padding: 0 4rem 4rem;
+   width: min(90%, 110rem);
+}
+
+
 .titleheading{
       text-align: center;
       margin-bottom: 2rem;
@@ -468,66 +476,64 @@ section{
       font-size: 3rem;
 }
 
-.recipeResults .box-container{
+.box-container {
    display: grid;
-   grid-template-columns: repeat(auto-fit, 33rem);
+   grid-template-columns: repeat(3, 1fr);
    justify-content: center;
-   align-items: flex-start;
-   gap:1.5rem;
+   align-items: center;
+   gap: 3rem;
 }
 
-.recipeResults .box-container .box{
-   border:var(--border);
-   padding:1.5rem;
-   position: relative;
-   overflow: hidden;
+.box-card{
+   display: flex;
+   flex-direction: column;
+   box-shadow: 0px 0px 15px 0px rgb(217, 217, 217);
+   border-radius: 2em;
 }
 
-.recipeResults .box-container .box img{
-   height: 25rem;
+.box-header{
+   height: 20em;
+   max-width: 100%;
+}
+
+.box-img{
    width: 100%;
-   object-fit: contain;
-   margin-bottom: 1rem;
+   height: 100%;
+   object-fit: cover;
+   object-position: 90% 50%;
+   border-top-left-radius: 2em;
+   border-top-right-radius: 2em;
 }
 
-.recipeResults .box-container .box .fa-eye{
-   position: absolute;
-   top:1rem;
-   height: 4.5rem;
-   width: 4.5rem;
-   line-height: 4.3rem;
-   border:var(--border);
-   background-color: var(--white);
-   cursor: pointer;
-   font-size: 2rem;
-   color:var(--black);
-   transition: .2s linear;
-   text-align: center;
+.box-details{
+   /* border: 1px solid rgb(139, 139, 139); */
+   display: flex;
+   
+   height: 10em;
+   margin-top: 2em;
 }
 
-.recipeResults .box-container .box .fa-eye:hover{
-   background-color: var(--black);
-   color:var(--white);
+.box-categ{
+   text-transform: uppercase;
+   font-weight: normal;
+   font-size: 0.7em;
+   margin: 3em 0 1em 3em;
+   color:rgb(142, 142, 142);
 }
 
-.recipeResults .box-container .box .fa-eye{
-   left: -10rem;
+.box-name{
+   /* text-transform: uppercase; */
+   font-weight: 450;
+   font-size: 2em;
+   letter-spacing: 0.03em;
+   margin: 0.5em 1em;
 }
 
-.recipeResults .box-container .box:hover .fa-eye{
-   left: 1rem;
+.box-rate, .box-not {
+   margin: 2em;
 }
 
-.recipeResults .box-container .box .cat{
-   font-size: 1.8rem;
-   color:var(--light-color);
-}
 
-.recipeResults .box-container .box .name{
-   font-size: 2rem;
-   color:var(--black);
-   margin:1rem 0;
-}
 
 /*--------------------------------------------------------------
 # Recipe View
@@ -1280,6 +1286,9 @@ hr {
 }
 
 @media only screen and (max-width:768px){
+   .userRecipeView{
+      padding: 0 2rem 2rem;
+   }
 
    #menu-btn{
       display: inline-block;
@@ -1304,10 +1313,16 @@ hr {
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
    }
 
-   .userRecipeView, .grocery-cont {
+   .recipeResults, .userRecipeView, .grocery-cont {
       background-color: #fff;
       margin: 0;
       width:auto;
+   }
+
+   .box-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7em;
+      margin: 0 2em;
    }
 
    .img-rec{
@@ -1331,6 +1346,10 @@ hr {
 }
 
 @media only screen and (max-width: 473px){
+   /* .userRecipeView{
+      padding: 0 2rem 2rem;
+   } */
+
    .img-rec{
       width: 85vw;
    }
@@ -1385,8 +1404,12 @@ hr {
       grid-template-columns: 1fr;
    }
 
-   .recipeResults .box-container{
+   .box-container{
       grid-template-columns: 1fr;
+   }
+
+   .box-img{
+      object-position: 100% 65%;
    }
 
    .heading h3{
@@ -1416,7 +1439,7 @@ hr {
 
 }
 
-@media only screen and (max-width: 396px){
+@media only screen and (max-width: 396px){ 
    .gForm{
       margin: auto 0 auto 10px;
    }
