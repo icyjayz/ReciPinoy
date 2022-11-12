@@ -1935,7 +1935,7 @@ exports.getFilter = (req,res) => {
                 }) 
             }
             else if(mealTime == 31){
-                conn.query('SELECT * FROM rec WHERE rec_time IN (40, 41, 42, 43, 44 45,47,48,49,50,55,56,57,58,59, "1 hr%")  ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
+                conn.query('SELECT * FROM rec WHERE rec_time IN (40, 41, 42, 43, 44,45,47,48,49,50,55,56,57,58,59, "1 hr%")  ORDER BY rec_time ASC LIMIT 35;',(err, filter) =>{
                     if(err){
                         console.log(err);
                     }else{
@@ -2338,28 +2338,37 @@ exports.mealPlanRecView = (req, res) => {
                             let msg = req.flash('msg');
                             session = req.session;
                             let isRated = false;
+                            let isSaved = false;
                             // let ratedArr = [];
                             if(session.userId){
-                                conn.query('SELECT user_ratedRecs FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                conn.query('SELECT user_ratedRecs, user_Saved, user_mealPlan FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
                                     if(err){
                                         console.log(err);
                                     }
                                     else{
                                         let getRated = rated[0].user_ratedRecs;
+                                        let getSaved = rated[0].user_Saved;
                                         if(getRated){
                                             let ratedArr = getRated.split('/');
                                             if(ratedArr.includes(rId)){
                                                 isRated = true;
                                             }
                                         }
-                                        res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated});
+                                        if(getSaved){
+                                            let savedArr = getSaved.split('/');
+                                            if(savedArr.includes(rId)){
+                                                isSaved= true;
+                                                console.log('isSaved');
+                                            }
+                                        }
+                                        res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated, isSaved: isSaved});
                                     }
                                 })
                                 
 
                             }
                             else{
-                                res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated});
+                                res.render('mealPlanRecView', { recs: recs, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated, isSaved: ''});
                             }
                             
                         }
