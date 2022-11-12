@@ -16,7 +16,7 @@
     <!-- guest dashboard section starts  -->
     <%#- include('./partials/logoOnlyNav'); %>
     <%- include('./partials/userNav'); %>
-    
+
     <section class="recipeResults">
         <a href="/" class="back-btn">>> Back</a>
 
@@ -96,6 +96,32 @@
                                 <span class="box-not">This recipe hasn't been rated.</span>
                             <% } %>
                             <!-- add saved recipe button -->
+                            <!-- # add to saved recipe # -->
+                            <div class="urv-saved-btn">
+                                <% if (isSaved) { %>
+                                    <form action="/search/unsave/<%= rec.rec_id%>" method="post">
+                                        <br><br><button type="submit" value ="Unsave Recipe"></button>
+                                    </form>
+                                <% } else { %>
+                                    <form action="/search/<%= rec.rec_id%>" method="post">
+                                        <input type="hidden" name="recID" id="recID" value="<%= rec.rec_id %>">
+                                        <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
+                                        <input type="hidden" name="recDesc" id="recDesc" value="<%= rec.rec_desc %>">
+                                        <input type="hidden" name="recProcess" id="recProcess" value="<%= rec.rec_process %>">
+                                        <input type="hidden" name="recCateg" id="recCateg" value="<%= rec.rec_categ %>">
+                                        <input type="hidden" name="recTime" id="recTime" value="<%= rec.rec_time %>">
+                                        <input type="hidden" name="recServing" id="recServing" value="<%= rec.rec_serving %>">
+                                        <input type="hidden" name="recSrc" id="recSrc" value="<%= rec.rec_src %>">
+                                        <input type="hidden" name="recVid" id="recVid" value="<%= rec.rec_vid %>">
+                                        <input type="hidden" name="recCal" id="recCal" value="<%= rec.rec_cal %>">
+                                        <input type="hidden" name="recMealtime" id="recMealtime" value="<%= rec.rec_mealTime %>">
+                                        <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
+                                        <input type="hidden" name="recRate" id="recRate" value="<%= rec.rec_rate %>">
+                                        <button type="submit" class="save-btn"></button>
+                                    </form>
+                                <% } %> 
+                            </div>
+                        </div>
                         </div>
                     </form>
                 <% }) %>

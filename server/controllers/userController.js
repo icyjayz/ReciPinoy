@@ -408,12 +408,29 @@ exports.userSearch = (req, res) => {
                         console.log(err, '\n');
                     }
                     else{
+                        let isSaved = false;
+                        let recid = result.rec_id;
                         session = req.session;
                         if(session.userId){
-                            res.render('userSearchResults', {title: 'Search Results', recs: result, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    res.render('userSearchResults', {title: 'Search Results', recs: result, id: session.userName, isSaved: isSaved});
+                                }
+                            }) 
                         }
                         else{
-                            res.render('userSearchResults', {title: 'Search Results', recs: result, id: ''});
+                            res.render('userSearchResults', {title: 'Search Results', recs: result, id: '', isSaved: ''});
                         }
                         
                     }   
@@ -1201,7 +1218,7 @@ exports.userSaveRec = (req, res) =>{
                 }
             })
         }else{
-            req.flash('msg', 'You need to login to rate the recipe!')
+            req.flash('msg', 'You need to login to save the recipe!')
             res.redirect('/login');
         }
         
@@ -1505,7 +1522,28 @@ exports.userSavedDelete = (req, res) => {
                     }
                     else{
                         conn.query('DELETE FROM saved_recing WHERE rec_id =?', [id]);
-                        conn.query('DELETE user_Saved FROM user WHERE rec_id LIKE ?', [id]);
+                        //conn.query('DELETE user_Saved FROM user WHERE rec_id LIKE ?', [id]);
+                        conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, saved) => {
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                let getSaved = saved[0].user_Saved;
+                                if(getSaved){
+                                    let savedArr = getSaved.split('/');
+                                    if (savedArr.includes(id)) {
+                                        for(let i = 0; i < savedArr.length; i++){ 
+                                            if (savedArr[i] === id) { 
+                                                savedArr.splice(i, 1); 
+                                            }
+                                        }
+                                    }
+                                    conn.query('UPDATE users SET user_Saved = ?', [savedArr]);
+                                    console.log(id);
+                                    console.log('deleted');
+                                }
+                            }
+                        })
                         conn.release();
                         res.redirect('/saved'); 
                     }
@@ -1925,15 +1963,32 @@ exports.getFilter = (req,res) => {
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(mealTime);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
                 }) 
             }
@@ -1942,15 +1997,32 @@ exports.getFilter = (req,res) => {
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(mealTime);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
                 }) 
             }
@@ -1959,15 +2031,32 @@ exports.getFilter = (req,res) => {
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(mealTime);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
                 }) 
             }
@@ -1976,15 +2065,32 @@ exports.getFilter = (req,res) => {
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(mealTime);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
                 }) 
             }
@@ -1995,69 +2101,137 @@ exports.getFilter = (req,res) => {
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(calorie);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
-            })
-        }
+                }) 
+            }
         else if(calorie=="800"){
                 conn.query('SELECT * FROM rec WHERE rec_cal BETWEEN 401 AND 800 ORDER BY rec_cal ASC LIMIT 35;',(err, filter) =>{
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(calorie);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
-            })
-        }
+                }) 
+            }
         else if(calorie=="801"){
                 conn.query('SELECT * FROM rec WHERE rec_cal BETWEEN 801 AND 1200 ORDER BY rec_cal ASC LIMIT 35;',(err, filter) =>{
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(calorie);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
-            })
-        }
+                }) 
+            }
         else if(calorie=="1201"){
                 conn.query('SELECT * FROM rec WHERE rec_cal > 1201 ORDER BY rec_cal ASC LIMIT 35;',(err, filter) =>{
                     if(err){
                         console.log(err);
                     }else{
+                        let isSaved = false;
+                        let recid = filter.rec_id;
                         console.log(calorie);
                         session = req.session;
                         if(session.userId){
-                            conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                            conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    let getSaved = rated[0].user_Saved;
+                                    if(getSaved){
+                                        let savedArr = getSaved.split('/');
+                                        if(savedArr.includes(recid)){
+                                            isSaved= true;
+                                            console.log('isSaved');
+                                        }
+                                    }
+                                    conn.release();
+                                    res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                }
+                            })
                         }
                         else{
                             conn.release();
-                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                            res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                     }}
-            })
-        }
+                }) 
+            }
         };
         let dishType = req.body.recDishInp;
         let categoryRec = req.body.recCateg;
@@ -2085,13 +2259,30 @@ exports.getFilter = (req,res) => {
                             console.log(categoryRec);
                             console.log(mealTime);
                             session = req.session;
+                            let isSaved = false;
+                            let recid = filter.rec_id;
                             if(session.userId){
-                                conn.release();
-                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName});
+                                conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        let getSaved = rated[0].user_Saved;
+                                        if(getSaved){
+                                            let savedArr = getSaved.split('/');
+                                            if(savedArr.includes(recid)){
+                                                isSaved= true;
+                                                console.log('isSaved');
+                                            }
+                                        }
+                                        conn.release();
+                                        res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: session.userName, isSaved: isSaved});
+                                    }
+                                })
                             }
                             else{
                                 conn.release();
-                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: ''});
+                                res.render('userSearchResults', {title: 'Filter Results', recs: filter, id: '', isSaved: ''});
                         }}
                     })
                 }
@@ -2399,6 +2590,28 @@ exports.mealPlanRecDelete = (req, res) => {
                         conn.release();
                     }
                     else{
+                        //conn.query('DELETE user_mealPlan FROM user WHERE rec_id LIKE ?', [id]);
+                        conn.query('SELECT user_mealPlan FROM users WHERE user_id = ?', [session.userId], (err, mealPlan) => {
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                let getmeal = mealPlan[0].user_mealPlan;
+                                if(getmeal){
+                                    let mealArr = getmeal.split('/');
+                                    if (mealArr.includes(id)) {
+                                        for(let i = 0; i < mealArr.length; i++){ 
+                                            if (mealArr[i] === id) { 
+                                                mealArr.splice(i, 1); 
+                                            }
+                                        }
+                                    }
+                                    conn.query('UPDATE users SET user_mealPlan = ?', [mealArr]);
+                                    console.log(id);
+                                    console.log('deleted');
+                                }
+                            }
+                        })
                         conn.release();
                         res.redirect('/mealplan'); 
                     }
@@ -2721,7 +2934,7 @@ exports.mealPlanEditButton = (req, res) => {
                             }
                             else{
                                 req.flash('msg', 'Successfully rescheduled the meal plan!');
-                                res.redirect('/recipes/' + id); 
+                                res.redirect('/mealPlan/' + id); 
                             }
                             })
                             conn.release();
@@ -2740,3 +2953,124 @@ exports.mealPlanEditButton = (req, res) => {
         res.status(500).json({ message: error.message});
     }
 }
+exports.userSearchSaveUnsaved = (req, res) =>{
+    try{
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn) => {
+                let id = req.params.id;
+                conn.query('DELETE FROM saved where rec_id =?', [id], (err, result) => {
+                    if(err){
+                        console.log('not deleted');
+                        res.redirect('/recipes/' + id); 
+                        conn.release();
+                    }
+                    else{
+                        conn.query('DELETE FROM saved_recing WHERE rec_id =?', [id]);
+                        conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, saved) => {
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                let getSaved = saved[0].user_Saved;
+                                if(getSaved){
+                                    let savedArr = getSaved.split('/');
+                                    if (savedArr.includes(id)) {
+                                        for(let i = 0; i < savedArr.length; i++){ 
+                                            if (savedArr[i] === id) { 
+                                                savedArr.splice(i, 1); 
+                                            }
+                                        }
+                                    }
+                                    conn.query('UPDATE users SET user_Saved = ?', [savedArr]);
+                                    console.log(id);
+                                    console.log('deleted');
+                                }
+                            }
+                        })
+                        conn.release();
+                        req.flash('msg', 'Recipe successfully unsaved!');
+                        res.redirect('/search'); 
+                    }
+                })
+            })
+        }
+    }
+    catch(error){
+        res.status(500).json({ message: error.message });
+
+    }
+}
+exports.userSearchSave = (req, res) =>{
+    try {
+        session = req.session;
+        if(session.userId){
+            pool.getConnection((err, conn)=>{
+                let userid = req.session.userId;
+                let id = req.body.recID;
+                let name = req.body.recName;
+                let desc = req.body.recDesc;
+                let categ = req.body.recCateg;
+                let time = req.body.recTime;
+                let serving = req.body.recServing;
+                let src = req.body.recSrc;
+                let vid = req.body.recVid;
+                let cal = req.body.recCal;
+                let pr = req.body.recProcess;
+                let mealTime = req.body.recMealtime;
+                let img = req.body.recImg;
+                let rate = req.body.recRate;
+                // console.log(rec_id);
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT user_Saved FROM users WHERE user_id = ?', [session.userId], (err, saved) =>{
+                        if (err) {
+                            console.log(err);   
+                        } else {
+                            let getSaved = saved[0].user_Saved;
+                            if(getSaved === null){
+                                getSaved = '';
+                            }
+                            getSaved += id.toString() + '/';
+
+                            conn.query('UPDATE users SET user_Saved = ? WHERE user_id = ?', [getSaved, session.userId], (err, row) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    // console.log(rec_id);
+                                    conn.query('INSERT INTO saved(user_id, rec_id, rec_name, rec_desc, rec_process, rec_categ, rec_time, rec_serving, rec_src, rec_vid, rec_cal, rec_mealTime, rec_img, rec_rate) VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [userid, id, name, desc, pr, categ, time, serving, src, vid, cal, mealTime, img, rate], (err, row) => {
+                                        if(err){
+                                            console.log(err);
+                                        }
+                                         else{
+                                            conn.query('INSERT IGNORE INTO saved_recing(rec_id, ingId, ingQuant, ingUnit, ingIns) SELECT recId, ingId, ingQuant, ingUnit, ingIns FROM recing WHERE recId = ?', [id], (err, row) => {
+                                                if(err){
+                                                    console.log(err);
+                                                } else{
+                                                    req.flash('msg', 'Recipe successfully saved!');
+                                                    res.redirect('/search'); 
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+
+                        }
+                    })
+                    
+                }
+            })
+        }else{
+            req.flash('msg', 'You need to login to save the recipe!')
+            res.redirect('/login');
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
+    }
+}
+

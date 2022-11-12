@@ -121,6 +121,35 @@
 
                     <!-- border line -->
                     <span class="bdr-line"></span>
+                    
+                    <!--Edit Schedule of meal plan -->
+                    <div class="urv-add-mp">
+                        <button type="button" id="mealPlanBut">Edit Schedule:</button>
+                            <div id="mealPlan" class="modal">
+                                <div class="modal-content">
+                                    <div id="cont">
+                                        <span class="closeBut">&times;</span>
+                                        <p class="mp-mdl">Choose Day & Meal Time</p>
+                                        <form action="/mealPlan/edit" method="post"> 
+                                            <input type="text" class="mp-date" name="datetimes" />
+                                                <!-- <label for="recMTime" class="addRecLabel">Meal Time: </label> -->
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                                                <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                                                <label for="mtLunch" class="addRecLabel">Lunch</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+                                                <label for="mtLunch" class="addRecLabel">Meryenda</label>
+                                            <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                                                <label for="mtDinner" class="addRecLabel">Dinner</label><br><br>
+                                            <input type="hidden" name="recID" value="<%= rec.rec_id %>">
+                                            <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
+                                            <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
+                                            <br><br><button type="submit">Edit Schedule</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
 
                 <!-- recipe source -->
                 <!-- <div class="rec-src"> -->
@@ -488,6 +517,74 @@
         if (event.target == modal) {
             $("#ingList").empty();
             modal.style.display = "none";
+        }
+        }
+
+        $(function() {
+         $('input[name="datetimes"]').daterangepicker({
+            "singleDatePicker": true,
+        "minYear": 2022,
+        "showWeekNumbers": true,
+        "timePicker": true,
+        "locale": {
+        "format": "MM/DD/YYYY hh:mm A",
+        "separator": " - ",
+        "applyLabel": "Apply",
+        "cancelLabel": "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Su",
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa"
+        ],
+        "monthNames": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ],
+        "firstDay": 1
+        },
+        minDate: new Date(),
+        "opens": "center"
+        })
+        });
+
+    let mealModal = document.getElementById("mealPlan");
+        let button = document.getElementById("mealPlanBut");
+        let cls = document.getElementsByClassName("closeBut")[0];
+
+        //open the modal
+        button.onclick = function() {
+            mealModal.style.display = "block";
+        }
+
+        //close the modal
+        cls.onclick = function() {
+            // $("#cont").empty();
+            mealModal.style.display = "none";
+        }
+
+        //close it
+        window.onclick = function(event) {
+        if (event.target == mealModal) {
+            $("#cont").empty();
+            mealModal.style.display = "none";
         }
         }
 
