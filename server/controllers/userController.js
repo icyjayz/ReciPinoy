@@ -5,6 +5,7 @@ const User = require('../classes/user');
 const randToken = require('rand-token');
 const Recipe = require('../classes/recipe');
 const { json } = require('express');
+const { Grocery } = require('../classes/recipe');
 
 
 
@@ -1784,8 +1785,10 @@ exports.groceryPage = (req, res) => {
             }
             async function renderPage() {
                 let gListArr = [];
-                let str = await getGList();
-                gListArr = str.split('/');
+                let grocery = new Recipe.Grocery();
+                grocery.item = await getGList();
+                //let str = await getGList();
+                gListArr = grocery.item.split('/');
 
                 let msg = req.flash('msg');
                 res.render('grocery', {msg, id: session.userName, list: gListArr});
@@ -1806,15 +1809,25 @@ exports.addGrocery = (req,res) => {
         session = req.session;
         if(session.userId){
             let recId = req.body.recId;
-            let gList = JSON.parse(req.body.gList);
+            let grocery = new Recipe.Grocery();
+            grocery.item = JSON.parse(req.body.gList);
+            //let gList = JSON.parse(req.body.gList);
             let gListStr = '';
-            if(Array.isArray(gList)){
-                gList.forEach(g => {
+            // if(Array.isArray(gList)){
+            //     gList.forEach(g => {
+            //         gListStr += g + '/';
+            //     });
+            // }
+            // else{
+            //     gListStr = gList;
+            // }
+            if(Array.isArray(grocery.getItem())){
+                grocery.getItem().forEach(g => {
                     gListStr += g + '/';
                 });
             }
             else{
-                gListStr = gList;
+                gListStr = grocery.getItem();
             }
             pool.getConnection((err, conn) => {
                 if (err) {

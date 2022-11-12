@@ -91,8 +91,19 @@ const Recomm = class{
         return this.restrict;
     }
 }
+
+const Grocery = class{
+    constructor(item){
+        this.item = item;
+    }
+    getItem(){
+        return this.item;
+    }
+
+}
 module.exports = {
     Recipe: Recipe,
     Ing: Ing,
-    Recomm: Recomm
+    Recomm: Recomm,
+    Grocery: Grocery
 }
