@@ -1787,7 +1787,6 @@ exports.groceryPage = (req, res) => {
                 let gListArr = [];
                 let grocery = new Recipe.Grocery();
                 grocery.item = await getGList();
-                //let str = await getGList();
                 gListArr = grocery.item.split('/');
 
                 let msg = req.flash('msg');
@@ -1811,16 +1810,7 @@ exports.addGrocery = (req,res) => {
             let recId = req.body.recId;
             let grocery = new Recipe.Grocery();
             grocery.item = JSON.parse(req.body.gList);
-            //let gList = JSON.parse(req.body.gList);
             let gListStr = '';
-            // if(Array.isArray(gList)){
-            //     gList.forEach(g => {
-            //         gListStr += g + '/';
-            //     });
-            // }
-            // else{
-            //     gListStr = gList;
-            // }
             if(Array.isArray(grocery.getItem())){
                 grocery.getItem().forEach(g => {
                     gListStr += g + '/';
