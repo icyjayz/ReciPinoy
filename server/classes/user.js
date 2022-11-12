@@ -60,25 +60,6 @@ const AdminLogin = class{
 
 }
 
-// const Admin = class {
-//     constructor(name, email, password){
-//         this.name = name;
-//         this.email = email;
-//         this.password = password;
-//     }
-
-//     getAdminName(){
-//         return this.name;
-//     }
-
-//     getAdminEmail(){
-//         return this.email;
-//     }
-
-//     getAdminPassword(){
-//         return this.password;
-//     }
-// }
 
 module.exports = {
     User : User,
