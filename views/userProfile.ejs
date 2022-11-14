@@ -25,13 +25,16 @@
     <%#- include('./partials/guestNav'); %>
     <%- include('./partials/userNav'); %>
 
+<section class="user-details">
+
+    <div class="user">
     <% user.forEach(u => { %>
         <form action="/profile" method="post">
-        <label for="emalLbl">Email: <%= u.user_email %> </label><br>
-        <label for="nameInp">Display Name: </label>
-        <input type="text" name="userName" id="userName" value="<%= u.user_name %>" required>
-        <br><br>
-        <label for="dietRLbl">Dietary Restrictions: </label>
+        <img src="images/user-icon.png" alt="">
+        <p><i class="fas fa-user"></i> <span>Display Name: <input type="text" class="userText" name="userName" id="userName" value="<%= u.user_name %>" required></span></p>    
+        <p><i class="fas fa-envelope"></i> <span>Email: <%= u.user_email %> </span></p>   
+        <br><br><br>
+        <p><i class="fas fa-hamburger"></i> <span>Dietary Restrictions: </span></p>
         <% if (u.user_restrict){ %> 
             <% let rStr = u.user_restrict; %> 
             <% if (rStr.includes('lactose intolerance')) { %>
@@ -88,7 +91,7 @@
                 <label for="dietRDairy">Dairy-free</label>
             <% } else { %>
                 <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
-                <label for="dietRDairy">Dairy-free</label>>
+                <label for="dietRDairy">Dairy-free</label>
             <% } %>
             <% if (rStr.includes('low carb')) { %>
                 <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb" checked>
@@ -118,7 +121,8 @@
             <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
             <label for="dietRLowCarb">Low carb</label>
         <% } %> 
-        <br><br><label for="faLbl">Food allergies</label>
+        <br><br><br>
+        <p><i class="fas fa-cheese"></i> <span>Food Allergies: </span></p>
         <% if (u.user_allergy) { %>
             <% let aStr = u.user_allergy; %> 
             <% if (aStr.includes("cow's milk")) { %>
@@ -196,16 +200,19 @@
             <label for="faFish">Fish</label>
         <% } %>
 
-        <br><br><button type="submit">save changes</button>
+        <br><br><button type="submit" class="btn">save changes</button>
         </form>
         
     <% }) %>
 
-    <button  
+    <button
+      class="btn"  
       id="notify-me"
       onclick="notifyMe()"> Notify Me
     </button>
+</div>
 
+</section>
 
 
 <script>

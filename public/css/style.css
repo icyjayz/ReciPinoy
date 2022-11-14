@@ -1203,6 +1203,88 @@ hr {
 }
 
 /*--------------------------------------------------------------
+# PROFILE
+--------------------------------------------------------------*/
+.user-details .user{
+   border:var(--border);
+   padding:2rem;
+   max-width: 100rem;
+   margin:0 auto;
+}
+
+.user-details .user img{
+   width: 100%;
+   height: 15rem;
+   object-fit: contain;
+   margin-bottom: 2rem;
+}
+
+.user-details .user p{
+   line-height: 1.5;
+   margin-bottom: .5rem;
+   font-size: 2rem;
+}
+
+.user-details .user p span{
+   color:var(--black);
+}
+
+.user-details .user p .userText{
+   line-height: 1.5;
+   margin-bottom: .5rem;
+   font-size: 2rem;   
+   color:var(--black);
+}
+
+.user-details .user i{
+   margin-right: .7rem;
+   color:var(--light-color);
+}
+
+.user-details .user label{
+   line-height: 1.5;
+   margin-bottom: .5rem;
+   font-size: 2rem;   
+   color:var(--black);
+}
+
+/* .user-details .user input[type=checkbox] + label{
+   display: block;
+   margin: 0.2em;
+   cursor: pointer;
+   padding: 0.2em;
+ }
+ 
+.user-details .user input[type=checkbox] {
+   display: none;
+ }
+ 
+.user-details .user input[type=checkbox] + label:before {
+   content: "\2714";
+   border: 0.1em solid #000;
+   border-radius: 0.2em;
+   display: inline-block;
+   width: 1em;
+   height: 1em;
+   padding-left: 0.2em;
+   padding-bottom: 0.3em;
+   margin-right: 0.2em;
+   vertical-align: bottom;
+   color: transparent;
+   transition: .2s;
+ }
+ 
+.user-details .user input[type=checkbox] + label:active:before {
+   transform: scale(0);
+ }
+ 
+.user-details .user input[type=checkbox]:checked + label:before {
+   background-color: MediumSeaGreen;
+   border-color: MediumSeaGreen;
+   color: #fff;
+ } */
+ 
+/*--------------------------------------------------------------
 # LOADER
 --------------------------------------------------------------*/
 
