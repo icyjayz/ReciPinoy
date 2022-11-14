@@ -70,9 +70,10 @@
                         </tr>
                     </thead>-->
                     <tbody>
-                        <% mealPlan.forEach( mealPlan => { %>
+                        
                         <tr class="align-middle">
-                            <!--<td>style="width: 80rem; align-items: center;">-->
+                            <% mealPlan.forEach( mealPlan => { %>
+                            <td style="width: 80rem; align-items: center;">
                                 <div class="card-text-center" style="width: 30rem; align-items: center;">
                                     <a href="/mealPlan/delete/<%= mealPlan.rec_id%>">x</a>
                                     <div class="card-header">
@@ -83,9 +84,10 @@
                                       <h5 class="card-title"><a href="/mealPlan/<%= mealPlan.rec_id%>"><%= mealPlan.rec_name %></a></h5>
                                     </div>
                                 </div>   
-                            <!--</td>-->  
+                            </td>  
+                            <% }) %>
                         </tr>  
-                        <% }) %>
+                       
                     </tbody>
                 </table>
             </div>
@@ -93,6 +95,8 @@
             <p class="empty">No saved meal recipes found.</p>
         <% } %>
     </section>
+
+
     <!-- custom js file link  -->
     <script src="/public/js/script.js"></script> 
     <script>

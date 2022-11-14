@@ -17,118 +17,153 @@
     <%#- include('./partials/logoOnlyNav'); %>
     <%- include('./partials/userNav'); %>
 
-    <section class="recipeResults">
+    <div class="recipeResults">
         <a href="/" class="back-btn">>> Back</a>
 
-
-        <h1 class="titleheading">Search Results</h1>
+        <!-- title -->
+        <span class="titleheading">Search Results</span>
         
-        <section>
-            <div class="getFilter">
-                <h1>Filter: </h1>
-                <br><br>
-                <form action="/search/filter" method="post">
-                <label for="recDish" class="addRecLabel">Dish Type:</label>
-                    <input type="radio" id="recDishInp" name="recDishInp" value="Breakfast" onchange="this.form.submit()" >
-                        <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
-                    <input type="radio" id="recDishInp" name="recDishInp" value="Lunch" onchange="this.form.submit()">
-                        <label for="mtLunch" class="addRecLabel">Lunch</label>
-                    <input type="radio" id="recDishInp" name="recDishInp" value="Meryenda" onchange="this.form.submit()">
-                        <label for="mtMeryenda" class="addRecLabel">Meryenda</label>
-                    <input type="radio" id="recDishInp" name="recDishInp" value="Dinner" onchange="this.form.submit()">
-                        <label for="mtDinner" class="addRecLabel">Dinner</label>
-                        <br><br>
-                <label for="recCategory" class="addRecLabel">Category: </label>
-                    <input type="radio" id="recCateg" name="recCateg" value="Luzon" onchange="this.form.submit()">
-                        <label for="recCLuzon" class="addRecLabel">Luzon</label>
-                    <input type="radio" id="recCateg" name="recCateg" value="Visayan" onchange="this.form.submit()">
-                        <label for="recCVisayas" class="addRecLabel">Visayan</label>
-                    <input type="radio" id="recCateg" name="recCateg" value="Mindanaoan" onchange="this.form.submit()">
-                        <label for="recCMindanao" class="addRecLabel">Mindanaoan</label>
-                    <input type="radio" id="recCateg" name="recCateg" value="Popular" onchange="this.form.submit()">
-                        <label for="recCPopular" class="addRecLabel">Popular</label>
-                        <br><br>
-                <label for="recTime" class="addRecLabel">Cooking Time: </label>
-                    <input type="radio" id="recTimeInp" name="recTimeInp" value="30" onchange="this.form.submit()">
-                        <label for="t30" class="addRecLabel">30 minutes</label>
-                    <input type="radio" id="recTimeInp" name="recTimeInp" value="31" onchange="this.form.submit()">
-                        <label for="t1hr" class="addRecLabel">Between 30 minutes and 1 hour</label>
-                    <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 30 minutes" onchange="this.form.submit()">
-                        <label for="t130" class="addRecLabel">Between 1 hour and 1 hr 30 minutes</label>
-                    <input type="radio" id="recTimeInp" name="recTimeInp" value="1 hr and 31 minutes" onchange="this.form.submit()">
-                        <label for="t131" class="addRecLabel">More than 1 hour and 30 minutes </label>
-                        <br><br>
-                <label for="recTime" class="addRecLabel">Preferred Calorie: </label>
-                    <input type="radio" id="recCal" name="recCal" value="400" onchange="this.form.submit()">
-                        <label for="C400" class="addRecLabel">Below 400 calories</label>
-                    <input type="radio" id="recCal" name="recCal" value="800" onchange="this.form.submit()">
-                        <label for="C401" class="addRecLabel">401 - 800 calories</label>
-                    <input type="radio" id="recCal" name="recCal" value="801" onchange="this.form.submit()">
-                        <label for="C801" class="addRecLabel">801- 1200</label>
-                    <input type="radio" id="recCal" name="recCal" value="1201" onchange="this.form.submit()">
-                        <label for="C1201" class="addRecLabel">More than 1200 calories </label>
-                        <br><br>
-                   </form> 
-            </div>
-        </section>
+        <!-- search filter -->
+        <div class="getFilter">
+            <!-- <span class="filter-title">Filter: </span> -->
+            <form action="/search/filter" method="post">
+                <!-- dish type -->
+                <button type="checkbox" class="checkbox-toggle">
+                    <label for="recDish" class="srchLbl">Dish Type</label>
+                    <ul class="dropdown-list">
+                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Breakfast" onchange="this.form.submit()">
+                            <label for="mtBreakfast" class="addRecLabel">Breakfast</label></li>
+                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Lunch" onchange="this.form.submit()">
+                            <label for="mtLunch" class="addRecLabel">Lunch</label></li>
+                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Meryenda" onchange="this.form.submit()">
+                            <label for="mtMeryenda" class="addRecLabel">Meryenda</label></li>
+                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Dinner" onchange="this.form.submit()">
+                            <label for="mtDinner" class="addRecLabel">Dinner</label></li>
+                    </ul>
+                </button>
+
+                <!-- category -->
+                <button type="button" class="checkbox-toggle">
+                    <label for="recCategory" class="srchLbl">Category</label>
+                    <ul class="dropdown-list">
+                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Luzon" onchange="this.form.submit()">
+                            <label for="recCLuzon" class="addRecLabel">Luzon</label></li>
+                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Visayan" onchange="this.form.submit()">
+                            <label for="recCVisayas" class="addRecLabel">Visayan</label></li>
+                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Mindanaoan" onchange="this.form.submit()">
+                            <label for="recCMindanao" class="addRecLabel">Mindanaoan</label></li>
+                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Popular" onchange="this.form.submit()">
+                            <label for="recCPopular" class="addRecLabel">Popular</label></li>
+                    </ul>
+                </button>
+                
+                <!-- cooking time -->
+                <button type="button" class="checkbox-toggle">
+                    <label for="recTime" class="srchLbl">Cooking Time</label>
+                    <ul class="dropdown-list">
+                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="30" onchange="this.form.submit()">
+                            <label for="t30" class="addRecLabel">30 minutes</label></li>
+                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="31" onchange="this.form.submit()">
+                            <label for="t1hr" class="addRecLabel">Between 30 minutes and 1 hour</label></li> <!-- may error tong part na to-->
+                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="1 hr and 30 minutes" onchange="this.form.submit()">
+                            <label for="t130" class="addRecLabel">Between 1 hour and 1 hour and 30 minutes</label></li>
+                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="1 hr and 31 minutes" onchange="this.form.submit()">
+                            <label for="t131" class="addRecLabel">More than 1 hour and 30 minutes </label></li>
+                    </ul>
+                </button>
+
+                <!-- preferred calorie -->
+                <button type="button" class="checkbox-toggle">
+                    <label for="recTime" class="srchLbl">Preferred Calorie</label>
+                    <ul class="dropdown-list">
+                        <li><input type="checkbox" id="recCal" name="recCal" value="400" onchange="this.form.submit()">
+                            <label for="C400" class="addRecLabel">Below 400 calories</label></li>
+                        <li><input type="checkbox" id="recCal" name="recCal" value="800" onchange="this.form.submit()">
+                            <label for="C401" class="addRecLabel">401 - 800 calories</label></li>
+                        <li> <input type="checkbox" id="recCal" name="recCal" value="801" onchange="this.form.submit()">
+                            <label for="C801" class="addRecLabel">801- 1200</label></li>
+                        <li><input type="checkbox" id="recCal" name="recCal" value="1201" onchange="this.form.submit()">
+                            <label for="C1201" class="addRecLabel">More than 1200 calories </label></li>
+                    </ul>
+                </button>
+    
+            </form> 
+        </div>
 
         <!-- search grid -->
-        <div class="box-container">
+        <div class="usr-container">
             <% if (recs.length > 0) { %>
                 <% recs.forEach(rec => { %>
-                    <form action="" method="post" class="box-card">
-                        <div class="box-header">
-                            <!-- <a href="/recipes/<%= rec.rec_id%>" class="rec-eye"></a> -->
-                            <img src="/images/<%= rec.rec_image%>"  class="box-img" alt="<%= rec.rec_name %> Image">
-                        </div>
-                        <div class="box-details">
-                            <!-- category -->
-                            <span class="box-categ"><%= rec.rec_categ %></span>
-                            <!-- recipe name -->
-                            <h1 class="box-name"><%= rec.rec_name %></h1>
-                            <!-- rating -->
-                            <% if (rec.rec_rate) { %>
-                                <div class="box-rate">
-                                    <%= rec.rec_rate %>
-                                    <span class="str"></span>
-                                </div>
-                            <% } else { %>
-                                <span class="box-not">This recipe hasn't been rated.</span>
-                            <% } %>
-                            <!-- add saved recipe button -->
-                            <!-- # add to saved recipe # -->
-                            <div class="urv-saved-btn">
-                                <% if (isSaved) { %>
-                                    <form action="/search/unsave/<%= rec.rec_id%>" method="post">
-                                        <br><br><button type="submit" value ="Unsave Recipe"></button>
-                                    </form>
-                                <% } else { %>
-                                    <form action="/search/<%= rec.rec_id%>" method="post">
-                                        <input type="hidden" name="recID" id="recID" value="<%= rec.rec_id %>">
-                                        <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
-                                        <input type="hidden" name="recDesc" id="recDesc" value="<%= rec.rec_desc %>">
-                                        <input type="hidden" name="recProcess" id="recProcess" value="<%= rec.rec_process %>">
-                                        <input type="hidden" name="recCateg" id="recCateg" value="<%= rec.rec_categ %>">
-                                        <input type="hidden" name="recTime" id="recTime" value="<%= rec.rec_time %>">
-                                        <input type="hidden" name="recServing" id="recServing" value="<%= rec.rec_serving %>">
-                                        <input type="hidden" name="recSrc" id="recSrc" value="<%= rec.rec_src %>">
-                                        <input type="hidden" name="recVid" id="recVid" value="<%= rec.rec_vid %>">
-                                        <input type="hidden" name="recCal" id="recCal" value="<%= rec.rec_cal %>">
-                                        <input type="hidden" name="recMealtime" id="recMealtime" value="<%= rec.rec_mealTime %>">
-                                        <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
-                                        <input type="hidden" name="recRate" id="recRate" value="<%= rec.rec_rate %>">
-                                        <button type="submit" class="save-btn"></button>
-                                    </form>
-                                <% } %> 
+                    <div class="result-card">
+                        <form action="" method="post" class="box-card">
+                            <!-- img -->
+                            <div class="box-header">
+                                <a href="/recipes/<%= rec.rec_id%>">
+                                <img src="/images/<%= rec.rec_image%>"  class="box-img" alt="<%= rec.rec_name %> Image">
+                                </a>
                             </div>
-                        </div>
-                        </div>
-                    </form>
+                            <!-- details -->
+                            <div class="box-details">
+                                <a href="/recipes/<%= rec.rec_id%>" class="rec-usr">
+                                    <div class="box-one">
+                                        <div class="name-cont">
+                                            <!-- category -->
+                                            <span class="box-categ"><%= rec.rec_categ %></span>
+                                            <!-- recipe name -->
+                                            <h2 class="box-name"><%= rec.rec_name %></h2>
+                                            <!-- rating -->
+                                            <% if (rec.rec_rate) { %>
+                                                <div class="box-rate">
+                                                    <%= rec.rec_rate %>
+                                                    <span class="str"></span>
+                                                </div>
+                                            <% } else { %>
+                                                <span class="box-not">This recipe hasn't been rated.</span>
+                                            <% } %>
+                                        </div>
+                                
+                                        <!-- add saved recipe button -->
+                                        <div class="usr-saved-btn">
+                                            <% if (isSaved) { %>
+                                                <form action="/search/unsave/<%= rec.rec_id%>" method="post">
+                                                    <br><br><button type="submit" value ="Unsave Recipe"></button>
+                                                </form>
+                                            <% } else { %>
+                                                <form action="/search/<%= rec.rec_id%>" method="post">
+                                                    <input type="hidden" name="recID" id="recID" value="<%= rec.rec_id %>">
+                                                    <input type="hidden" name="recName" id="recName" value="<%= rec.rec_name %>">
+                                                    <input type="hidden" name="recDesc" id="recDesc" value="<%= rec.rec_desc %>">
+                                                    <input type="hidden" name="recProcess" id="recProcess" value="<%= rec.rec_process %>">
+                                                    <input type="hidden" name="recCateg" id="recCateg" value="<%= rec.rec_categ %>">
+                                                    <input type="hidden" name="recTime" id="recTime" value="<%= rec.rec_time %>">
+                                                    <input type="hidden" name="recServing" id="recServing" value="<%= rec.rec_serving %>">
+                                                    <input type="hidden" name="recSrc" id="recSrc" value="<%= rec.rec_src %>">
+                                                    <input type="hidden" name="recVid" id="recVid" value="<%= rec.rec_vid %>">
+                                                    <input type="hidden" name="recCal" id="recCal" value="<%= rec.rec_cal %>">
+                                                    <input type="hidden" name="recMealtime" id="recMealtime" value="<%= rec.rec_mealTime %>">
+                                                    <input type="hidden" name="recImg" id="recImg" value="<%= rec.rec_image %>">
+                                                    <input type="hidden" name="recRate" id="recRate" value="<%= rec.rec_rate %>">
+                                                    <button type="submit" class="usr-saved"></button>
+                                                </form>
+                                            <% } %> 
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <!-- view recipe button -->
+                                <div class="usr-view">
+                                    <a href="/recipes/<%= rec.rec_id%>" class="usr-view-btn">
+                                        <span></span>View Recipe</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 <% }) %>
             <% } else { %>
                 <p class="empty">No recipes found.</p>
                 <% } %>
         </div>
+    </div>
     
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     
