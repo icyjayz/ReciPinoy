@@ -33,7 +33,7 @@
             <input type="text" name="ings[]" id="ing1" class ="ingsInp">
             <ul id="ingCont"></ul>
         </div>
-        <input type="hidden" name="ingsVal" value="" id="ingsVal">
+        <input type="hidden" name="ingsVal" value="" id="ingsVal"> 
         <br><button type="button" id="addIngredientsBtn">Add another ingredient</button><br><br><br>
 
         <div id="exIngs">
@@ -75,6 +75,24 @@
                });
            }
        });
+
+       $('#addIngredientsBtn').attr('disabled',true);
+       $('#exIngredientsBtn').attr('disabled',true);
+
+        $('#ing1').keyup(function(){
+            if($(this).val().length !=0)
+                $('#addIngredientsBtn').attr('disabled', false);            
+            else
+                $('#addIngredientsBtn').attr('disabled',true);
+        })
+
+        $('#exIng').keyup(function(){
+            if($(this).val().length !=0)
+                $('#exIngredientsBtn').attr('disabled', false);            
+            else
+                $('#exIngredientsBtn').attr('disabled',true);
+        })
+
 });
 
         function getAllIngs() {
@@ -113,6 +131,7 @@
             $('#exIngCont').append(p);
             $("#exIng").val('');
             $('#exIngNum').val(newIngNum);  
+            $('#exIngredientsBtn').attr('disabled',true);
         }
 
         function add() {
@@ -129,7 +148,8 @@
             } else {
                 getRecommBtn.disabled = false;
                 ingCheck.innerHTML = '';
-            }   
+            }  
+            $('#addIngredientsBtn').attr('disabled',true); 
         }
 
         function removeIng(ing) {
