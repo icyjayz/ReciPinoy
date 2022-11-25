@@ -1242,7 +1242,7 @@ hr {
 }
 
 /* checkbox */
-input[type="checkbox"] {
+.user-details .user input[type="checkbox"] {
    -webkit-appearance: none;
    appearance: none;
    background-color: var(--form-background);
@@ -1259,7 +1259,7 @@ input[type="checkbox"] {
    place-content: center;
  }
  
- input[type="checkbox"]::before {
+ .user-details .user input[type="checkbox"]::before {
    content: "";
    width: 0.65em;
    height: 0.65em;
@@ -1272,7 +1272,7 @@ input[type="checkbox"] {
    background-color: var(--green);
  }
  
- input[type="checkbox"]:checked::before {
+ .user-details .user input[type="checkbox"]:checked::before {
    transform: scale(1);
  }
  
