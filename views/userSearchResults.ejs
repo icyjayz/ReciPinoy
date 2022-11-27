@@ -27,66 +27,42 @@
         <div class="getFilter">
             <!-- <span class="filter-title">Filter: </span> -->
             <form action="/search/filter" method="post">
+
                 <!-- dish type -->
-                <button type="checkbox" class="checkbox-toggle">
-                    <label for="recDish" class="srchLbl">Dish Type</label>
-                    <ul class="dropdown-list">
-                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Breakfast" onchange="this.form.submit()">
-                            <label for="mtBreakfast" class="addRecLabel">Breakfast</label></li>
-                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Lunch" onchange="this.form.submit()">
-                            <label for="mtLunch" class="addRecLabel">Lunch</label></li>
-                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Meryenda" onchange="this.form.submit()">
-                            <label for="mtMeryenda" class="addRecLabel">Meryenda</label></li>
-                        <li><input type="checkbox" id="recDishInp" name="recDishInp" value="Dinner" onchange="this.form.submit()">
-                            <label for="mtDinner" class="addRecLabel">Dinner</label></li>
-                    </ul>
-                </button>
+                    <select name="recDishInp" id="recDishInp" onchange="this.form.submit()">
+                        <option value="" disabled selected>Dish Type:</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Meryenda">Meryenda</option>
+                        <option value="Dinner">Dinner</option>
+                    </select>
 
-                <!-- category -->
-                <button type="button" class="checkbox-toggle">
-                    <label for="recCategory" class="srchLbl">Category</label>
-                    <ul class="dropdown-list">
-                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Luzon" onchange="this.form.submit()">
-                            <label for="recCLuzon" class="addRecLabel">Luzon</label></li>
-                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Visayan" onchange="this.form.submit()">
-                            <label for="recCVisayas" class="addRecLabel">Visayan</label></li>
-                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Mindanaoan" onchange="this.form.submit()">
-                            <label for="recCMindanao" class="addRecLabel">Mindanaoan</label></li>
-                        <li><input type="checkbox" id="recCateg" name="recCateg" value="Popular" onchange="this.form.submit()">
-                            <label for="recCPopular" class="addRecLabel">Popular</label></li>
-                    </ul>
-                </button>
-                
-                <!-- cooking time -->
-                <button type="button" class="checkbox-toggle">
-                    <label for="recTime" class="srchLbl">Cooking Time</label>
-                    <ul class="dropdown-list">
-                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="30" onchange="this.form.submit()">
-                            <label for="t30" class="addRecLabel">30 minutes</label></li>
-                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="31" onchange="this.form.submit()">
-                            <label for="t1hr" class="addRecLabel">Between 30 minutes and 1 hour</label></li> <!-- may error tong part na to-->
-                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="1 hr and 30 minutes" onchange="this.form.submit()">
-                            <label for="t130" class="addRecLabel">Between 1 hour and 1 hour and 30 minutes</label></li>
-                        <li><input type="checkbox" id="recTimeInp" name="recTimeInp" value="1 hr and 31 minutes" onchange="this.form.submit()">
-                            <label for="t131" class="addRecLabel">More than 1 hour and 30 minutes </label></li>
-                    </ul>
-                </button>
+                    <!-- category -->
+                    <select name="recCateg" id="recCateg" onchange="this.form.submit()">
+                        <option value="" disabled selected>Category:</option>
+                        <option value="Luzon">Luzon</option>
+                        <option value="Visayas">Visayas</option>
+                        <option value="Mindanao">Mindanao</option>
+                        <option value="Popular">Popular</option>
+                    </select>
 
-                <!-- preferred calorie -->
-                <button type="button" class="checkbox-toggle">
-                    <label for="recTime" class="srchLbl">Preferred Calorie</label>
-                    <ul class="dropdown-list">
-                        <li><input type="checkbox" id="recCal" name="recCal" value="400" onchange="this.form.submit()">
-                            <label for="C400" class="addRecLabel">Below 400 calories</label></li>
-                        <li><input type="checkbox" id="recCal" name="recCal" value="800" onchange="this.form.submit()">
-                            <label for="C401" class="addRecLabel">401 - 800 calories</label></li>
-                        <li> <input type="checkbox" id="recCal" name="recCal" value="801" onchange="this.form.submit()">
-                            <label for="C801" class="addRecLabel">801- 1200</label></li>
-                        <li><input type="checkbox" id="recCal" name="recCal" value="1201" onchange="this.form.submit()">
-                            <label for="C1201" class="addRecLabel">More than 1200 calories </label></li>
-                    </ul>
-                </button>
-    
+                    <!-- cooking time -->
+                    <select name="recTimeInp" id="recTimeInp" onchange="this.form.submit()">
+                        <option value="" disabled selected>Cooking Time:</option>
+                        <option value="30">Less than 30 minutes</option>
+                        <option value="31">Between 30 minutes to 1 hour</option>
+                        <option value="1 hr and 30 minutes">Between 1 hour to 1 hour and 30 minutes</option>
+                        <option value="1 hr and 31 minutes">More than 2 hours</option>
+                    </select>
+
+                    <!-- preferred calorie -->
+                    <select name="recCal" id="recCal" onchange="this.form.submit()">
+                        <option value="" disabled selected>Calorie:</option>
+                        <option value="400">Less than 400 calories</option>
+                        <option value="800">Between 401 calories to 800 calories</option>
+                        <option value="801">Between 801 calories to 1200 calories</option>
+                        <option value="1201">More than 1200 calories</option>
+                    </select>
             </form> 
         </div>
 
@@ -163,10 +139,6 @@
                 <p class="empty">No recipes found.</p>
                 <% } %>
         </div>
-    </div>
-    
-    <div class="loader">
-        <img src="images/loader.gif" alt="">
     </div>
 
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
