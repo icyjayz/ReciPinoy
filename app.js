@@ -22,7 +22,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: 1000 * 60 * 60
+        expires: 1000 * 60 * 60 * 24 * 30
     }
 }));
 app.use(fileUpload());
