@@ -7,7 +7,7 @@ const toStore = [
     'grocery.ejs',
     'index.ejs',
     'userHome.ejs',
-    '/public/css/style.css',
+    // '/public/css/style.css',
     '/public/js/script.js',
     '/public/js/main.js',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css',

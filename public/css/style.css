@@ -483,41 +483,23 @@ section{
    margin: 2em;
 }
 
-/* .checkbox-toggle{
-   display: inline-block;
-   background-color: var(--white);
-} */
-
-
-.srchLbl{
-   display: inline-block;
-   width: 100%;
-   background-color: #fff;
-   padding: 1em;
-   cursor: pointer;
-   text-align: center;
-   border: 1px solid black;
-   border-radius: 5px;
+.filter-cont{
+   /* display: flex;
+   flex-direction: column; */
+   height: 30vh;
 }
 
-.srchLbl:hover{
-   background-color: var(--green);
-   color: #fff;
-}
-
-.dropdown-list{
-   list-style: none;
-   text-align: left;
-   width: 100%;
-   z-index: 1;
-   /* display: none; */
-}
-
-.dropdown-list li{
-   background-color: #fff;
-   padding: 1em;
-   cursor: pointer;
-   font-size: 1rem;
+.categ-opt{
+   align-items: center;
+   border: 2px solid var(--green);
+   border-radius: 10px;
+   background-color: transparent;
+   color: var(--black);
+   padding: 0.7em;
+   font-weight: 600;
+   line-height: 5px; 
+   text-transform: capitalize;
+   letter-spacing: 1px;
 }
 
 /* recipe grid */
