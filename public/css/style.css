@@ -542,14 +542,14 @@ section{
  .select-box__value {
    display: flex;
  }
- .select-box__input {
+ /* .select-box__input {
    display: none;
- }
- .select-box__input:checked + .select-box__input-text {
+ } */
+ /* .select-box__input:checked + .select-box__input-text {
    display: block;
- }
+ } */
  .select-box__input-text {
-   display: none;
+   /* display: none; */
    width: 100%;
    margin: 0;
    padding: 15px;
