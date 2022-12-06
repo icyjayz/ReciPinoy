@@ -39,7 +39,7 @@
  
     <div class="userRecipeView">
         <!-- back button -->
-        <a class="back-btn" onclick="history.back()"> >>> </a>
+        <a class="back-btn" onclick="history.back()"><span class="rec-back">Recipe</span></a>
         <div class="urv-upper-content">
             <!-- # image # -->
             <div class="urv-img">
@@ -54,7 +54,7 @@
                         <!-- category -->
                         <span class="rec-categ"><%= rec.rec_categ %></span>
                         <!-- recipe name -->
-                        <h1 class="rec-name"><%= rec.rec_name %></h1>
+                        <p class="rec-name"><%= rec.rec_name %></p>
                         <% if (rec.rec_rate) { %>
                             <div class="star-rate">
                                 <%= rec.rec_rate %>
@@ -257,7 +257,7 @@
 
             <!-- ingredients process -->
             <div class="rec-process">
-                <span class="rproc">Process </span>
+                <span class="rproc">How to Cook <%= rec.rec_name %></span>
                 <textarea name="" id="" cols="30" rows="14" class="txt-area" readonly><%= rec.rec_process %></textarea><br>
             </div>
 

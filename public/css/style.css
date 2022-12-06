@@ -724,6 +724,33 @@ section{
 /*--------------------------------------------------------------
 # Recipe View
 --------------------------------------------------------------*/
+/* for back button icon */
+.back-btn::before{
+   content: "\f060";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(27, 27, 27);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.back-btn {
+   background-color: #fff;
+   font-size: 1.5rem;
+   padding: 1rem 0 1rem 1.5rem;
+   margin-bottom: 2rem;
+} 
+
+.rec-back{
+   font-size: 1.5rem;
+   text-transform: uppercase;
+}
+
+.back-btn:hover{
+   letter-spacing: 0.1rem;
+}
 
 .userRecipeView{
    background-color: #fff;
@@ -735,17 +762,21 @@ section{
 /* urv-img, urv-grid (urv-title, urv-saved-btn, rec-desc, urv-upper-details) */
 .urv-upper-content {
    display: grid;
-   grid-template-columns: repeat(2, fit-content(500px));
-   gap: 15px;
+   grid-template-columns: repeat(2, 2fr);
+   gap: 25px;
 }
 
 
 /* img src */
 .img-rec{
-   width: 450px;
-   height: 450px;
-   object-fit: cover;
-   object-position: center center;
+   width: 100%;
+   height: 100%;
+   /* object-fit: cover;
+   object-position: center center; */
+}
+
+.urv-grid{
+   margin-bottom: 1.5em;
 }
 
 .urv-grid-header{
@@ -766,6 +797,8 @@ section{
 
 .rec-name {
    margin: 10px 0;
+   font-size: 1.7em;
+   font-weight: bolder;
 }
 
 /* star ulet sa ratings */
@@ -869,7 +902,7 @@ section{
    cursor: pointer;
    background-color: var(--green);
    color:var(--white);
-   font-size: 0.9rem;
+   font-size: 1.2rem;
    text-transform: uppercase;
 }
 
@@ -1501,6 +1534,22 @@ hr {
   }
 }
 
+@media only screen and (max-width: 1100px) {
+   .urv-upper-content{
+      grid-template-columns: repeat(1, 1fr);
+   }
+   
+   .img-rec{
+       height: 500px;
+       object-fit: fill;
+       object-position: center;
+   }
+
+   .rec-name {
+      font-size: 1.9em;
+   }
+ }
+
 
 @media only screen and (max-width:1019px) {
    
@@ -1517,22 +1566,9 @@ hr {
       padding: 1.15em 0 0;
    } 
 
-   .urv-upper-content{
-      grid-template-columns: repeat(1, 100%);
-   }
-
    /* .box-header{
       height: vh;
   } */
-  
-
-   .urv-img{
-      max-width: 100%;
-   }
-
-   .img-rec{
-      width: 82vw;
-   }
 
    .save-btn{
       font-size: 2em;
@@ -1548,10 +1584,6 @@ hr {
 
    .urv-cal, .urv-add-mp{
       margin: 1em 3em 1em;
-   }
-
-   .add-mp{
-      font-size: 1em;
    }
 
    .rec-ing-title, .rproc{
@@ -1599,6 +1631,10 @@ hr {
 
 .header .flex .navbar.active{
    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.img-rec{
+   height: 425px;
 }
 }
 
@@ -1657,10 +1693,6 @@ hr {
       display: none;
    }
 
-   .img-rec{
-      width: 90vw;
-   }
-
    .star{
       font-size: 2.3em;
       padding: 1rem;
@@ -1675,47 +1707,15 @@ hr {
      
    }
 }
-   
 
-@media only screen and (max-width: 473px){
-   /* .userRecipeView{
-      padding: 0 2rem 2rem;
-   } */
-
-   /* .box-header{
-      height: 11vh;
-   } */
-
+@media only screen and (max-width: 580px){
    .img-rec{
-      width: 85vw;
+      height: 350px;
    }
 
-   .rating-title{
-      font-size: 1.2em;
+   .rec-name{
+      font-size: 1.5em;
    }
-   
-
-   .grocery-header{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-   } 
-
-   .del-all::before{
-      float: none;
-   } 
-
-   .del-all{
-      padding: 0.80em 0 0;
-   }
-
-   .gForm{
-      float: none;
-      display: block;
-      margin: auto 0 auto 20px;
-   }
-
- 
 }
 
 @media only screen and (max-width:500px) {
@@ -1771,16 +1771,78 @@ hr {
       flex-flow: column;
       gap:0;
    } 
+
+}
    
+
+@media only screen and (max-width: 473px){
+   /* .userRecipeView{
+      padding: 0 2rem 2rem;
+   } */
+
+   /* .box-header{
+      height: 11vh;
+   } */
+
    .img-rec{
-      width: 85vw;
+      height: 270px;
+   }
+
+
+   .rating-title{
+      font-size: 1.2em;
+   }
+   
+
+   .grocery-header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+   } 
+
+   .del-all::before{
+      float: none;
+   } 
+
+   .del-all{
+      padding: 0.80em 0 0;
+   }
+
+   .gForm{
+      float: none;
+      display: block;
+      margin: auto 0 auto 20px;
+   }
+
+}
+
+@media only screen and (max-width: 428px){
+   .urv-add-mp{
+      margin: 1em 1.9em 1em;
+   }
+
+   .add-mp{
+      font-size: 1.1rem;
    }
 }
+
 
 @media only screen and (max-width: 396px){ 
    /* .box-header{
       height: 14vh;
    } */
+
+   .img-rec{
+      height: 250px;
+   }
+
+   .urv-add-mp{
+      margin: 1em 1.3em 1em 2em;
+   }
+
+   .add-mp{
+      font-size: 1rem;
+   }
    
    .gForm{
       margin: auto 0 auto 10px;
@@ -1788,8 +1850,17 @@ hr {
 
 }
 
-@media only screen and (max-width: 354px){
+@media only screen and (max-width: 375px) { 
+   .urv-add-mp{
+      margin: 1em 1.1em 1em 1.7em;
+   }
+}
 
+
+@media only screen and (max-width: 354px){
+   .img-rec{
+      height: 220px;
+   }
    
    .ing-details{
       flex-direction: column;
