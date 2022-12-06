@@ -1502,7 +1502,7 @@ hr {
 }
 
 
-@media only screen and (max-width:991px) {
+@media only screen and (max-width:1019px) {
    
    html{
       font-size: 55%;
@@ -1573,33 +1573,36 @@ hr {
 
 }
 
+@media only screen and (max-width:919px){
+.userRecipeView{
+   padding: 0 2rem 2rem;
+}
+
+#menu-btn{
+   display: inline-block;
+}
+
+.header .flex .navbar{
+   position: absolute;
+   top:99%; left: 0; right: 0;
+   border-top: var(--border);
+   border-bottom: var(--border);
+   background-color: var(--white);
+   transition: .2s linear;
+   clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+}
+
+.header .flex .navbar a{
+   display: block;
+   margin:2rem;
+}
+
+.header .flex .navbar.active{
+   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+}
+
 @media only screen and (max-width:768px){
-   .userRecipeView{
-      padding: 0 2rem 2rem;
-   }
-
-   #menu-btn{
-      display: inline-block;
-   }
-
-   .header .flex .navbar{
-      position: absolute;
-      top:99%; left: 0; right: 0;
-      border-top: var(--border);
-      border-bottom: var(--border);
-      background-color: var(--white);
-      transition: .2s linear;
-      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-   }
-
-   .header .flex .navbar a{
-      display: block;
-      margin:2rem;
-   }
-
-   .header .flex .navbar.active{
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-   }
 
    .recipeResults, .userRecipeView, .grocery-cont {
       background-color: #fff;
@@ -1673,11 +1676,6 @@ hr {
    }
 }
    
-/* @media only screen and (max-width: 670px){
-   .name-cont{
-      width: 45vw;
-   }
-} */
 
 @media only screen and (max-width: 473px){
    /* .userRecipeView{
@@ -1720,7 +1718,7 @@ hr {
  
 }
 
-@media only screen and (max-width:450px) {
+@media only screen and (max-width:500px) {
    
    html{
       font-size: 50%;
@@ -1777,9 +1775,6 @@ hr {
    .img-rec{
       width: 85vw;
    }
-
-
-
 }
 
 @media only screen and (max-width: 396px){ 
