@@ -17,8 +17,8 @@
 
     <section class="flex">
       <% if (id != '') { %>
-        <a href="/home" class="logo">ReciPinoy</a>
-        
+        <a href="/home" class="logo"><img src="/images/logo/logo-for-nav.png" style="height:5.5vh;"></a>
+
         <nav class="navbar">
           <a href="/home">Home</a>
           <a href="/recommend">Get Recommendation</a>
@@ -35,21 +35,21 @@
         <div class="profile">
           <p class="name"><%= id %></p>
           <div class="flex">
-             <a href="/profile" class="btn">profile</a>
-             <a href="/logout" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
+             <a href="/profile" class="btn">Profile</a>
+             <a href="/logout" onclick="return confirm('Logout from this website?');" class="delete-btn">Logout</a>
           </div>
         </div>
       
       <% } else { %>
-        <a href="/" class="logo">ReciPinoy</a>
-
+        <a href="/home" class="logo"><img src="/images/logo/logo-for-nav.png"></a>
+        
         <nav class="navbar">
-          <a href="/">home</a>
-          <a href="/recommend">get recommendation</a>
-          <a href="/recipes">view recipes</a>
-          <a href="/saved">saved recipes</a>
-          <a href="/mealPlan">meal plan</a>
-          <a href="/grocery-list">grocery lists</a>
+          <a href="/">Home</a>
+          <a href="/recommend">Get Recommendation</a>
+          <a href="/recipes">View Recipes</a>
+          <a href="/saved">Saved Recipes</a>
+          <a href="/mealPlan">Meal Plan</a>
+          <a href="/grocery-list">Grocery Lists</a>
         </nav>
   
         <div class="icons">
@@ -57,10 +57,10 @@
           <div id="menu-btn" class="fas fa-bars"></div>
         </div>
         <div class="profile">
-          <p class="name">please login first!</p>
+          <p class="name">Please login first!</p>
           <div class="flex">
-            <a href="/login" class="btn">login</a>
-            <a href="/register" class="btn">register</a>
+            <a href="/login" class="btn">Login</a>
+            <a href="/register" class="btn">Register</a>
           </div>
         </div>
       <% } %> 

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <link rel="icon" href="/images/logo/logo-recipinoy.png" type="image/icon type">
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -16,8 +17,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link type="text/css" href="css/bootstrap-timepicker.min.css" />
-    <script type="text/javascript" src="js/bootstrap-timepicker.min.js"></script>
+    <link type="text/css" href="/css/bootstrap-timepicker.min.css" />
+    <script type="text/javascript" src="/js/bootstrap-timepicker.min.js"></script>
     <% let i = 0; %> 
     <% let ingArr = []; %> 
     <% let srv = 0; %>
@@ -36,10 +37,11 @@
 
     <!-- header -->
     <%- include('./partials/userNav'); %>
+    <%#- include('./partials/guestNav'); %>
  
     <div class="userRecipeView">
         <!-- back button -->
-        <a class="back-btn" onclick="history.back()"><span class="rec-back">Recipe</span></a>
+        <a class="back-btn" onclick="history.back()"><span class="rec-back">Home</span></a>
         <div class="urv-upper-content">
             <!-- # image # -->
             <div class="urv-img">
@@ -612,7 +614,7 @@
     </script>
 
 <div class="loader">
-    <img src="images/loader.gif" alt="">
+    <img src="/images/loader.gif" alt="">
 </div>
 
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
