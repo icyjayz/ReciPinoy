@@ -612,7 +612,8 @@ section{
    grid-template-columns: repeat(4, 22%);
    justify-content: center;
    align-items: center;
-   gap: 3rem;
+   gap: 25px;
+   margin-top: 5em;
 }
 
 .result-card:hover{
@@ -628,25 +629,9 @@ section{
    cursor: pointer;
 }
 
-.box-header{
-   height: 22vh;
-   max-width: 100vw;
-}
 
 .box-img{
    width: 100%;
-   height: 100%;
-   object-fit: cover;
-   object-position: 90% 50%;
-   /* border-top-left-radius: 2em;
-   border-top-right-radius: 2em; */
-}
-
-.box-details{
-   /* border: 1px solid rgb(139, 139, 139); */
-   display: flex;
-   flex-direction: column;
-   /* justify-content: space-between; */
 }
 
 .rec-usr{
@@ -663,8 +648,8 @@ section{
 }
 
 .name-cont{
-   padding-left: 1em;
-   width: 21vw;
+   padding-left: 0.7em;
+   width: 100%;
 }
 
 .box-categ{
@@ -677,15 +662,14 @@ section{
 .box-name{
    /* text-transform: uppercase; */
    font-weight: 450;
-   font-size: 1.4em;
-   letter-spacing: 0.03em;
-   margin: 0.5rem 1rem 0.5rem 0;
+   font-size: 1.2rem;
+   /* letter-spacing: 0.2em; */
+   margin: 0.6rem 1rem 0.9rem 0;
 }
 
-
-
 .usr-saved-btn{
-   margin: 0 0.5rem 0 0;
+   /* width: 20%; */
+   margin-right: 0.5em;
 }
 
 .usr-saved::before{
@@ -699,11 +683,14 @@ section{
 }
 
 .usr-saved {
+   /* float: right; */
    background-color: #fff;
    font-size: 1.8em;
 }
 
-.usr-view-btn{
+/* -------------------------------end of recipe grid */
+
+/* .usr-view-btn{
    display: block;
    background-color: var(--green);
    color: #fff;
@@ -718,7 +705,7 @@ section{
 .usr-view-btn:hover{
    color: var(--black);
    transition: 250ms;
-}
+} */
 
 /*--------------------------------------------------------------
 # Recipe View
@@ -1527,11 +1514,9 @@ hr {
 # MEDIA QUERIES
 --------------------------------------------------------------*/
 
-@media only screen and (max-width: 1366px) {
-  .box-header{
-      height: 18vh;
-  }
-}
+/* @media only screen and (max-width: 1366px) {
+
+} */
 
 @media only screen and (max-width: 1300px) {
    .urv-upper-content{
@@ -1560,17 +1545,23 @@ hr {
    }
 
    .usr-container {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4em;
+      grid-template-columns: repeat(3, 30%);
+      gap: 25px;
    }
+
+   .box-categ{
+      font-size: 1rem;
+   }
+
+   .box-name{
+      font-size: 1.7rem;
+   }
+
 
    .del-all{
       padding: 1.15em 0 0;
    } 
 
-   /* .box-header{
-      height: vh;
-  } */
 
    .save-btn{
       font-size: 2em;
@@ -1665,11 +1656,6 @@ hr {
       flex-direction: row;
    }
 
-   .box-header{
-      width: 38vw;
-      height: 18vh;
-   }
-
    .box-details{
       margin: 2.3em 0 0 1.5em;
    }
@@ -1753,15 +1739,6 @@ hr {
       grid-template-columns: 1fr;
    }
 
-   .box-header{
-      width: 40vw;
-      height: 18vh;
-   }
-
-   .box-img{
-      object-position: 100% 65%;
-   }
-
    .heading h3{
       font-size: 3.5rem;
    }
@@ -1789,9 +1766,6 @@ hr {
       padding: 0 2rem 2rem;
    } */
 
-   /* .box-header{
-      height: 11vh;
-   } */
 
    .img-rec{
       height: 270px;
@@ -1837,10 +1811,6 @@ hr {
 
 
 @media only screen and (max-width: 396px){ 
-   /* .box-header{
-      height: 14vh;
-   } */
-
    .img-rec{
       height: 250px;
    }

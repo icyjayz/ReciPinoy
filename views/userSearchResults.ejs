@@ -237,7 +237,7 @@
                                             <!-- category -->
                                             <span class="box-categ"><%= rec.rec_categ %></span>
                                             <!-- recipe name -->
-                                            <h2 class="box-name"><%= rec.rec_name %></h2>
+                                            <p class="box-name"><%= rec.rec_name %></p>
                                             <!-- rating -->
                                             <% if (rec.rec_rate) { %>
                                                 <div class="box-rate">
@@ -278,10 +278,10 @@
                                 </a>
 
                                 <!-- view recipe button -->
-                                <div class="usr-view">
+                                <!-- <div class="usr-view">
                                     <a href="/recipes/<%= rec.rec_id%>" class="usr-view-btn">
                                         <span></span>View Recipe</a>
-                                </div>
+                                </div> -->
                             </div>
                         </form>
                     </div>
