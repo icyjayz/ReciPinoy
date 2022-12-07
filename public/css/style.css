@@ -469,7 +469,7 @@ section{
 /* search result page title */
 .titleheading{
    display: block;
-   text-align: left;
+   text-align: center;
    margin: 2rem;
    text-transform: capitalize;
    color:var(--black);
@@ -1324,77 +1324,186 @@ hr {
 /*--------------------------------------------------------------
 # PROFILE
 --------------------------------------------------------------*/
+.user-details{
+   background-color: #fff;
+   margin: 5rem auto;
+   padding: 0 4rem 4rem;
+   width: min(90%, 110rem);
+}
+
+/* profile page title */
+.titleheading{
+   display: block;
+   text-align: center;
+   margin: 2rem;
+   text-transform: capitalize;
+   color:var(--black);
+   font-size: 2.5rem;
+   font-weight: bold;
+}
+
 .user-details .user{
-   border:var(--border);
-   padding:2rem;
    max-width: 100rem;
    margin:0 auto;
 }
 
-.user-details .user img{
-   width: 100%;
-   height: 15rem;
-   object-fit: contain;
-   margin-bottom: 2rem;
+.user-details .user .user-info{
+   text-align: center;
 }
 
-.user-details .user p{
+.user-details .user .user-info p{
    line-height: 1.5;
    margin-bottom: .5rem;
    font-size: 2rem;
 }
 
-.user-details .user p span{
+.user-details .user .user-info p span{
    color:var(--black);
 }
 
-.user-details .user p .userText{
+.user-details .user .user-info p .userText{
    line-height: 1.5;
    margin-bottom: .5rem;
    font-size: 2rem;   
    color:var(--black);
 }
 
-.user-details .user i{
+.user-details .user-info i{
    margin-right: .7rem;
    color:var(--light-color);
 }
 
-/* checkbox */
-.user-details .user input[type="checkbox"] {
+/* checkbox for dietary restrictions*/
+.user-details .user .flex-container i{
+   margin-right: .7rem;
+   color:var(--light-color);
+   line-height: 1.5;
+   margin-bottom: .5rem;
+
+}
+
+.user-details .user .restrictions input[type="checkbox"] {
    -webkit-appearance: none;
    appearance: none;
-   background-color: var(--form-background);
-   margin: 0;
-   font: inherit;
-   color: currentColor;
-   width: 1.15em;
-   height: 1.15em;
-   border: 0.15em solid currentColor;
-   border-radius: 0.15em;
-   transform: translateY(-0.075em);
- 
-   display: grid;
-   place-content: center;
+   background-color: #d5d5d5;
+   width: 1.7em;
+   height: 1.7em;
+   border-radius: 0.5em;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   outline: none;
+   margin-left: 2.3em;
  }
- 
- .user-details .user input[type="checkbox"]::before {
-   content: "";
-   width: 0.65em;
-   height: 0.65em;
-   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-   transform: scale(0);
-   transform-origin: bottom left;
-   transition: 120ms transform ease-in-out;
-   box-shadow: inset 1em 1em var(--form-control-color);
-   /* Windows High Contrast Mode */
-   background-color: var(--green);
+
+ .user-details .user .restrictions input[type="checkbox"]::after {
+   font-family: "Font Awesome 5 Free";
+   font-size: 18px;
+   font-weight: 900;
+   content: "\f00c";
+   color: white;
+   display: none;
  }
- 
- .user-details .user input[type="checkbox"]:checked::before {
-   transform: scale(1);
+
+ .user-details .user .restrictions input[type="checkbox"]:hover {
+   background-color: #a5a5a5;
  }
+
+ .user-details .user .restrictions input[type="checkbox"]:checked {
+   background-color: #5bcd3e;
+ }
+
+ .user-details .user .restrictions input[type="checkbox"]:checked:after {
+   display: block;
+ }
+
+ .user-details .user .restrictions .structure{
+   display: flex;
+  }
+
+ .user-details .user .restrictions .structure .rest-label{
+ line-height: 1.5;
+ margin-left: 1em;
+ margin-bottom: 1rem;
+ font-size: 1.7rem;   
+ color:var(--black);
+}
+
+/* checkbox for allergies */
+.user-details .user .allergies input[type="checkbox"] {
+   -webkit-appearance: none;
+   appearance: none;
+   background-color: #d5d5d5;
+   width: 1.7em;
+   height: 1.7em;
+   border-radius: 0.5em;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   outline: none;
+   margin-left: 2.3em;
+ }
+
+ .user-details .user .allergies input[type="checkbox"]::after {
+   font-family: "Font Awesome 5 Free";
+   font-size: 18px;
+   font-weight: 900;
+   content: "\f00c";
+   color: white;
+   display: none;
+ }
+
+ .user-details .user .allergies input[type="checkbox"]:hover {
+   background-color: #a5a5a5;
+ }
+
+ .user-details .user .allergies input[type="checkbox"]:checked {
+   background-color: #5bcd3e;
+ }
+
+ .user-details .user .allergies input[type="checkbox"]:checked:after {
+   display: block;
+ }
+
+ .user-details .user .allergies .structure{
+   display: flex;
+  }
+
+ .user-details .user .allergies .structure .rest-label{
+ line-height: 1.5;
+ margin-left: 1em;
+ margin-bottom: 1rem;
+ font-size: 1.7rem;   
+ color:var(--black);
+}
  
+/* flex for restrictions and allergies */
+.flex-container {
+   display: flex;
+   flex-direction: row;
+   font-size: 30px;
+   text-align: center;
+ }
+
+.user-details .user .restrictions{
+   flex: 50%;
+   padding: 10px;
+  }
+.user-details .user .allergies{
+   flex: 50%;
+   padding: 10px;
+}
+
+.profbuttons{
+   margin-left: 35vh;
+}
+
+.profbuttons .btn{
+   margin: 2vh;
+}
+
 /*--------------------------------------------------------------
 # LOADER
 --------------------------------------------------------------*/
@@ -1649,7 +1758,7 @@ hr {
       font-size: 70%;
    }
 
-   .recipeResults, .userRecipeView, .grocery-cont {
+   .recipeResults, .userRecipeView, .grocery-cont , .user-details{
       background-color: #fff;
       margin: 0;
       width:auto;
@@ -1772,6 +1881,11 @@ hr {
    }
 
    .recipeResults{
+      padding:1.5rem;
+      justify-content: center;
+   }
+
+   .user-details{
       padding:1.5rem;
       justify-content: center;
    }

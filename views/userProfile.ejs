@@ -28,180 +28,296 @@
     <%- include('./partials/userNav'); %>
 
 <div class="user-details">
-
     <div class="user">
     <% user.forEach(u => { %>
         <form action="/profile" method="post" class="user-prof">
-            <img src="images/user-icon.png" alt="">
-            <p><i class="fas fa-user"></i> <span>Display Name: <input type="text" class="userText" name="userName" id="userName" value="<%= u.user_name %>" required></span></p>    
-            <p><i class="fas fa-envelope"></i> <span>Email: <%= u.user_email %> </span></p>   
+            <a href="/" class="back-btn"><span class="prof-back">Home</span></a>
+
+            <!-- title -->
+            <span class="titleheading">Profile</span>
+
+            <div class="user-info">
+                <p><i class="fas fa-user"></i> <span>Display Name: <input type="text" class="userText" name="userName" id="userName" value="<%= u.user_name %>" required></span></p>    
+                <p><i class="fas fa-envelope"></i> <span>Email: <%= u.user_email %> </span></p>   
+            </div>
             <br><br><br>
+
+        <div class="flex-container">
+            <div class="restrictions">
             <p><i class="fas fa-hamburger"></i> <span>Dietary Restrictions: </span></p>
+            
             <% if (u.user_restrict){ %> 
                 <% let rStr = u.user_restrict; %> 
                 <% if (rStr.includes('lactose intolerance')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance" checked>
-                    <label for="dietRLacInt">Lactose intolerance</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance" checked>
+                        <label for="dietRLacInt" class="rest-label">Lactose intolerance</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance">
-                    <label for="dietRLacInt">Lactose intolerance</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance">
+                        <label for="dietRLacInt" class="rest-label">Lactose intolerance</label>
+                    </div>
                 <% } %> 
                 <% if (rStr.includes('gluten intolerance')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance" checked>
-                    <label for="dietRGutInt">Gluten intolerance</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance" checked>
+                        <label for="dietRGutInt" class="rest-label">Gluten intolerance</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance">
-                    <label for="dietRGutInt">Gluten intolerance</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance">
+                        <label for="dietRGutInt" class="rest-label">Gluten intolerance</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('vegetarianism')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism" checked>
-                    <label for="dietRVegetnism">Vegetarianism</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism" checked>
+                        <label for="dietRVegetnism" class="rest-label">Vegetarianism</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism">
-                    <label for="dietRVegetnism">Vegetarianism</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism">
+                        <label for="dietRVegetnism" class="rest-label">Vegetarianism</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('veganism')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism" checked>
-                    <label for="dietRVeganism">Veganism</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism" checked>
+                        <label for="dietRVeganism" class="rest-label">Veganism</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism">
-                    <label for="dietRVeganism">Veganism</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism">
+                        <label for="dietRVeganism" class="rest-label">Veganism</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('kosher')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher" checked>
-                    <label for="dietRKosher">Kosher</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher" checked>
+                        <label for="dietRKosher" class="rest-label">Kosher</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher">
-                    <label for="dietRKosher">Kosher</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher">
+                        <label for="dietRKosher" class="rest-label">Kosher</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('keto')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto" checked>
-                    <label for="dietRKeto">Keto</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto" checked>
+                        <label for="dietRKeto" class="rest-label">Keto</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto">
-                    <label for="dietRKeto">Keto</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto">
+                        <label for="dietRKeto" class="rest-label">Keto</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('diabetes')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes" checked>
-                    <label for="dietRDiab">Diabetes</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes" checked>
+                        <label for="dietRDiab" class="rest-label">Diabetes</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes">
-                    <label for="dietRDiab">Diabetes</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes">
+                        <label for="dietRDiab" class="rest-label">Diabetes</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('dairy-free')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free" checked>
-                    <label for="dietRDairy">Dairy-free</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free" checked>
+                        <label for="dietRDairy" class="rest-label">Dairy-free</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
-                    <label for="dietRDairy">Dairy-free</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
+                        <label for="dietRDairy" class="rest-label">Dairy-free</label>
+                    </div>
                 <% } %>
                 <% if (rStr.includes('low carb')) { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb" checked>
-                    <label for="dietRLowCarb">Low carb</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb" checked>
+                        <label for="dietRLowCarb" class="rest-label">Low carb</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
-                    <label for="dietRLowCarb">Low carb</label>
+                    <div class="structure">
+                        <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
+                        <label for="dietRLowCarb" class="rest-label">Low carb</label>
+                    </div>
                 <% } %>
 
             <% } else { %>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance">
-                <label for="dietRLacInt">Lactose intolerance</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance">
-                <label for="dietRGutInt">Gluten intolerance</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism">
-                <label for="dietRVegetnism">Vegetarianism</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism">
-                <label for="dietRVeganism">Veganism</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher">
-                <label for="dietRKosher">Kosher</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto">
-                <label for="dietRKeto">Keto</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes">
-                <label for="dietRDiab">Diabetes</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
-                <label for="dietRDairy">Dairy-free</label>
-                <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
-                <label for="dietRLowCarb">Low carb</label>
+                <div class="structure">
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Lactose intolerance">
+                    <label for="dietRLacInt" class="rest-label">Lactose intolerance</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Gluten intolerance">
+                    <label for="dietRGutInt" class="rest-label">Gluten intolerance</label>
+                </div>
+                <div class="structure">    
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Vegetarianism">
+                    <label for="dietRVegetnism" class="rest-label">Vegetarianism</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Veganism">
+                    <label for="dietRVeganism" class="rest-label">Veganism</label>
+                </div>
+                <div class="structure"> 
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Kosher">
+                    <label for="dietRKosher" class="rest-label">Kosher</label>
+                </div>
+                <div class="structure"> 
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Keto">
+                    <label for="dietRKeto" class="rest-label">Keto</label>
+                </div>
+                <div class="structure"> 
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Diabetes">
+                    <label for="dietRDiab" class="rest-label">Diabetes</label>
+                </div>
+                <div class="structure"> 
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Dairy-free">
+                    <label for="dietRDairy" class="rest-label">Dairy-free</label>
+                </div>
+                <div class="structure"> 
+                    <input type="checkbox" name="dietRInp" id="dietRInp" value="Low carb">
+                    <label for="dietRLowCarb" class="rest-label">Low carb</label>
+                </div>
             <% } %> 
-            <br><br><br>
+            </div>
+
+            <div class="allergies">
             <p><i class="fas fa-cheese"></i> <span>Food Allergies: </span></p>
+            
             <% if (u.user_allergy) { %>
                 <% let aStr = u.user_allergy; %> 
                 <% if (aStr.includes("cow's milk")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk" checked>
-                    <label for="faCow">Cow&rsquo;s milk</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk" checked>
+                        <label for="faCow" class="rest-label">Cow&rsquo;s milk</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk">
-                    <label for="faCow">Cow&rsquo;s milk</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk">
+                        <label for="faCow" class="rest-label">Cow&rsquo;s milk</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("eggs")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="eggs" checked>
-                    <label for="faEggs">Eggs</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="eggs" checked>
+                        <label for="faEggs" class="rest-label">Eggs</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="eggs">
-                    <label for="faEggs">Eggs</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="eggs">
+                        <label for="faEggs" class="rest-label">Eggs</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("tree nuts")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="tree nuts" checked>
-                    <label for="faTNuts">Tree nuts</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="tree nuts" checked>
+                        <label for="faTNuts" class="rest-label">Tree nuts</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="tree nuts">
-                    <label for="faTNuts">Tree nuts</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="tree nuts">
+                        <label for="faTNuts" class="rest-label">Tree nuts</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("peanuts")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="peanuts" checked>
-                    <label for="faTPnuts">Peanuts</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="peanuts" checked>
+                        <label for="faTPnuts" class="rest-label">Peanuts</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="peanuts">
-                    <label for="faTPnuts">Peanuts</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="peanuts">
+                        <label for="faTPnuts" class="rest-label">Peanuts</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("shellfish")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="shellfish" checked>
-                    <label for="faShllfish">Shellfish</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="shellfish" checked>
+                        <label for="faShllfish" class="rest-label">Shellfish</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="shellfish">
-                    <label for="faShllfish">Shellfish</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="shellfish">
+                        <label for="faShllfish" class="rest-label">Shellfish</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("wheat")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="wheat" checked>
-                    <label for="faWheat">Wheat</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="wheat" checked>
+                        <label for="faWheat" class="rest-label">Wheat</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="wheat">
-                    <label for="faWheat">Wheat</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="wheat">
+                        <label for="faWheat" class="rest-label">Wheat</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("soy")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="soy" checked>
-                    <label for="faSoy">Soy</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="soy" checked>
+                        <label for="faSoy" class="rest-label">Soy</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="soy">
-                    <label for="faSoy">Soy</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="soy">
+                        <label for="faSoy" class="rest-label">Soy</label>
+                    </div>
                 <% } %>
                 <% if (aStr.includes("Fish")) { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="Fish" checked>
-                    <label for="faFish">Fish</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="Fish" checked>
+                        <label for="faFish" class="rest-label">Fish</label>
+                    </div>
                 <% } else { %>
-                    <input type="checkbox" name="faInp" id="faInp" value="Fish">
-                    <label for="faFish">Fish</label>
+                    <div class="structure">
+                        <input type="checkbox" name="faInp" id="faInp" value="Fish">
+                        <label for="faFish" class="rest-label">Fish</label>
+                    </div>
                 <% } %>
             <% } else { %>
-                <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk">
-                <label for="faCow">Cow&rsquo;s milk</label>
-                <input type="checkbox" name="faInp" id="faInp" value="eggs">
-                <label for="faEggs">Eggs</label>
-                <input type="checkbox" name="faInp" id="faInp" value="tree nuts">
-                <label for="faTNuts">Tree nuts</label>
-                <input type="checkbox" name="faInp" id="faInp" value="peanuts">
-                <label for="faTPnuts">Peanuts</label>
-                <input type="checkbox" name="faInp" id="faInp" value="shellfish">
-                <label for="faShllfish">Shellfish</label>
-                <input type="checkbox" name="faInp" id="faInp" value="wheat">
-                <label for="faWheat">Wheat</label>
-                <input type="checkbox" name="faInp" id="faInp" value="soy">
-                <label for="faSoy">Soy</label>
-                <input type="checkbox" name="faInp" id="faInp" value="Fish">
-                <label for="faFish">Fish</label>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="cow&rsquo;s milk">
+                    <label for="faCow" class="rest-label">Cow&rsquo;s milk</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="eggs">
+                    <label for="faEggs" class="rest-label">Eggs</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="tree nuts">
+                    <label for="faTNuts" class="rest-label">Tree nuts</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="peanuts">
+                    <label for="faTPnuts" class="rest-label">Peanuts</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="shellfish">
+                    <label for="faShllfish" class="rest-label">Shellfish</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="wheat">
+                    <label for="faWheat" class="rest-label">Wheat</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="soy">
+                    <label for="faSoy" class="rest-label">Soy</label>
+                </div>
+                <div class="structure">
+                    <input type="checkbox" name="faInp" id="faInp" value="Fish">
+                    <label for="faFish" class="rest-label">Fish</label>
+                </div>
             <% } %>
-
+        </div>
+    </div>
+    <div class="profbuttons">
         <br><br><button type="submit" class="btn">save changes</button>
         </form>
         
@@ -212,8 +328,8 @@
       id="notify-me"
       onclick="notifyMe()"> Notify Me
     </button>
-</div>
-
+    </div>
+    </div>
 </div>
 
 
@@ -261,9 +377,9 @@ button.addEventListener('click', () =>{
 });
 </script>
 
-    <div class="loader">
+    <!-- <div class="loader">
         <img src="/images/loader.gif" alt="">
-    </div>
+    </div> -->
 
 <!-- custom js file link  -->
 <script src="/public/js/script.js"></script>
