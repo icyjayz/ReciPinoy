@@ -217,7 +217,7 @@ exports.userHome = (req,res) => {
                     console.log(err);
                 }
                 else{
-                    conn.query('SELECT * FROM rec ORDER BY rec_id DESC LIMIT 6', (err, recs) => {
+                    conn.query('SELECT * FROM rec ORDER BY rec_id DESC LIMIT 12', (err, recs) => {
                         if(err){
                             console.log(err);
                         }
