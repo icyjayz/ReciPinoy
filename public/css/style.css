@@ -54,7 +54,7 @@ body {
 }
 section{
    margin:0 auto;
-   max-width: 1200px;
+   max-width: 1450px;
    padding:2rem;
 }
 
@@ -211,7 +211,7 @@ section{
 .header .flex .navbar a{
    font-size: 2rem;
    color:var(--black);
-   margin:0 1rem;
+   margin:0 2rem;
 }
 
 .header .flex .navbar a:hover{
