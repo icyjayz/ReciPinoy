@@ -212,7 +212,25 @@ exports.userHome = (req,res) => {
     try{
         session = req.session;
         if(session.userId){
-            res.render('userHome', {title: 'User Homepage', id: session.userName});
+            pool.getConnection((err, conn) =>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT * FROM rec ORDER BY rec_id DESC LIMIT 6', (err, recs) => {
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            // let msg = req.flash('msg');
+                            // res.render('index', { title: 'Home Page', msg, recs: recs, id: ''});
+                            res.render('userHome', {title: 'User Homepage', recs: recs, id: session.userName});
+        
+                        }
+                    })
+                }
+            })
+
         }
     }
     catch(error){

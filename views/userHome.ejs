@@ -89,6 +89,32 @@
     </section>
     <!-- search form section ends -->
 
+    <section class="recipes">
+
+      <h1 class="title" id=recipe_page>latest recipes</h1>
+      
+      <div class="box-container">
+         <% if (recs.length > 0) { %>
+             <% recs.forEach(rec => { %>
+                 <form action="" method="post" class="box">
+                     <a href="/recipes/<%= rec.rec_id%>" class="fas fa-eye"></a>
+                     <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150">
+                     <div class="cat"><%= rec.rec_categ %></div>
+                     <div class="name"><%= rec.rec_name %></div>
+                 </form>
+             <% }) %>
+         <% } else { %>
+             <p class="empty">No recipes found.</p>
+             <% } %>
+     </div>
+      
+   
+      <!-- <div class="more-btn">
+         <a href="menu.html" class="backbtn">veiw all</a>
+      </div> -->
+   
+   </section>
+   
    <div class="loader">
       <img src="/images/loader.gif" alt="">
    </div>
