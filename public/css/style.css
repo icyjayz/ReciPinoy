@@ -752,13 +752,17 @@ section{
    gap: 25px;
 }
 
-
 /* img src */
+/* .urv-img{
+   position: relative;
+   height: 0;
+   padding-bottom: 56.25%;
+} */
+
 .img-rec{
    width: 100%;
    height: 100%;
-   /* object-fit: cover;
-   object-position: center center; */
+   /* object-fit: cover; */
 }
 
 .urv-grid{
@@ -1553,6 +1557,44 @@ hr {
   justify-content: center;
  }
 
+ /* checkbox for meal plan button */
+ .urv-add-mp .modal-content .meal-time input[type="checkbox"]{
+   -webkit-appearance: none;
+   appearance: none;
+   background-color: #d5d5d5;
+   width: 1.8em;
+   height: 1.8em;
+   border-radius: 0.5em;
+   cursor: pointer;
+   /* display: flex;
+   align-items: center;
+   justify-content: center; */
+   outline: none;
+   margin: 1.2em 0 0;
+   /* margin-left: 2.3em; */
+ }
+
+ .urv-add-mp .modal-content .meal-time input[type="checkbox"]::after {
+   font-family: "Font Awesome 5 Free";
+   font-size: 20px;
+   font-weight: 900;
+   content: "\f00c";
+   color: white;
+   display: none;
+ }
+
+ .urv-add-mp .modal-content .meal-time input[type="checkbox"]:hover {
+   background-color: #a5a5a5;
+ }
+
+ .urv-add-mp .modal-content .meal-time input[type="checkbox"]:checked {
+   background-color: #5bcd3e;
+ }
+
+ .urv-add-mp .modal-content .meal-time input[type="checkbox"]:checked:after {
+   display: block;
+ }
+
 .addRecLabel{
    margin: 1.2em 1em 1em;
    font-weight: normal;
@@ -1628,15 +1670,16 @@ hr {
 } */
 
 @media only screen and (max-width: 1300px) {
-   .urv-upper-content{
-      grid-template-columns: repeat(1, 1fr);
+   /* .urv-img{
+      height:80%;
+      object-fit: fill;
+      object-position: center;
    }
-   
-   .img-rec{
-       height: 500px;
-       object-fit: fill;
-       object-position: center;
-   }
+    */
+
+   /* .img-rec{
+      height: 450px;
+   } */
 
    .rec-name {
       font-size: 1.9em;
@@ -1739,10 +1782,25 @@ hr {
    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.img-rec{
-   height: 425px;
 }
+
+@media only screen and (max-width:1020px){
+   .urv-upper-content{
+   grid-template-columns: repeat(1, 1fr);
+   }
+
+   .img-rec{
+      height: 365px;
+      object-fit: cover;
+   }
 }
+
+/* @media only screen and (max-width:950px){
+   .img-rec{
+      height: 450px;
+   }
+} */
+
 
 @media only screen and (max-width:768px){
    html{
@@ -1785,6 +1843,10 @@ hr {
       font-size: 2.2em;
   }
 
+  .img-rec{
+   height: 335px;
+  }
+
   .usr-saved-btn{
       margin-right: 1.2em;
    }
@@ -1808,14 +1870,17 @@ hr {
    .modal-content {
       margin: 9% auto auto;
       width: auto;
-     
+   }
+
+   .urv-add-mp .modal-content .meal-time input[type="checkbox"]::after {
+      font-size: 24px;
    }
 }
 
 @media only screen and (max-width: 580px){
    .img-rec{
-      height: 350px;
-   }
+      height: 270px;
+     }
 
    .rec-name{
       font-size: 1.5em;
@@ -1876,21 +1941,14 @@ hr {
    
 
 @media only screen and (max-width: 473px){
-   /* .userRecipeView{
-      padding: 0 2rem 2rem;
-   } */
-
-
-   .img-rec{
-      height: 270px;
+   .urv-add-mp .modal-content .meal-time input[type="checkbox"]::after {
+      font-size: 16px;
    }
-
 
    .rating-title{
       font-size: 1.2em;
    }
    
-
    .grocery-header{
       display: flex;
       flex-wrap: wrap;
@@ -1925,10 +1983,6 @@ hr {
 
 
 @media only screen and (max-width: 396px){ 
-   .img-rec{
-      height: 250px;
-   }
-
    .urv-add-mp{
       margin: 1em 1.3em 1em 2em;
    }
@@ -1951,10 +2005,6 @@ hr {
 
 
 @media only screen and (max-width: 354px){
-   .img-rec{
-      height: 220px;
-   }
-   
    .ing-details{
       flex-direction: column;
    }
