@@ -1023,7 +1023,7 @@ pool.getConnection((err, conn) => {
                 console.log('before session if');
                 console.log(finalRids);
                 if (finalRids.length == 0) {
-                    req.flash('msg', "No recipes found given the inclusion and exclusion of ingredients, and user's food restrictions and allergies!");
+                    req.flash('msg', "No recipes found given the inclusion and exclusion of ingredients!");
                     res.redirect('/recommend');
                 }
                 else{

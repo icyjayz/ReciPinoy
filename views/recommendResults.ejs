@@ -32,7 +32,7 @@
             <ul id="ingCont">
                 <% for( let index = 0; index < ings.length; index++ ) { %>
                     <!-- mukhang button to dapat yung li since clickable sya -->
-                    <li><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</li> 
+                    <li name="ingLi[]"><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
                     <input type="hidden" name="ings[]" id="ing<%= index+1 %>" value="<%= ings[index] %>">
                     <input type="hidden" name="ingNum" id="ingNum" value="<%= index+1 %>">
                 <% } %>
@@ -52,7 +52,7 @@
             <ul id="exIngCont">
                 <% for( let index = 0; index < exIngs.length; index++ ) { %>
                      <!-- mukhang button to dapat yung li since clickable sya -->
-                     <li><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</li> 
+                     <li name="exIngLi[]"><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
                     <input type="hidden" name="exIng[]" id="exIng<%= index+1 %>" value="<%= exIngs[index] %>">
                     
                 <% } %>
@@ -133,11 +133,28 @@
             }
         }
 
+
+        // console.log(tempExIng);
+        // console.log(tempIng);
+
         function add() {
+            let tempIng = [];
+            let tempExIng = [];
+            jQuery('li[name="exIngLi[]"]').each(function() {
+                let str = $(this).text();
+                let newStr = str.replace(/DEL/g, '');
+                tempExIng.push(newStr.trim());
+        });
+            jQuery('li[name="ingLi[]"]').each(function() {
+                let str = $(this).text();
+                let newStr = str.replace(/DEL/g, '');
+                tempIng.push(newStr.trim());
+        });
             let xv = [];
             let iv = [];
-            jQuery('input[name="exIng[]"]').each(function() { //dito na ko ayaw ko naHHUHU
+            jQuery('input[name="exIng[]"]').each(function() { 
                 let exIngstr = this.value;
+                let temp = [];
                 if(exIngstr){
                     // let newIngNum = parseInt($('#exIngNum').val()) + 1;
                     // $('#exIngNum').val(newIngNum);
@@ -147,35 +164,69 @@
                         // alert(element);
                         if(exIngstr != element){
                             xv.push(exIngstr.toLowerCase());
+                            tempExIng.push(exIngstr.toLowerCase());
                             let newIngNum = parseInt($('#exIngNum').val()) + 1;
-                            $('#exIngNum').val(newIngNum);                      
+                            $('#exIngNum').val(newIngNum); 
+                            
                         }
                         }
                     }
                     else{
-                        xv.push(exIngstr.toLowerCase());
-                        let newIngNum = parseInt($('#exIngNum').val()) + 1;
-                        $('#exIngNum').val(newIngNum);
+                        if(tempExIng.includes(exIngstr)){
+                                
+                                // alert("ingredient is already entered!");
+                                // $("#exIngNew").val('');
+                                if(xv.includes(exIngstr)){
+                                    alert("ingredient is already entered!");
+                                }
+                                else{
+                                    xv.push(exIngstr.toLowerCase());
+                                }
+                            }
+                            else{
+                                xv.push(exIngstr.toLowerCase());
+                                tempExIng.push(exIngstr.toLowerCase());
+                                let newIngNum = parseInt($('#exIngNum').val()) + 1;
+                                $('#exIngNum').val(newIngNum); 
+                            }
                     }
                 }
             });
 
             jQuery('input[name="ings[]"]').each(function() {
                 let ingstr = this.value;
+                // let temp = [];
                 if(ingstr){
                     if(deletedIng.length > 0){
                         for (let index = 0; index < deletedIng.length; index++) {
                         const element = deletedIng[index];
-                        if(ingstr != element){
+                        if(ingstr != element){ 
                             iv.push(ingstr.toLowerCase());
                         }
                         }
                     }
                     else{
-                        iv.push(ingstr.toLowerCase());
+                        if(tempIng.includes(ingstr)){
+                                if(iv.includes(ingstr)){
+                                    alert("ingredient is already entered!");
+                                }
+                                else{
+                                    iv.push(ingstr.toLowerCase());
+                                }
+                                // alert("ingredient is already entered!");
+                                // console.log(tempIng);
+                                
+                                // $("#ingNew").val('');
+                            }
+                            else{
+                                iv.push(ingstr.toLowerCase());
+                                tempIng.push(ingstr.toLowerCase());
+                            }
+
                     }
                     
                 }
+                console.log(iv);
             });
 
             if(iv.length < 4){
@@ -197,7 +248,7 @@
         ings.forEach(i => {
             i.addEventListener('click',(e)=>{
                 let ingStr = e.target.textContent;
-                let newStr = ingStr.replace(/x/g, '');
+                let newStr = ingStr.replace(/DEL/g, '');
                 newStr = newStr.trim();
                 deletedIng.push(newStr.toLowerCase());
                 e.target.remove();
@@ -211,7 +262,7 @@
         exIngs.forEach(ex => {
             ex.addEventListener('click',(e)=>{
                 let ingStr = e.target.textContent;
-                let newStr = ingStr.replace(/x/g, '');
+                let newStr = ingStr.replace(/DEL/g, '');
                 newStr = newStr.trim();
                 deletedExIng.push(newStr.toLowerCase());
                 e.target.remove();

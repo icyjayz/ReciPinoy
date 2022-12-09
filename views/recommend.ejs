@@ -104,7 +104,7 @@
                     let current = $(this);
                     if(current.children().size() > 0){
                         let ingStr = $(this).text();
-                        let newStr = ingStr.replace(/x/g, '');
+                        let newStr = ingStr.replace(/DEL/g, '');
                         newStr = newStr.trim();
                         iv.push(newStr.toLowerCase());
                     }
@@ -116,7 +116,7 @@
                     let current = $(this);
                     if(current.children().size() > 0){
                         let ingStr = $(this).text();
-                        let newStr = ingStr.replace(/x/g, '');
+                        let newStr = ingStr.replace(/DEL/g, '');
                         newStr = newStr.trim();
                         xv.push(newStr.toLowerCase());
                     }
@@ -128,45 +128,100 @@
         }
         
         function exclude() {
-            let newIngNum = parseInt($('#exIngNum').val()) + 1;
             let ingstr = $("#exIng").val();
-            let p = '<li onclick="removeIng(this)"><pre>'+ ingstr +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</pre></li>';
-            $('#exIngCont').append(p);
-            $("#exIng").val('');
-            $('#exIngNum').val(newIngNum);  
-            $('#exIngredientsBtn').attr('disabled',true);
+            console.log("exIng: ", ingstr);
+            let exIngArr = [];
+            
+                jQuery('li[name="exIngLi[]"]').each(function() {
+                let str = $(this).text();
+                let newStr = str.replace(/DEL/g, '');
+                exIngArr.push(newStr.trim());
+            });
+            console.log("exIngArr: ", exIngArr);
+
+            if(exIngArr.includes(ingstr)){
+                alert("ingredient is already entered!");
+                $("#exIng").val('');
+            }
+            else{
+                let newIngNum = parseInt($('#exIngNum').val()) + 1;
+                let p = '<li onclick="removeExIng(ing)" name="exIngLi[]"><pre>'+ ingstr +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></pre></li>';
+                $('#exIngCont').append(p);
+                $("#exIng").val('');
+                $('#exIngNum').val(newIngNum);  
+                $('#exIngredientsBtn').attr('disabled',true);
+            }
+            
         }
 
         function add() {
-            let newIngNum = parseInt($('#ingNum').val()) + 1;
-            $('#ingNum').val(newIngNum); 
             let str = $("#ing1").val();
-            let p = '<li onclick="removeIng(this)"><pre>'+ str +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</pre></li>';
-            $('#ingCont').append(p);
-            $("#ing1").val('');
-            let ingCheck = document.getElementById('ingCheck');
-            ingNum = parseInt($('#ingNum').val());
+            console.log("str: ", str);
+            let ingStr = [];
 
-            let ingCount = ingNum - clickCount;
-            console.log("ingCount: ", ingCount);
-            if (ingCount >= 0 && ingCount < 4) {
-                ingCheck.innerHTML = "Ingredients should be at least 4!";
-            } else {
-                getRecommBtn.disabled = false;
-                ingCheck.innerHTML = '';
+            jQuery('li[name="ingLi[]"]').each(function() {
+                let str = $(this).text();
+                let newStr = str.replace(/DEL/g, '');
+                ingStr.push(newStr.trim());
+            });
+
+            console.log("ingStr: ", ingStr);
+            if(ingStr.includes(str)){
+                alert("ingredient is already entered!");
+                $("#ing1").val('');
             }
+            else{
+                let newIngNum = parseInt($('#ingNum').val()) + 1;
+                $('#ingNum').val(newIngNum); 
+                let p = '<li onclick="removeIng(this)" name="ingLi[]"><pre>'+ str +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></pre></li>';
+                $('#ingCont').append(p);
+                $("#ing1").val('');
+                let ingCheck = document.getElementById('ingCheck');
+                ingNum = parseInt($('#ingNum').val());
+
+                ingCount = ingNum - clickCount;
+                console.log("ingCount: ", ingCount);
+                if (ingCount >= 0 && ingCount < 4) {
+                    ingCheck.innerHTML = "Ingredients should be at least 4!";
+                } else {
+                    getRecommBtn.disabled = false;
+                    ingCheck.innerHTML = '';
+                }
+
             $('#addIngredientsBtn').attr('disabled',true); 
+            }
         }
 
         function removeIng(ing) {
             clickCount++;
             ing.parentNode.removeChild(ing);
+            // console.log("ing: ", ing);
             let ingCount = ingNum - clickCount;
             console.log("ingCount: ", ingCount);
+            ingStr = [];
+            jQuery('li[name="ingLi[]"]').each(function() {
+                let str = $(this).text();
+                let newStr = str.replace(/DEL/g, '');
+                ingStr.push(newStr.trim());
+            });
+
+            console.log("ingStr: ", ingStr);
+
             if (ingCount >= 0 && ingCount < 4) {
                 ingCheck.innerHTML = "Ingredients should be at least 4!";
                 getRecommBtn.disabled = true;
             }   
+        }
+
+        function removeExIng(ing) {
+            exIngArr = [];
+            jQuery('li[name="exIngLi[]"]').each(function() {
+                let str = $(this).text();
+                let newStr = str.replace(/DEL/g, '');
+                exIngArr.push(newStr.trim());
+            });
+
+            console.log("ingStr: ", ingStr);
         }
     </script>
 
