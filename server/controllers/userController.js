@@ -927,7 +927,7 @@ pool.getConnection((err, conn) => {
         
         if(exIngNum > 0){
             recomm.exIngs = JSON.parse(req.body.exIngsVal);
-            console.log(recomm.getExIngs());
+            console.log('exIngs: ', recomm.getExIngs());
             let exIngsId = [];
             let rIds = [];
             //query to get ing ids of excluded ings
@@ -972,8 +972,10 @@ pool.getConnection((err, conn) => {
             async function getExIngs(){
                 let exIngs = recomm.getExIngs();
                 for (const ex of exIngs) {
-                    let exids = await getExIngsId(ex);
-                    exIngsId.push(exids);
+                    if(ex){
+                        let exids = await getExIngsId(ex);
+                        exIngsId.push(exids);
+                    }
                 }
                 console.log(exIngsId); //ing id of excluded ings
                 
@@ -985,6 +987,7 @@ pool.getConnection((err, conn) => {
                 //query to get ing id for inputted ings
                 let ings = recomm.getIngs();
                 for(i of ings){
+                    console.log(i);
                     const id = await getIngId(i);
                     ingsId.push(id);
                 }

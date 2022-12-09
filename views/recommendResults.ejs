@@ -32,7 +32,7 @@
             <ul id="ingCont">
                 <% for( let index = 0; index < ings.length; index++ ) { %>
                     <!-- mukhang button to dapat yung li since clickable sya -->
-                    <li name="ingLi[]"><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
+                    <li name="ingLi[]" onclick="removeIng(this)"><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
                     <input type="hidden" name="ings[]" id="ing<%= index+1 %>" value="<%= ings[index] %>">
                     <input type="hidden" name="ingNum" id="ingNum" value="<%= index+1 %>">
                 <% } %>
@@ -52,8 +52,11 @@
             <ul id="exIngCont">
                 <% for( let index = 0; index < exIngs.length; index++ ) { %>
                      <!-- mukhang button to dapat yung li since clickable sya -->
-                     <li name="exIngLi[]"><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
-                    <input type="hidden" name="exIng[]" id="exIng<%= index+1 %>" value="<%= exIngs[index] %>">
+                     <% if (exIngs[index]) { %>
+                        <li name="exIngLi[]" onclick="removeExIng(this)"><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
+                        <input type="hidden" name="exIng[]" id="exIng<%= index+1 %>" value="<%= exIngs[index] %>">
+                     <% } %> 
+
                     
                 <% } %>
                 </ul>
@@ -140,42 +143,37 @@
         function add() {
             let tempIng = [];
             let tempExIng = [];
+
             jQuery('li[name="exIngLi[]"]').each(function() {
                 let str = $(this).text();
                 let newStr = str.replace(/DEL/g, '');
                 tempExIng.push(newStr.trim());
-        });
+            });
             jQuery('li[name="ingLi[]"]').each(function() {
                 let str = $(this).text();
                 let newStr = str.replace(/DEL/g, '');
                 tempIng.push(newStr.trim());
-        });
+            });
+
             let xv = [];
             let iv = [];
             jQuery('input[name="exIng[]"]').each(function() { 
                 let exIngstr = this.value;
                 let temp = [];
-                if(exIngstr){
-                    // let newIngNum = parseInt($('#exIngNum').val()) + 1;
-                    // $('#exIngNum').val(newIngNum);
                     if(deletedExIng.length > 0){
                         for (let index = 0; index < deletedExIng.length; index++) {
                         const element = deletedExIng[index];
-                        // alert(element);
-                        if(exIngstr != element){
-                            xv.push(exIngstr.toLowerCase());
-                            tempExIng.push(exIngstr.toLowerCase());
-                            let newIngNum = parseInt($('#exIngNum').val()) + 1;
-                            $('#exIngNum').val(newIngNum); 
-                            
-                        }
+                            if(exIngstr != element){
+                                xv.push(exIngstr.toLowerCase());
+                                tempExIng.push(exIngstr.toLowerCase());
+                                let newIngNum = parseInt($('#exIngNum').val()) + 1;
+                                $('#exIngNum').val(newIngNum); 
+                                
+                            }
                         }
                     }
                     else{
                         if(tempExIng.includes(exIngstr)){
-                                
-                                // alert("ingredient is already entered!");
-                                // $("#exIngNew").val('');
                                 if(xv.includes(exIngstr)){
                                     alert("ingredient is already entered!");
                                 }
@@ -190,12 +188,10 @@
                                 $('#exIngNum').val(newIngNum); 
                             }
                     }
-                }
             });
 
             jQuery('input[name="ings[]"]').each(function() {
                 let ingstr = this.value;
-                // let temp = [];
                 if(ingstr){
                     if(deletedIng.length > 0){
                         for (let index = 0; index < deletedIng.length; index++) {
@@ -213,10 +209,6 @@
                                 else{
                                     iv.push(ingstr.toLowerCase());
                                 }
-                                // alert("ingredient is already entered!");
-                                // console.log(tempIng);
-                                
-                                // $("#ingNew").val('');
                             }
                             else{
                                 iv.push(ingstr.toLowerCase());
@@ -226,7 +218,6 @@
                     }
                     
                 }
-                console.log(iv);
             });
 
             if(iv.length < 4){
@@ -243,34 +234,54 @@
             
         }
 
-        const ingCont = document.querySelector("#ingDiv");
-        const ings = ingCont.querySelectorAll('ul > li');
-        ings.forEach(i => {
-            i.addEventListener('click',(e)=>{
-                let ingStr = e.target.textContent;
-                let newStr = ingStr.replace(/DEL/g, '');
-                newStr = newStr.trim();
-                deletedIng.push(newStr.toLowerCase());
-                e.target.remove();
-                add();
-            }   
-            )
-        })
+        // const ingCont = document.querySelector("#ingDiv");
+        // const ings = ingCont.querySelectorAll('ul > li');
+        // ings.forEach(i => {
+        //     i.addEventListener('click',(e)=>{
+        //         let ingStr = e.target.textContent;
+        //         let newStr = ingStr.replace(/DEL/g, '');
+        //         newStr = newStr.trim();
+        //         deletedIng.push(newStr.toLowerCase());
+        //         e.target.remove();
+        //         add();
+        //     }   
+        //     )
+        // })
 
-        const exIngcont = document.querySelector("#exIngDiv");
-        const exIngs = exIngcont.querySelectorAll('ul > li');
-        exIngs.forEach(ex => {
-            ex.addEventListener('click',(e)=>{
-                let ingStr = e.target.textContent;
-                let newStr = ingStr.replace(/DEL/g, '');
-                newStr = newStr.trim();
-                deletedExIng.push(newStr.toLowerCase());
-                e.target.remove();
-                add();
-            }   
-            )
-        })
+        // const exIngcont = document.querySelector("#exIngDiv");
+        // const exIngs = exIngcont.querySelectorAll('ul > li');
+        // exIngs.forEach(ex => {
+        //     ex.addEventListener('click',(e)=>{
+        //         let ingStr = e.target.textContent;
+        //         let newStr = ingStr.replace(/DEL/g, '');
+        //         newStr = newStr.trim();
+        //         deletedExIng.push(newStr.toLowerCase());
+        //         e.target.remove();
+        //         add();
+        //     }   
+        //     )
+        // })
         
+
+        function removeIng(ing) {
+            ing.parentNode.removeChild(ing);
+            console.log("ing: ", ing);
+            let str = $(ing).text();
+            let newStr = str.replace(/DEL/g, '');
+            deletedIng.push(newStr.trim());
+            console.log(deletedIng);
+            add();
+        }
+
+        function removeExIng(ing) {
+            ing.parentNode.removeChild(ing);
+            console.log("ing: ", ing);
+            let str = $(ing).text();
+            let newStr = str.replace(/DEL/g, '');
+            deletedExIng.push(newStr.trim());
+            console.log(deletedExIng);
+            add();
+        }
     </script>
 
     <div class="loader">
