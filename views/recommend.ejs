@@ -55,6 +55,7 @@
         $('#exIngredientsBtn').on('click', exclude);
         let iv = [];
         let xv = [];
+        let clickCount = 0, ingNum = 0;
 
         $(document).ready(function() { //https://github.com/ashwanibakshi/autocompletesearch
         $(".ingsInp").autocomplete({ 
@@ -144,18 +145,28 @@
             $('#ingCont').append(p);
             $("#ing1").val('');
             let ingCheck = document.getElementById('ingCheck');
-            let ingNum = parseInt($('#ingNum').val());
-            if (ingNum > 0 && ingNum < 4) {
+            ingNum = parseInt($('#ingNum').val());
+
+            let ingCount = ingNum - clickCount;
+            console.log("ingCount: ", ingCount);
+            if (ingCount >= 0 && ingCount < 4) {
                 ingCheck.innerHTML = "Ingredients should be at least 4!";
             } else {
                 getRecommBtn.disabled = false;
                 ingCheck.innerHTML = '';
-            }  
+            }
             $('#addIngredientsBtn').attr('disabled',true); 
         }
 
         function removeIng(ing) {
+            clickCount++;
             ing.parentNode.removeChild(ing);
+            let ingCount = ingNum - clickCount;
+            console.log("ingCount: ", ingCount);
+            if (ingCount >= 0 && ingCount < 4) {
+                ingCheck.innerHTML = "Ingredients should be at least 4!";
+                getRecommBtn.disabled = true;
+            }   
         }
     </script>
 
