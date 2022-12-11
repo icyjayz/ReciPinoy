@@ -485,7 +485,7 @@ section{
 .filter-cont{
    display: flex;
    flex-direction: row;
-   justify-content: space-between;
+   justify-content: center;
 }
 
 /* .categ-opt{
@@ -685,6 +685,11 @@ section{
    color: var(--black);
    transition: 250ms;
 } */
+
+/*--------------------------------------------------------------
+# View Recipes Page
+--------------------------------------------------------------*/
+
 
 /*--------------------------------------------------------------
 # Recipe View
