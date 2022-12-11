@@ -17,8 +17,15 @@ window.onscroll = () =>{
    profile.classList.remove('active');
 }
 
-function loader(){
-   document.querySelector('.loader').style.display = 'none';
+// function loader(){
+//    document.querySelector('.loader').style.display = 'none';
+// }
+
+let ldr = document.querySelector('.loader');
+if(ldr){
+   function loader(){
+      ldr.style.display = 'none';
+   }
 }
 
 function fadeOut(){
