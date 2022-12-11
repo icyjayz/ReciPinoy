@@ -4,8 +4,7 @@ const pool = require('../classes/db');
 const User = require('../classes/user');
 const randToken = require('rand-token');
 const Recipe = require('../classes/recipe');
-const { json } = require('express');
-const { Grocery } = require('../classes/recipe');
+
 
 
 
@@ -35,7 +34,25 @@ exports.indexPage = (req, res) =>{
     try{
         session = req.session;
         if(session.userId){
-            res.render('userHome', { title: 'User Home', id: session.userName});
+            pool.getConnection((err, conn) =>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    conn.query('SELECT * FROM rec ORDER BY rec_id DESC LIMIT 12', (err, recs) => {
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            let name = session.userName;
+                            // let msg = req.flash('msg');
+                            // res.render('index', { title: 'Home Page', msg, recs: recs, id: ''});
+                            res.render('userHome', {title: name +'\'s Homepage', recs: recs, id: session.userName});
+                        }
+                    })
+                }
+            })
+            
         }
         else{
             console.log('user none...\n');
@@ -222,9 +239,10 @@ exports.userHome = (req,res) => {
                             console.log(err);
                         }
                         else{
+                            let name = session.userName;
                             // let msg = req.flash('msg');
                             // res.render('index', { title: 'Home Page', msg, recs: recs, id: ''});
-                            res.render('userHome', {title: 'User Homepage', recs: recs, id: session.userName});
+                            res.render('userHome', {title: name +'\'s Homepage', recs: recs, id: session.userName});
         
                         }
                     })
