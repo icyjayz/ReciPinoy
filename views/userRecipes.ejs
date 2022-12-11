@@ -19,33 +19,106 @@
    <%- include('./partials/userNav'); %>
    <%#- include('./partials/guestNav'); %>
 
+    <div class ="recipeResults">
+        <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
+
+        <!-- title -->
+        <span class="titleheading">All Items</span>
+    
+    <!-- search filter -->
+    <div class="getFilter">
+
     <form action="/recipes" method="post">
-        <div id="sortResults">
-            <select name="alphabet" id="alphabet" onchange="this.form.submit()">
-                <option value="" disabled selected>sort alphabetically</option>
-                <option value="a-z">a to z</option>
-                <option value="z-a">z to a</option>
-            </select>
-            <select name="rating" id="rating" onchange="this.form.submit()">
-                <option value="" disabled selected>sort by ratings</option>
-                <option value="h-l">rating: highest to lowest</option>
-                <option value="l-h">rating: lowest to highest</option>
-            </select>
-         </div>
-        <table>
-            <tbody>
-                <% recs.forEach(rec => { %>
-                    <tr>
-                        <td><img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" height="150"></td>
-                        <td><a href="/recipes/<%= rec.rec_id%>"><%= rec.rec_name %></a></td>
-                        <td><% if (rec.rec_rating != 0) { %>
-                            <span>Rating: <%=rec.rec_rate  %> </span>
-                        <% } %></td>
-                    </tr>
+        <div id="sortResults" class="filter-cont">
+                <!-- Alphabetically -->
+                <div class="select-box">
+                    <div class="select-box__current" tabindex="1">
+                        <div class="select-box__value">
+                            <label class="select-box__input-text">Sort Alphabetically</label>
+                        </div>
+                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
+                    </div>
+                    <ul class="select-box__list">
+                        <li>
+                            <label class="select-box__option" aria-hidden="aria-hidden">
+                                <input class="select-box__input" type="radio" name="alphabet" id="alphabet" value="a-z" onchange="this.form.submit()">
+                                A to Z
+                            </label>
+                        </li>
+                        <li>
+                            <label class="select-box__option" aria-hidden="aria-hidden">
+                                <input class="select-box__input" type="radio" name="alphabet" id="alphabet" value="z-a" onchange="this.form.submit()">
+                                Z to A
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="select-box">
+                    <div class="select-box__current" tabindex="1">
+                        <div class="select-box__value">
+                            <label class="select-box__input-text">Sort by Ratings</label>
+                        </div>
+                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
+                    </div>
+                    <ul class="select-box__list">
+                        <li>
+                            <label class="select-box__option" aria-hidden="aria-hidden">
+                                <input class="select-box__input" type="radio" name="rating" id="rating" value="h-l" onchange="this.form.submit()">
+                                Highest to Lowest
+                            </label>
+                        </li>
+                        <li>
+                            <label class="select-box__option" aria-hidden="aria-hidden">
+                                <input class="select-box__input" type="radio" name="rating" id="rating" value="l-h" onchange="this.form.submit()">
+                                Lowest to Highest
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+    </div>
+        <div class="usr-container">
+
+            <% recs.forEach(rec => { %>
+                <div class="result-card">
+                    <div class="box-card">
+                    <!-- img -->
+                    <div class="box-header">
+                        <a href="/recipes/<%= rec.rec_id%>">
+                        <img src="/images/<%= rec.rec_image%>" alt="<%= rec.rec_name %> Image" class="box-img">
+                        </a>
+                    </div>
+                    <!-- details -->
+                    <div class="box-details">
+                        <a href="/recipes/<%= rec.rec_id%>" class="rec-usr">
+                            <div class="box-one">
+                                <div class="name-cont">
+                                    <!-- category -->
+                                    <span class="box-categ"><%= rec.rec_categ %></span>
+                                    <!-- recipe name -->
+                                    <p class="box-name"><%= rec.rec_name %></p>
+                                    <!-- rating -->
+                                    <% if (rec.rec_rate) { %>
+                                        <div class="box-rate">
+                                            <%= rec.rec_rate %>
+                                            <span class="str"></span>
+                                        </div>
+                                    <% } else { %>
+                                        <span class="box-not">This recipe hasn't been rated.</span>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </a>                       
+                    </div>
+
+                </div>
+                </div>
                 <% }) %>
-            </tbody>
-        </table>
-     </form>   
+        </div>
+
+     </form>
+
+    </div>  
     
     <div class="loader">
         <img src="/images/loader.gif" alt="">
