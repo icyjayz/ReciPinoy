@@ -485,7 +485,7 @@ section{
 .filter-cont{
    display: flex;
    flex-direction: row;
-   justify-content: center;
+   justify-content: space-between;
 }
 
 /* .categ-opt{
@@ -505,13 +505,14 @@ section{
 .select-box {
    position: relative;
    display: block;
-   width: 20%;
-   font-size: 1.6em;
+   width: 200px;
+   font-size: 18px;
    color: #60666d;
  }
+
  
  .select-box__current {
-   /* position: relative; */
+   position: relative;
    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
    cursor: pointer;
    outline: none;
@@ -531,14 +532,14 @@ section{
    -webkit-transform: translateY(-50%) rotate(180deg);
            transform: translateY(-50%) rotate(180deg);
  } */
- 
+
  .select-box__icon {
    position: absolute;
    top: 50%;
    right: 15px;
    -webkit-transform: translateY(-50%);
            transform: translateY(-50%);
-   width: 20px;
+   width: 15px;
    opacity: 0.3;
    /* transition: 0.2s ease; */
  }
@@ -549,10 +550,11 @@ section{
 
  /* .select-box__input {
    display: none;
- } 
+ } */
+
  .select-box__input:checked + .select-box__input-text {
    display: block;
- } */
+ }
 
  .select-box__input-text {
    /* display: none; */
@@ -568,8 +570,17 @@ section{
    padding: 0;
    list-style: none;
    opacity: 0;
+   /* -webkit-animation-name: HideList;
+           animation-name: HideList;
+   -webkit-animation-duration: 0.5s;
+           animation-duration: 0.5s;
+   -webkit-animation-delay: 0.5s;
+           animation-delay: 0.5s;
+   -webkit-animation-fill-mode: forwards;
+           animation-fill-mode: forwards;
+   -webkit-animation-timing-function: step-start;
+           animation-timing-function: step-start; */
    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
-   
  }
 
  .select-box__option {
@@ -582,6 +593,60 @@ section{
    color: #546c84;
    background-color: #fbfbfb;
  }
+ 
+ @-webkit-keyframes HideList {
+   from {
+     -webkit-transform: scaleY(1);
+             transform: scaleY(1);
+   }
+   to {
+     -webkit-transform: scaleY(0);
+             transform: scaleY(0);
+   }
+ }
+ 
+ @keyframes HideList {
+   from {
+     -webkit-transform: scaleY(1);
+             transform: scaleY(1);
+   }
+   to {
+     -webkit-transform: scaleY(0);
+             transform: scaleY(0);
+   }
+ }
+ 
+/* filter button */
+.btn-lang{
+   background-color: #fff;
+   width: 105px;
+}
+.fil-icon::before{
+   content: "\f0b0";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(141, 141, 141);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.fil-icon {
+   background-color: #fff;
+   font-size: 1.4em;
+}
+
+.fil-btn{
+   font-size: 18px;
+   background: none;
+   color: #888;
+   cursor:pointer;
+}
+
+ .fil-btn:hover{
+   color: var(--green);
+}
  
  /* ----------------------------------end of filter */
 
@@ -654,7 +719,7 @@ section{
 .usr-saved::before{
    content: "\f02e";
    display: inline-block;
-   color: rgb(27, 27, 27);
+   color: var(--green);
    font: var(--fa-font-regular);
    text-rendering: auto;
    -webkit-font-smoothing: antialiased;
@@ -690,6 +755,24 @@ section{
 # View Recipes Page
 --------------------------------------------------------------*/
 
+.filter-cont1{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+}
+.select-box1 {
+   position: relative;
+   display: block;
+   width: 100%;
+   font-size: 18px;
+   color: #60666d;
+ }
+
+ .sel-opt{
+   margin-left: 0.5em;
+   font-size: 1em;
+   padding: 15px 15px 15px 0;
+ }
 
 /*--------------------------------------------------------------
 # Recipe View
@@ -795,7 +878,7 @@ section{
    content: "\f02e";
    display: inline-block;
    margin: 0.2rem 0.5rem 0 0;
-   color: rgb(27, 27, 27);
+   color: var(--green);
    font: var(--fa-font-regular);
    text-rendering: auto;
    -webkit-font-smoothing: antialiased;
@@ -1665,6 +1748,9 @@ hr {
    /* .img-rec{
       height: 450px;
    } */
+   .select-box {
+      width: 170px;
+    }
 
    .rec-name {
       font-size: 1.9em;
@@ -1778,13 +1864,35 @@ hr {
       height: 365px;
       object-fit: cover;
    }
+
+   .select-box {
+      width: 140px;
+      font-size: 14px;
+    }
 }
 
-/* @media only screen and (max-width:950px){
-   .img-rec{
-      height: 450px;
+@media only screen and (max-width:950px){
+   .select-box {
+      width: 140px;
+      font-size: 14px;
+    }
+
+    .btn-lang{
+      width: 30px;
+    }
+
+    .fil-btn{
+      display: none;
    }
-} */
+}
+
+@media only screen and (max-width:830px){
+   .select-box {
+      width: 130px;
+      font-size: 12px;
+    }
+}
+
 
 
 @media only screen and (max-width:768px){
@@ -1798,6 +1906,32 @@ hr {
       width:auto;
    }
 
+   .getFilter{
+      margin: 0;
+   }
+
+   .filter-cont{
+      justify-content: start;
+   }
+
+   .btn-lang{
+      float: right;
+   }
+
+   .select-box {
+      margin-right: 1.5em;
+      width: 115px;
+      font-size: 10px;
+    }
+
+    .select-box__icon{
+      right: 10px;
+    }
+
+    .btn-lang{
+      width: 15px;
+    }
+   
    .usr-container {
       grid-template-columns: repeat(1, 1fr);
       gap: 2em;
@@ -1862,7 +1996,27 @@ hr {
    }
 }
 
-@media only screen and (max-width: 580px){
+@media only screen and (max-width: 670px){ 
+   .select-box {
+      width: 120px;
+      font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 580px){ 
+   .select-box {
+      width: 100px;
+      font-size: 11px;
+    }
+
+   .select-box1 {
+      font-size: 13px;
+   }
+
+   .sel-opt{
+      font-size: 1.2em;
+   }
+   
    .img-rec{
       height: 270px;
      }
@@ -1930,6 +2084,15 @@ hr {
    
 
 @media only screen and (max-width: 473px){
+   .select-box1 {
+      font-size: 11px;
+   }
+
+   .sel-opt{
+      font-size: 1.3em;
+   }
+   
+   
    .urv-add-mp .modal-content .meal-time input[type="checkbox"]::after {
       font-size: 16px;
    }
@@ -1972,6 +2135,14 @@ hr {
 
 
 @media only screen and (max-width: 396px){ 
+   .select-box1 {
+      font-size: 9px;
+   }
+
+   .sel-opt{
+      font-size: 1.4em;
+   }
+
    .urv-add-mp{
       margin: 1em 1.3em 1em 2em;
    }
@@ -2008,6 +2179,9 @@ hr {
    #list {
       background-color: #fff;
       padding: 0 2px 0;
+   }
+   .select-box1 {
+      font-size: 7px;
    }
 }
 
