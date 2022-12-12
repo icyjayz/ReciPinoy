@@ -209,13 +209,20 @@ exports.getLoginData = (req, res) => {
 }
 exports.userLogout = (req,res) => {
     try{
-        if(req.session.userId){
+        let resp = req.body.logoutRes;
+        if (resp === 'Yes') {
             req.session.destroy();
-            console.log('session user destroy');
-            console.log(req.session, '\n');
-            //conn.destroy();
-            res.redirect('/');
-            
+            console.log('session user destroy...\n');
+            if(req.session){
+                console.log(req.session, '\n');
+            }
+            else{
+                console.log('no session atm...\n');
+            }
+            res.redirect('/');  
+        } 
+        else {
+            res.redirect('back');
         }
     }
     catch(error){
