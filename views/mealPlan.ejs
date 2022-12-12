@@ -19,11 +19,10 @@
    <%- include('./partials/userNav'); %>
    <%#- include('./partials/guestNav'); %>
 
-   <!--start-->
-    <h1>Meal Plan Calendar</h1>
-    <br>
-    <title><%= title %></title>
+    <!-- title -->
+    <span class="titleheading">Meal Plan</span>
     <p><%= title %></p>
+    <br>
     <div>
         <button type="button"> <a href="/saved">Add Recipes From Save</a></button>&nbsp;
         <button type="button" id ="searchBut">Search Recipes</button>&nbsp;
@@ -42,58 +41,63 @@
         <br><br><br>
     </div>
     <section>
-        <!--id="weekViewInp" name="weekViewInp"-->
-        <form action="/mealPlan/past" method="post">
-            <input type="submit" id="mealPlanPastBut" value="<"></button>&nbsp;
-        </form>
-        <form action="/mealPlan/current" method="post" >
-            <input type="submit" id="mealPlanCurrentBut" value="Today"></button>&nbsp;
-        </form>
-        <form action="/mealPlan/next" method="post">
-            <input type="submit" id="mealPlanNextBut"  value=">"></button>
-        </form>
-        <br><br>
-        
+      <!--id="weekViewInp" name="weekViewInp"-->
+      <form action="/mealPlan/past" method="post">
+          <input type="submit" id="mealPlanPastBut" value="<"></button>&nbsp;
+      </form>
+      <form action="/mealPlan/current" method="post" >
+          <input type="submit" id="mealPlanCurrentBut" value="This Week"></button>&nbsp;
+      </form>
+      <form action="/mealPlan/next" method="post">
+          <input type="submit" id="mealPlanNextBut"  value=">"></button>
+      </form>
+      <br><br>
+
+
+      <div class="usr-container">
         <% if (mealPlan.length > 0) { %>
-            <div class="table-responsive">
-                <table class="table table-bordered text-center">
-                    <!--<thead>
-                        <tr class="bg-light-gray">
-                            <th class="text-uppercase" name="weekDay" value = "Monday">Monday</th>
-                            <th class="text-uppercase" name="weekDay" value = "Tuesday">Tuesday</th>
-                            <th class="text-uppercase" name="weekDay" value = "Wednesday">Wednesday</th>
-                            <th class="text-uppercase" name="weekDay" value = "Thursday">Thursday</th>
-                            <th class="text-uppercase" name="weekDay" value = "Friday">Friday</th>
-                            <th class="text-uppercase" name="weekDay" value = "Saturday">Saturday</th>
-                            <th class="text-uppercase" name="weekDay" value = "Sunday">Sunday</th>
-                        </tr>
-                    </thead>-->
-                    <tbody>
-                        
-                        <tr class="align-middle">
-                            <% mealPlan.forEach( mealPlan => { %>
-                            <td style="width: 80rem; align-items: center;">
-                                <div class="card-text-center" style="width: 30rem; align-items: center;">
-                                    <a href="/mealPlan/delete/<%= mealPlan.rec_id%>">x</a>
-                                    <div class="card-header">
-                                        <%= mealPlan.sDay%><br> <%= mealPlan.dateTime%>
-                                      </div>
-                                    <img class="card-img-top" src="/images/<%= mealPlan.rec_image%>" alt="<%= mealPlan.rec_name %> Image" height="150" style="width: 20rem;">>
-                                    <div class="card-body">
-                                      <h5 class="card-title"><a href="/mealPlan/<%= mealPlan.rec_id%>"><%= mealPlan.rec_name %></a></h5>
+        <% mealPlan.forEach(mealPlan => { %>
+            <div class="result-card">
+                <div class="box-card">
+                <!-- img -->
+                <div class="box-header">
+                    <a href="/mealPlan/delete/<%= mealPlan.rec_id%>">x</a>
+                    <a href="/recipes/<%= mealPlan.rec_id%>">
+                    <img src="/images/<%= mealPlan.rec_image%>" alt="<%= mealPlan.rec_name %> Image" class="box-img">
+                    </a>
+                </div>
+                <!-- details -->
+                <div class="box-details">
+                    <a href="/recipes/<%= mealPlan.rec_id%>" class="rec-usr">
+                        <div class="box-one">
+                            <div class="name-cont">
+                                <!-- category -->
+                                <span class="box-categ"><%= mealPlan.rec_categ %></span>
+                                <!-- recipe name -->
+                                <p class="box-name"><%= mealPlan.rec_name %></p>
+                                <!-- rating -->
+                                <% if (mealPlan.rec_rate) { %>
+                                    <div class="box-rate">
+                                        <%= mealPlan.rec_rate %>
+                                        <span class="str"></span>
                                     </div>
-                                </div>   
-                            </td>  
-                            <% }) %>
-                        </tr>  
-                       
-                    </tbody>
-                </table>
+                                <% } else { %>
+                                    <span class="box-not">This recipe hasn't been rated.</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </a>                       
+                </div>
+
             </div>
-        <% } else { %>
-            <p class="empty">No saved meal recipes found.</p>
-        <% } %>
-    </section>
+            </div>
+            <% }) %>
+            <% } else { %>
+              <p class="empty">No saved meal recipes found.</p>
+          <% } %>
+    </div>
+      
+  </section>
 
     <div class="loader">
         <img src="/images/loader.gif" alt="">
