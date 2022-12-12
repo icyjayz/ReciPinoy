@@ -105,7 +105,9 @@
                         <p class="tt-time">TOTAL TIME</p>
                         <% if (rec.rec_time) { %>
                             <span class="tot-time"><%= rec.rec_time %></span>
-                        <% } %>
+                        <% } else { %>
+                            <span class="calv">Total time is not available.</span>
+                        <% } %> 
                     </div>
 
                     <!-- border line -->
