@@ -82,24 +82,24 @@
         <label for="ingInsLbl" class="addRecLabel">Instruction: </label>
         
         <div id="ingInps" class="add-ingredients">
-        <% ing.forEach(i => { %>
-            <% counter++ %>
-            <% if (i.ingQuant == 0) { %>
-                <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
-            <% } else { %>
-                <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="<%= i.ingQuant%>" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
-             <% } %> 
-            <input type="text" name="ingUnitInp[]" id="ingUnitInp<%= counter%>" value="<%= i.ingUnit%>" placeholder="Unit" maxlength="10" class="s_ingredientbox">
-            <input type="text" name="recIng[]" id="recIng<%= counter%>" value="<%= i.ing_name%>" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
-            <input type="text" name="ingInsInp[]" id="ingInsInp<%= counter%>" value="<%= i.ingIns%>" placeholder="Instruction" maxlength="500" class="ingredientbox">
-        <% }) %>
-        <input type="hidden" id="ingNum" name="ingNum" value="<%= counter%>" >
-        </div>
+            <% ing.forEach(i => { %>
+                <% counter++ %>
+                <% if (i.ingQuant == 0) { %>
+                    <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+                <% } else { %>
+                    <br><input type="text" name="ingQuantInp[]" id="ingQuantInp<%= counter%>" value="<%= i.ingQuant%>" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
+                <% } %> 
+                <input type="text" name="ingUnitInp[]" id="ingUnitInp<%= counter%>" value="<%= i.ingUnit%>" placeholder="Unit" maxlength="10" class="s_ingredientbox">
+                <input type="text" name="recIng[]" id="recIng<%= counter%>" value="<%= i.ing_name%>" required placeholder="Ingredient" maxlength="100" class="ingredientbox">
+                <input type="text" name="ingInsInp[]" id="ingInsInp<%= counter%>" value="<%= i.ingIns%>" placeholder="Instruction" maxlength="500" class="ingredientbox">
+            <% }) %>
+            <input type="hidden" id="ingNum" name="ingNum" value="<%= counter%>" >
             <input type="hidden" name="qval" value="" id="qval" placeholder="Quantity" maxlength="10" class="s_ingredientbox">
             <input type="hidden" name="idval" value="" id="idval" placeholder="Unit" maxlength="10" class="s_ingredientbox">
             <input type="hidden" name="uval" value="" id="uval" placeholder="Ingredient" maxlength="100" class="ingredientbox">
             <input type="hidden" name="insval" value="" id="insval" placeholder="Ingredient" maxlength="100" class="ingredientbox">
-            <button id="addIngredientsBtn" type="button" class="createbtn">Add Another Ingredient</button><br><br>
+        </div>
+            <button id="addIngredientsBtn" type="button" class="createbtn">Add Another Ingredient</button>
             <button type="submit" class="btn">Update Recipe</button>
     </form>
 </section>    

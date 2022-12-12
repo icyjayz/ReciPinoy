@@ -536,7 +536,7 @@ section{
  .select-box__icon {
    position: absolute;
    top: 50%;
-   right: 15px;
+   right: 9px;
    -webkit-transform: translateY(-50%);
            transform: translateY(-50%);
    width: 15px;
@@ -548,9 +548,9 @@ section{
    display: flex;
  }
 
- /* .select-box__input {
-   display: none;
- } */
+ .select-box__input {
+   border: 5px solid #55c57a;
+ }
 
  .select-box__input:checked + .select-box__input-text {
    display: block;
@@ -773,6 +773,156 @@ section{
    font-size: 1em;
    padding: 15px 15px 15px 0;
  }
+
+/*--------------------------------------------------------------
+# SAVED RECIPES - EDIT RECIPE PAGE
+--------------------------------------------------------------*/
+.add-recipes{
+   background-color: #fff;
+   margin: 5rem auto;
+   padding: 0 4rem 4rem;
+   width: min(90%, 110rem);
+}
+
+.edit-cont{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.title-edit{
+   margin-bottom: 2rem;
+   font-size: 2.5rem;
+   color:var(--black);
+   text-transform: capitalize;
+   text-align: center;
+}
+
+
+.add-recipes form{
+   margin:0 auto;
+   max-width: 100rem;
+   background-color: var(--white);
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border:var(--border);
+   padding:2rem;
+}
+
+.add-recipes form .addRecLbl{
+   margin: 1.2em 1em 1em 0;
+   font-size: 1.8rem;
+   font-weight: bold;
+   color:var(--black);
+   text-align: left;
+   text-transform: capitalize;
+}
+
+/* variety of box */
+.add-recipes form .box{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 80%;
+   padding:1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .textareabox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 80%;
+   height: 20rem;
+   font-size: 1.7rem;
+   padding:1rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+   /* resize: vertical; */
+   resize: none;
+}
+
+.ing-edit{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+   align-items: center;
+}
+
+.ingLbl{
+   margin: 1.2em 0 1em;
+   font-size: 1.8rem;
+   font-weight: bold;
+   width: 12%;
+   color:var(--black);
+   text-transform: capitalize;
+}
+
+.ingLabel{
+   margin: 1.2em 0 1em;
+   font-size: 1.8rem;
+   font-weight: bold;
+   width: 25%;
+   color:var(--black);
+   text-transform: capitalize;
+}
+
+.user-edit{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+}
+
+.add-recipes form .add-ingredients .s_ingredientbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 12%;
+   padding: .5rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .add-ingredients .ingredientbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 25%;
+   padding: .5rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+/* add another ingredient button */
+.plus-ing{
+   display: block;
+   font-size: 1rem;
+   margin: 1rem 0 0 5rem;
+   padding:1rem 1.2rem;
+   cursor: pointer;
+   background-color: var(--green);
+   color:var(--white);
+   text-transform: uppercase;
+}
+
+/* update saved recipe button */
+.ud-rec{
+   display: block;
+   font-size: 2rem;
+   margin: 6rem auto 3rem;
+   padding:1rem 1.2rem;
+   cursor: pointer;
+   background-color: var(--green);
+   color:var(--white);
+   text-transform: uppercase;
+}
+
+
+
 
 /*--------------------------------------------------------------
 # Recipe View
@@ -1877,6 +2027,10 @@ hr {
       font-size: 14px;
     }
 
+    .select-box__icon{
+      width: 12px;
+    }
+
     .btn-lang{
       width: 30px;
     }
@@ -1884,12 +2038,17 @@ hr {
     .fil-btn{
       display: none;
    }
+
 }
 
 @media only screen and (max-width:830px){
    .select-box {
       width: 130px;
-      font-size: 12px;
+      font-size: 13px;
+    }
+
+    .select-box__icon{
+      width: 10px;
     }
 }
 
@@ -1900,7 +2059,7 @@ hr {
       font-size: 70%;
    }
 
-   .recipeResults, .userRecipeView, .grocery-cont , .user-details{
+   .add-recipes, .recipeResults, .userRecipeView, .grocery-cont , .user-details{
       background-color: #fff;
       margin: 0;
       width:auto;
@@ -1910,22 +2069,23 @@ hr {
       margin: 0;
    }
 
-   .filter-cont{
-      justify-content: start;
-   }
+   /* .filter-cont{
+      flex-direction: column;
+      flex-wrap: wrap;
+   } */
 
    .btn-lang{
       float: right;
    }
 
    .select-box {
-      margin-right: 1.5em;
-      width: 115px;
-      font-size: 10px;
+      margin-right: 1.2em;
+      width: 100%;
+      font-size: 13.5px;
     }
 
     .select-box__icon{
-      right: 10px;
+      right: 5px;
     }
 
     .btn-lang{
@@ -1998,16 +2158,25 @@ hr {
 
 @media only screen and (max-width: 670px){ 
    .select-box {
+      margin-right: 1em;
       width: 120px;
       font-size: 11px;
+    }
+
+    .select-box__icon{
+      right: 3px;
     }
 }
 
 @media only screen and (max-width: 580px){ 
    .select-box {
       width: 100px;
-      font-size: 11px;
+      font-size: 12px;
     }
+
+    /* .select-box__icon{
+      display: none;
+    } */
 
    .select-box1 {
       font-size: 13px;
@@ -2084,9 +2253,9 @@ hr {
    
 
 @media only screen and (max-width: 473px){
-   .select-box1 {
-      font-size: 11px;
-   }
+   /* .select-box1 {
+      font-size: 14px;
+   } */
 
    .sel-opt{
       font-size: 1.3em;
@@ -2136,7 +2305,7 @@ hr {
 
 @media only screen and (max-width: 396px){ 
    .select-box1 {
-      font-size: 9px;
+      font-size: 14px;
    }
 
    .sel-opt{
@@ -2161,6 +2330,9 @@ hr {
    .urv-add-mp{
       margin: 1em 1.1em 1em 1.7em;
    }
+   .select-box1 {
+      font-size: 12px;
+   }
 }
 
 
@@ -2181,7 +2353,7 @@ hr {
       padding: 0 2px 0;
    }
    .select-box1 {
-      font-size: 7px;
+      font-size: 11px;
    }
 }
 
