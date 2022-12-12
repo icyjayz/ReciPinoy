@@ -195,6 +195,11 @@ exports.getLoginData = (req, res) => {
                                 }
                             })
                         }
+                        else{
+                            conn.release();
+                            req.flash('msg', 'Invalid credentials!');
+                            res.redirect('/login');
+                        }
                     
                     }
                 })
