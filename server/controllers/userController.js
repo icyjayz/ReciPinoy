@@ -1139,7 +1139,7 @@ pool.getConnection((err, conn) => {
             getRecommRec();
         }
     }
-})
+    })
 } catch (error) {
 res.status(500).json({ message: error.message});
 }
@@ -2470,8 +2470,11 @@ exports.mealPlanRec = (req, res) =>{
         function getRec(conn, name) {
             let date = new Date();
             let dateC = date.getWeek();
+            let gy = 'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ?'
             //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
-            conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.day',[dateC], (err, mealPlan) => {
+            //arrange by day per week
+            //if monday
+            conn.query(gy,[dateC], (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
                 } else {
@@ -2681,36 +2684,65 @@ exports.mealPlanRecDelete = (req, res) => {
 }
 
 exports.mealPlanCurrentBut = (req, res) => {
-    Date.prototype.getWeek = function() {
-        var date = new Date(this.getTime());
-        date.setHours(0, 0, 0, 0);
-        // Thursday in current week decides the year.
-        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-        // January 4 is always in week 1.
-        var week1 = new Date(date.getFullYear(), 0, 4);
-        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-      };
-    try{
+    try {
         session = req.session;
-        if(session.userId){
-            pool.getConnection((err, conn) => {
-                let today = new Date();
-                let dateC = today.getWeek();
-                console.log(dateC);
-                // SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime
-                conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime ', [dateC], (err, mealPlan) => {
-                    if(err){
-                        console.log(err);  
-                    }else{
-                        res.render('mealPlan', { title: 'CurrentWeek ', mealPlan: mealPlan, id: session.userName});
-                    }
-                });
+        /*function startAndEndOfWeek(date) {
+                let now = date ? new Date(date) : new Date().setHours(0, 0, 0, 0);
+                let monday = new Date(now);
+                monday.setDate(monday.getDate() - monday.getDay() + 1);
+                let sunday = new Date(now);
+                sunday.setDate(sunday.getDate() - sunday.getDay() + 7);
+                return [monday, sunday];
+        }*/
+        /*Date.prototype.getWeek = function(){
+            return [new Date(this.setDate(this.getDate()-this.getDay()))]
+                     .concat(
+                       String(Array(6)).split(',')
+                          .map ( function(){
+                                  return new Date(this.setDate(this.getDate()+1));
+                                }, this )
+                     );
+        }*/
+        Date.prototype.getWeek = function() {
+            var date = new Date(this.getTime());
+            date.setHours(0, 0, 0, 0);
+            // Thursday in current week decides the year.
+            date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+            // January 4 is always in week 1.
+            var week1 = new Date(date.getFullYear(), 0, 4);
+            // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+            return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+        };
+        function getRec(conn, name) {
+            let date = new Date();
+            let dateC = date.getWeek();
+            let gy = 'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ?'
+            //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
+            //arrange by day per week
+            //if monday
+            conn.query(gy,[dateC], (err, mealPlan) => {
+                if (err) {
+                    console.log(err);   
+                } else {
+                    res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: name});
+                }
             })
+        };
+        if(session.userId){
+            pool.getConnection((err, conn)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        getRec(conn, session.userName);
+                    }})
+        }else{
+            req.flash('msg', 'You need to login to view mealplan!')
+            res.redirect('/login');
         }
-    }catch(error){
-        res.status(500).json({ message: error.message });
-
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message});
     }
 }
 exports.mealPlanPastBut = (req, res) => {
