@@ -808,7 +808,7 @@ pool.getConnection((err, conn) => {
         }
         function getRecIds(ingsId) {
             return new Promise((resolve, reject) => {
-                conn.query('SELECT recId FROM recing WHERE ingId = ? LIMIT 35', [ingsId], (err, recs) =>{
+                conn.query('SELECT recId FROM recing WHERE ingId = ?', [ingsId], (err, recs) =>{
                     if(err){
                         console.log(err);
                     }
@@ -830,7 +830,7 @@ pool.getConnection((err, conn) => {
                 counts[arr[i]] = 1
                 }
                 }
-                console.log(counts)
+                console.log('counts: ', counts)
         }
         function getRecDetails(id) {
             return new Promise((resolve, reject) => {
@@ -865,11 +865,12 @@ pool.getConnection((err, conn) => {
             toFindDuplicates(recIds);
             let cVal = Object.values(counts);
             let mx = Math.max(...cVal);
-            for (let index = mx; index > 0; --index) {
+            console.log('max match: ', mx);
+            for (let index = mx; index >= 2; --index) {
                 let matched = Object.keys(counts).filter(function(key) {
                     return counts[key] === index;
                 });
-
+                console.log('matched: ', matched);
                 matched.forEach(m => {
                     let pint = parseInt(m);
                     finalRids.push(pint);
@@ -980,7 +981,7 @@ pool.getConnection((err, conn) => {
             }
             function getFinalRecIds(i) {
                 return new Promise((resolve, reject) => {
-                    conn.query('SELECT recId FROM recing WHERE ingId = ? LIMIT 35', [i], (err, recs) =>{
+                    conn.query('SELECT recId FROM recing WHERE ingId = ?', [i], (err, recs) =>{
                         if(err){
                             console.log(err);
                         }
@@ -1040,13 +1041,29 @@ pool.getConnection((err, conn) => {
                     
                 }
 
-                toFindDuplicates(rIds);
+                // toFindDuplicates(rIds);
+                // let cVal = Object.values(counts);
+                // let mx = Math.max(...cVal);
+                
+                // for (let index = mx; index > 0; --index) {
+                //     let matched = Object.keys(counts).filter(function(key) {
+                //         return counts[key] === index;
+                //     });
+                //     matched.forEach(m => {
+                //         let pint = parseInt(m);
+                //         finalRids.push(pint);
+                //     });
+                // }
+
+                toFindDuplicates(recIds);
                 let cVal = Object.values(counts);
                 let mx = Math.max(...cVal);
-                for (let index = mx; index > 0; --index) {
+                console.log('max match: ', mx);
+                for (let index = mx; index >= 2; --index) {
                     let matched = Object.keys(counts).filter(function(key) {
                         return counts[key] === index;
                     });
+                    console.log('matched: ', matched);
                     matched.forEach(m => {
                         let pint = parseInt(m);
                         finalRids.push(pint);
