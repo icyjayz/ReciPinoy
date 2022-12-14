@@ -1055,7 +1055,7 @@ pool.getConnection((err, conn) => {
                 //     });
                 // }
 
-                toFindDuplicates(recIds);
+                toFindDuplicates(rIds);
                 let cVal = Object.values(counts);
                 let mx = Math.max(...cVal);
                 console.log('max match: ', mx);
@@ -1070,7 +1070,7 @@ pool.getConnection((err, conn) => {
                     });
                 }
 
-                console.log('before session if');
+                console.log('before session if in exings');
                 console.log(finalRids);
                 if (finalRids.length == 0) {
                     req.flash('msg', "No recipes found given the inclusion and exclusion of ingredients!");
@@ -1344,8 +1344,11 @@ exports.userSavedRView = (req, res) => {
                         let quantArr = [];
                         let recIngs = [];
                         let ingStringArr = [];
+                        let ingI = [];
+                        let insArr = [];
+                        let ingIStr = '';
                         let ingStr = '';
-                        let qStr = 'SELECT saved_recing.*, ing_name FROM `saved_recing` INNER JOIN ing ON saved_recing.ingId=ing.ing_id WHERE saved_recing.rec_id = ?';
+                        let qStr = 'SELECT saved_recing.*, ing_name FROM `saved_recing` INNER JOIN ing ON saved_recing.ingId=ing.ing_id WHERE saved_recing.rec_id = ?';;
                         function getIngs(id){
                             return new Promise((resolve, reject) => {
                                 conn.query(qStr, [id], (err, ings) => {
@@ -1357,8 +1360,9 @@ exports.userSavedRView = (req, res) => {
                                             let ingq = ing.ingQuant;
                                             let ingu = ing.ingUnit;
                                             let ingi = ing.ingIns;
-                                            if(!ing.ingQuant || ing.ingQuant == 0){
-                                                ingq = '';
+                                            
+                                            if(!ing.ingQuant){
+                                                ingq = 0;
                                             }
                                             if(!ing.ingUnit){
                                                 ingu = '';
@@ -1366,25 +1370,34 @@ exports.userSavedRView = (req, res) => {
                                             if(!ing.ingIns){
                                                 ingi = '';
                                             }
-                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
+                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name;
+                                            let ii = ' '+ ingi;
                                             ingStringArr.push(temp);
+                                            ingI.push(ii);
                                         });
                                         ingStr = ingStringArr.join('/');
-                                        ingStringArr = []; 
-                                        resolve(ingStr);
+                                        ingIStr = ingI.join('/');
+                                        let strConcat = ingStr.concat('*', ingIStr);
+                                        ingStringArr = [];
+                                        ingI = []; 
+                                        resolve(strConcat);
                                     }
                                 })
                             })
                         }
+                        
                         async function getAllRecIng(save){
                             for(id of save){
                                 ingStr = await getIngs(id.rec_id);
-                                let ingArr = ingStr.split('/');
+                                let strArr = ingStr.split('*');
+                                let qui = strArr[0]
+                                let ins = strArr[1];
+                                insArr = ins.split('/');
+                                let ingArr = qui.split('/');
                                 for (const i of ingArr) {
                                     let quantNum = i.match(regexQuant);
                                     let iStr = i.match(regexStr); 
                                     if(Array.isArray(quantNum)){
-                                        //console.log(quantNum);
                                         quantArr.push(quantNum[0]);
                                     }else{
                                         quantArr.push(quantNum);
@@ -1399,21 +1412,48 @@ exports.userSavedRView = (req, res) => {
                                     finalStr = '';
                                 }
                             }
-                            conn.release();
                             let msg = req.flash('msg');
                             session = req.session;
+                            let isRated = false;
+                            let isSaved = false;
+                            let isMeal = false;
+                            // let ratedArr = [];
                             if(session.userId){
-                                res.render('userSavedRView', { save: save, recIngs: recIngs, quantArr: quantArr, msg, id: session.userName});
+                                conn.query('SELECT user_ratedRecs, user_Saved, user_mealPlan FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        let getRated = rated[0].user_ratedRecs;
+                                        let getMeal = rated[0].user_mealPlan;
+                                        if(getRated){
+                                            let ratedArr = getRated.split('/');
+                                            if(ratedArr.includes(rId)){
+                                                isRated = true;
+                                            }
+                                        }
+                                        if(getMeal){
+                                            let mealArr = getMeal.split('/');
+                                            if(mealArr.includes(rId)){
+                                                isMeal= true;
+                                                console.log('isMeal');
+                                            }
+                                        }
+                                        res.render('userSavedRView', { save: save, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated, isSaved: isSaved, isMeal: isMeal});
+                                    }
+                                })
+                                
+
                             }
                             else{
-                                res.render('userSavedRView', { save: save, recIngs: recIngs, quantArr: quantArr, msg, id: ''});
+                                res.render('userSavedRView', { save: save, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated, isSaved: '', isMeal: ''});
                             }
                             
                         }
                         getAllRecIng(save);
                     }
                 })
-
+                         
             }
         })
     } catch (error) {
@@ -2318,9 +2358,6 @@ exports.getFilter = (req,res) => {
                 else if(calorie){
                     calorieFilter(conn, calorie);
                 }
-                else if (categoryRec, mealTime){
-                    
-                }
                 else{
                     conn.query('SELECT * FROM rec WHERE rec_mealTime LIKE ? OR rec_categ LIKE ? OR rec_time LIKE ? OR rec_cal LIKE ?', ['%' +req.body.recDishInp + '%', '%' + req.body.recCateg + '%', '%' +req.body.recTimeInp + '%', '%' + req.body.recCal + '%'], (err, filter) =>{
                         if(err){
@@ -2457,23 +2494,6 @@ exports.mealPlan = (req, res) =>{
 exports.mealPlanRec = (req, res) =>{
     try {
         session = req.session;
-        /*function startAndEndOfWeek(date) {
-                let now = date ? new Date(date) : new Date().setHours(0, 0, 0, 0);
-                let monday = new Date(now);
-                monday.setDate(monday.getDate() - monday.getDay() + 1);
-                let sunday = new Date(now);
-                sunday.setDate(sunday.getDate() - sunday.getDay() + 7);
-                return [monday, sunday];
-        }*/
-        /*Date.prototype.getWeek = function(){
-            return [new Date(this.setDate(this.getDate()-this.getDay()))]
-                     .concat(
-                       String(Array(6)).split(',')
-                          .map ( function(){
-                                  return new Date(this.setDate(this.getDate()+1));
-                                }, this )
-                     );
-        }*/
         Date.prototype.getWeek = function() {
             var date = new Date(this.getTime());
             date.setHours(0, 0, 0, 0);
@@ -2488,9 +2508,6 @@ exports.mealPlanRec = (req, res) =>{
             let date = new Date();
             let dateC = date.getWeek();
             let gy = 'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ?'
-            //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
-            //arrange by day per week
-            //if monday
             conn.query(gy,[dateC], (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
@@ -2703,23 +2720,6 @@ exports.mealPlanRecDelete = (req, res) => {
 exports.mealPlanCurrentBut = (req, res) => {
     try {
         session = req.session;
-        /*function startAndEndOfWeek(date) {
-                let now = date ? new Date(date) : new Date().setHours(0, 0, 0, 0);
-                let monday = new Date(now);
-                monday.setDate(monday.getDate() - monday.getDay() + 1);
-                let sunday = new Date(now);
-                sunday.setDate(sunday.getDate() - sunday.getDay() + 7);
-                return [monday, sunday];
-        }*/
-        /*Date.prototype.getWeek = function(){
-            return [new Date(this.setDate(this.getDate()-this.getDay()))]
-                     .concat(
-                       String(Array(6)).split(',')
-                          .map ( function(){
-                                  return new Date(this.setDate(this.getDate()+1));
-                                }, this )
-                     );
-        }*/
         Date.prototype.getWeek = function() {
             var date = new Date(this.getTime());
             date.setHours(0, 0, 0, 0);
@@ -2734,9 +2734,6 @@ exports.mealPlanCurrentBut = (req, res) => {
             let date = new Date();
             let dateC = date.getWeek();
             let gy = 'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ?'
-            //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
-            //arrange by day per week
-            //if monday
             conn.query(gy,[dateC], (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
@@ -2764,35 +2761,6 @@ exports.mealPlanCurrentBut = (req, res) => {
 }
 exports.mealPlanPastBut = (req, res) => {
     function getFirstDay(){
-        /*let weekBgnDt = new Date();
-        let weekEndDt = new Date();
-        let wBeginDateLng, wEndDateLng, diffDays,dateCols=[];
-    
-        if (weekBgnDt.getDay() > 0) {
-            diffDays = 0 - weekBgnDt.getDay();
-            weekBgnDt.setDate(weekBgnDt.getDate() + diffDays)
-        }
-        weekEndDt = weekEndDt.setDate(weekBgnDt.getDate() + 6)
-    
-        wBeginDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: '2-digit' }).format(weekBgnDt);
-        wEndDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', month: 
-        '2-digit' }).format(weekEndDt);
-    
-        wBeginDateLng = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: 'long' }).format(weekBgnDt);
-        wEndDateLng = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: 'long' }).format(weekEndDt);
-    
-        console.log(wBeginDate, "-", wBeginDateLng)
-        console.log(wEndDate, "-", wEndDateLng)
-    
-        for(let i=weekBgnDt;i<=weekEndDt;){
-        dateCols.push(new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: '2-digit' }).format(i));
-        i=weekBgnDt.setDate(weekBgnDt.getDate()+1)
-        }
-        //console.log({wBeginDate,wBeginDateLng,wEndDate,wEndDateLng,dateCols})*/
         let curr = new Date; // get current date
         let first = curr.getDate() - curr.getDay()-12; // First day is the day of the month - the day of the week
         console.log(first);
@@ -2839,51 +2807,6 @@ exports.mealPlanPastBut = (req, res) => {
     }
 }
 exports.mealPlanNextBut = (req, res) => {
-    /*function getFirstDay(){
-        let curr = new Date; // get current date
-        let first = curr.getDate() + curr.getDay()-4; // First day is the day of the month - the day of the week
-        console.log(first);
-        let startDate = new Date(curr.setDate(first));
-        console.log(startDate);
-        //startDate = ""+startDate.getFullYear()+"/"+ (startDate.getMonth() + 1) + "/" + startDate.getDate() 
-        startDate = ""+startDate.getDate() + (startDate.getMonth() + 1);
-        
-        return startDate;
-       //alert(startDate+" ,   "+endDate)
-    };
-    function getLastDay(){
-        let curr = new Date; // get current date
-        let first = curr.getDate() + curr.getDay() -4; // First day is the day of the month - the day of the week
-        let last = first + 6; // last day is the first day + 5
-        let endDate = new Date(curr.setDate(last));
-        //endDate = "" + (endDate.getMonth() + 1) + "/" + endDate.getDate() + "/" + endDate.getFullYear();
-        endDate = ""+endDate.getDate() + (endDate.getMonth() + 1);
-        return endDate;
-    }
-
-    try{
-        session = req.session;
-        if(session.userId){
-            pool.getConnection((err, conn) => {
-                let today = new Date();
-                let dateC = getFirstDay();
-                let dateD = getLastDay();
-                console.log(dateC);
-                console.log(dateD);
-                // SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime
-                conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.dayMonth BETWEEN ? AND ? ORDER BY mealPlan.dateTime', [dateC, dateD], (err, mealPlan) => {
-                    if(err){
-                        console.log(err);  
-                    }else{
-                        res.render('mealPlan', { title: 'NextWeek', mealPlan: mealPlan, id: session.userName});
-                    }
-                });
-            })
-        }
-    }catch(error){
-        res.status(500).json({ message: error.message });
-
-    }*/
     Date.prototype.getWeek = function() {
         var date = new Date(this.getTime());
         date.setHours(0, 0, 0, 0);
@@ -2918,69 +2841,6 @@ exports.mealPlanNextBut = (req, res) => {
 
     }
 }
-/*exports.mealPlanViewSort = (req, res) => {
-    Date.prototype.getWeek = function() {
-        var date = new Date(this.getTime());
-        date.setHours(0, 0, 0, 0);
-        // Thursday in current week decides the year.
-        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-        // January 4 is always in week 1.
-        var week1 = new Date(date.getFullYear(), 0, 4);
-        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-      };
-    try{
-        session = req.session;
-        if(session.userId){
-            pool.getConnection((err, conn) => {
-                let weekView = req.body.weekViewInp;
-                console.log(weekView);
-                if (weekView == 'Past Week'){
-                    let date = new Date();
-                    let dateC = date.getWeek()-1;
-                    console.log(dateC);
-                    // SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime
-                    conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime ', [dateC], (err, mealPlan) => {
-                        if(err){
-                            console.log(err);  
-                        }else{
-                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
-                        }
-                    })
-                }
-                else if (weekView == 'Current Week'){
-                    let date = new Date();
-                    let dateC = date.getWeek();
-                    console.log(dateC);
-                    conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime', [dateC], (err, mealPlan) => {
-                        if(err){
-                            console.log(err);  
-                        }else{
-                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
-                        }
-                    })
-                } else if (weekView == 'Next Week'){
-                    let date = new Date();
-                    let dateC = date.getWeek() + 1;
-                    console.log(dateC);
-                    conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime', [dateC], (err, mealPlan) => {
-                        if(err){
-                            console.log(err);  
-                        }else{
-                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
-                        }
-                    })
-                }else{
-
-                }
-            })
-        }
-        
-    }catch(error){
-        res.status(500).json({ message: error.message });
-
-    }
-}*/
 exports.mealPlanEditButton = (req, res) => {
     Date.prototype.getWeek = function() {
         var date = new Date(this.getTime());

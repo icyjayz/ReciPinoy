@@ -25,7 +25,7 @@ router.post('/search/:id', userController.userSearchSave);
 router.post('/search/unsave/:id', userController.userSearchSaveUnsaved);
 router.get('/recipes/:id', userController.userRecipeView);
 router.post('/recipes/:id', userController.userSaveRec);
-router.post('/recipes/unsave/:id', userController.UnsavedButton);
+router.post('/saved/unsave/:id', userController.UnsavedButton);
 router.post('/recipes/rate/:id', userController.userRateRec);
 router.get('/recommend', userController.userRecommend);
 router.post('/recommend', userController.userRecommendRecipe);
