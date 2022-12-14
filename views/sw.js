@@ -75,7 +75,7 @@ self.addEventListener("activate", (event) => {
 
 // -------------------------------------------------------------------- fetch
 self.addEventListener('fetch', (event) => {
-        console.log('fetch', event);
+        // console.log('fetch', event);
     if (event.request.method !== "GET") {
         return;
     }
