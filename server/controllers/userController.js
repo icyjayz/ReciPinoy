@@ -1055,7 +1055,7 @@ pool.getConnection((err, conn) => {
                 //     });
                 // }
 
-                toFindDuplicates(recIds);
+                toFindDuplicates(rIds);
                 let cVal = Object.values(counts);
                 let mx = Math.max(...cVal);
                 console.log('max match: ', mx);
@@ -1070,7 +1070,7 @@ pool.getConnection((err, conn) => {
                     });
                 }
 
-                console.log('before session if');
+                console.log('before session if in exings');
                 console.log(finalRids);
                 if (finalRids.length == 0) {
                     req.flash('msg', "No recipes found given the inclusion and exclusion of ingredients!");
