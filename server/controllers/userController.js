@@ -2318,9 +2318,6 @@ exports.getFilter = (req,res) => {
                 else if(calorie){
                     calorieFilter(conn, calorie);
                 }
-                else if (categoryRec, mealTime){
-                    
-                }
                 else{
                     conn.query('SELECT * FROM rec WHERE rec_mealTime LIKE ? OR rec_categ LIKE ? OR rec_time LIKE ? OR rec_cal LIKE ?', ['%' +req.body.recDishInp + '%', '%' + req.body.recCateg + '%', '%' +req.body.recTimeInp + '%', '%' + req.body.recCal + '%'], (err, filter) =>{
                         if(err){
@@ -2457,23 +2454,6 @@ exports.mealPlan = (req, res) =>{
 exports.mealPlanRec = (req, res) =>{
     try {
         session = req.session;
-        /*function startAndEndOfWeek(date) {
-                let now = date ? new Date(date) : new Date().setHours(0, 0, 0, 0);
-                let monday = new Date(now);
-                monday.setDate(monday.getDate() - monday.getDay() + 1);
-                let sunday = new Date(now);
-                sunday.setDate(sunday.getDate() - sunday.getDay() + 7);
-                return [monday, sunday];
-        }*/
-        /*Date.prototype.getWeek = function(){
-            return [new Date(this.setDate(this.getDate()-this.getDay()))]
-                     .concat(
-                       String(Array(6)).split(',')
-                          .map ( function(){
-                                  return new Date(this.setDate(this.getDate()+1));
-                                }, this )
-                     );
-        }*/
         Date.prototype.getWeek = function() {
             var date = new Date(this.getTime());
             date.setHours(0, 0, 0, 0);
@@ -2488,9 +2468,6 @@ exports.mealPlanRec = (req, res) =>{
             let date = new Date();
             let dateC = date.getWeek();
             let gy = 'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ?'
-            //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
-            //arrange by day per week
-            //if monday
             conn.query(gy,[dateC], (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
@@ -2703,23 +2680,6 @@ exports.mealPlanRecDelete = (req, res) => {
 exports.mealPlanCurrentBut = (req, res) => {
     try {
         session = req.session;
-        /*function startAndEndOfWeek(date) {
-                let now = date ? new Date(date) : new Date().setHours(0, 0, 0, 0);
-                let monday = new Date(now);
-                monday.setDate(monday.getDate() - monday.getDay() + 1);
-                let sunday = new Date(now);
-                sunday.setDate(sunday.getDate() - sunday.getDay() + 7);
-                return [monday, sunday];
-        }*/
-        /*Date.prototype.getWeek = function(){
-            return [new Date(this.setDate(this.getDate()-this.getDay()))]
-                     .concat(
-                       String(Array(6)).split(',')
-                          .map ( function(){
-                                  return new Date(this.setDate(this.getDate()+1));
-                                }, this )
-                     );
-        }*/
         Date.prototype.getWeek = function() {
             var date = new Date(this.getTime());
             date.setHours(0, 0, 0, 0);
@@ -2734,9 +2694,6 @@ exports.mealPlanCurrentBut = (req, res) => {
             let date = new Date();
             let dateC = date.getWeek();
             let gy = 'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ?'
-            //'SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id ORDER BY mealPlan.dateTime DESC' 'SELECT * FROM mealPlan ORDER BY dateTime'
-            //arrange by day per week
-            //if monday
             conn.query(gy,[dateC], (err, mealPlan) => {
                 if (err) {
                     console.log(err);   
@@ -2764,35 +2721,6 @@ exports.mealPlanCurrentBut = (req, res) => {
 }
 exports.mealPlanPastBut = (req, res) => {
     function getFirstDay(){
-        /*let weekBgnDt = new Date();
-        let weekEndDt = new Date();
-        let wBeginDateLng, wEndDateLng, diffDays,dateCols=[];
-    
-        if (weekBgnDt.getDay() > 0) {
-            diffDays = 0 - weekBgnDt.getDay();
-            weekBgnDt.setDate(weekBgnDt.getDate() + diffDays)
-        }
-        weekEndDt = weekEndDt.setDate(weekBgnDt.getDate() + 6)
-    
-        wBeginDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: '2-digit' }).format(weekBgnDt);
-        wEndDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', month: 
-        '2-digit' }).format(weekEndDt);
-    
-        wBeginDateLng = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: 'long' }).format(weekBgnDt);
-        wEndDateLng = new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: 'long' }).format(weekEndDt);
-    
-        console.log(wBeginDate, "-", wBeginDateLng)
-        console.log(wEndDate, "-", wEndDateLng)
-    
-        for(let i=weekBgnDt;i<=weekEndDt;){
-        dateCols.push(new Intl.DateTimeFormat('en-GB', { day: 'numeric', year: 'numeric', 
-        month: '2-digit' }).format(i));
-        i=weekBgnDt.setDate(weekBgnDt.getDate()+1)
-        }
-        //console.log({wBeginDate,wBeginDateLng,wEndDate,wEndDateLng,dateCols})*/
         let curr = new Date; // get current date
         let first = curr.getDate() - curr.getDay()-12; // First day is the day of the month - the day of the week
         console.log(first);
@@ -2839,51 +2767,6 @@ exports.mealPlanPastBut = (req, res) => {
     }
 }
 exports.mealPlanNextBut = (req, res) => {
-    /*function getFirstDay(){
-        let curr = new Date; // get current date
-        let first = curr.getDate() + curr.getDay()-4; // First day is the day of the month - the day of the week
-        console.log(first);
-        let startDate = new Date(curr.setDate(first));
-        console.log(startDate);
-        //startDate = ""+startDate.getFullYear()+"/"+ (startDate.getMonth() + 1) + "/" + startDate.getDate() 
-        startDate = ""+startDate.getDate() + (startDate.getMonth() + 1);
-        
-        return startDate;
-       //alert(startDate+" ,   "+endDate)
-    };
-    function getLastDay(){
-        let curr = new Date; // get current date
-        let first = curr.getDate() + curr.getDay() -4; // First day is the day of the month - the day of the week
-        let last = first + 6; // last day is the first day + 5
-        let endDate = new Date(curr.setDate(last));
-        //endDate = "" + (endDate.getMonth() + 1) + "/" + endDate.getDate() + "/" + endDate.getFullYear();
-        endDate = ""+endDate.getDate() + (endDate.getMonth() + 1);
-        return endDate;
-    }
-
-    try{
-        session = req.session;
-        if(session.userId){
-            pool.getConnection((err, conn) => {
-                let today = new Date();
-                let dateC = getFirstDay();
-                let dateD = getLastDay();
-                console.log(dateC);
-                console.log(dateD);
-                // SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime
-                conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.dayMonth BETWEEN ? AND ? ORDER BY mealPlan.dateTime', [dateC, dateD], (err, mealPlan) => {
-                    if(err){
-                        console.log(err);  
-                    }else{
-                        res.render('mealPlan', { title: 'NextWeek', mealPlan: mealPlan, id: session.userName});
-                    }
-                });
-            })
-        }
-    }catch(error){
-        res.status(500).json({ message: error.message });
-
-    }*/
     Date.prototype.getWeek = function() {
         var date = new Date(this.getTime());
         date.setHours(0, 0, 0, 0);
@@ -2918,69 +2801,6 @@ exports.mealPlanNextBut = (req, res) => {
 
     }
 }
-/*exports.mealPlanViewSort = (req, res) => {
-    Date.prototype.getWeek = function() {
-        var date = new Date(this.getTime());
-        date.setHours(0, 0, 0, 0);
-        // Thursday in current week decides the year.
-        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-        // January 4 is always in week 1.
-        var week1 = new Date(date.getFullYear(), 0, 4);
-        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-      };
-    try{
-        session = req.session;
-        if(session.userId){
-            pool.getConnection((err, conn) => {
-                let weekView = req.body.weekViewInp;
-                console.log(weekView);
-                if (weekView == 'Past Week'){
-                    let date = new Date();
-                    let dateC = date.getWeek()-1;
-                    console.log(dateC);
-                    // SELECT * FROM mealPlan where weekCount = ? ORDER BY dateTime
-                    conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime ', [dateC], (err, mealPlan) => {
-                        if(err){
-                            console.log(err);  
-                        }else{
-                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
-                        }
-                    })
-                }
-                else if (weekView == 'Current Week'){
-                    let date = new Date();
-                    let dateC = date.getWeek();
-                    console.log(dateC);
-                    conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime', [dateC], (err, mealPlan) => {
-                        if(err){
-                            console.log(err);  
-                        }else{
-                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
-                        }
-                    })
-                } else if (weekView == 'Next Week'){
-                    let date = new Date();
-                    let dateC = date.getWeek() + 1;
-                    console.log(dateC);
-                    conn.query('SELECT * FROM rec INNER JOIN mealPlan ON rec.rec_id=mealPlan.rec_id WHERE mealPlan.weekCount = ? ORDER BY mealPlan.dateTime', [dateC], (err, mealPlan) => {
-                        if(err){
-                            console.log(err);  
-                        }else{
-                            res.render('mealPlan', { title: 'Meal Plan', mealPlan: mealPlan, id: session.userName});
-                        }
-                    })
-                }else{
-
-                }
-            })
-        }
-        
-    }catch(error){
-        res.status(500).json({ message: error.message });
-
-    }
-}*/
 exports.mealPlanEditButton = (req, res) => {
     Date.prototype.getWeek = function() {
         var date = new Date(this.getTime());
