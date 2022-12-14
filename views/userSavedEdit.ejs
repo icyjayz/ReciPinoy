@@ -153,6 +153,7 @@
                     <input type="hidden" name="uval" value="" id="uval" placeholder="Ingredient" maxlength="100" class="ingredientbox">
                     <input type="hidden" name="insval" value="" id="insval" placeholder="Ingredient" maxlength="100" class="ingredientbox">
                 </div>
+                
                 <button id="addIngredientsBtn" type="button" class="plus-ing">Add Another Ingredient</button>
                 <button type="submit" class="ud-rec">Update Saved Recipe</button>
             </div>
@@ -201,7 +202,7 @@
             console.log('add button clicked....');
             let newIngNum = parseInt($('#ingNum').val()) + 1;
 
-            let quantInp = '<br><input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +' "placeholder="Quantity" maxlength="10"  class="s_ingredientbox">';
+            let quantInp = '<input type="text" name="ingQuantInp[]" id="ingQuantInp'+ newIngNum +' "placeholder="Quantity" maxlength="10"  class="s_ingredientbox">';
             let ingInp = '<input type="text" name="recIng[]" id="recIng'+ newIngNum +' "required placeholder="Ingredient" maxlength="100" class="ingredientbox">';
             let unitInp = '<input type="text" name="ingUnitInp[]" id="ingUnitInp'+ newIngNum +' "placeholder="Unit" maxlength="10" class="s_ingredientbox">';
             let insInp = '<input type="text" name="ingInsInp[]" id="ingInsInp'+ newIngNum+' "placeholder="Instruction" maxlength="500" class="ingredientbox">';
