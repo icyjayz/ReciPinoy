@@ -1344,8 +1344,11 @@ exports.userSavedRView = (req, res) => {
                         let quantArr = [];
                         let recIngs = [];
                         let ingStringArr = [];
+                        let ingI = [];
+                        let insArr = [];
+                        let ingIStr = '';
                         let ingStr = '';
-                        let qStr = 'SELECT saved_recing.*, ing_name FROM `saved_recing` INNER JOIN ing ON saved_recing.ingId=ing.ing_id WHERE saved_recing.rec_id = ?';
+                        let qStr = 'SELECT saved_recing.*, ing_name FROM `saved_recing` INNER JOIN ing ON saved_recing.ingId=ing.ing_id WHERE saved_recing.rec_id = ?';;
                         function getIngs(id){
                             return new Promise((resolve, reject) => {
                                 conn.query(qStr, [id], (err, ings) => {
@@ -1357,8 +1360,9 @@ exports.userSavedRView = (req, res) => {
                                             let ingq = ing.ingQuant;
                                             let ingu = ing.ingUnit;
                                             let ingi = ing.ingIns;
-                                            if(!ing.ingQuant || ing.ingQuant == 0){
-                                                ingq = '';
+                                            
+                                            if(!ing.ingQuant){
+                                                ingq = 0;
                                             }
                                             if(!ing.ingUnit){
                                                 ingu = '';
@@ -1366,25 +1370,34 @@ exports.userSavedRView = (req, res) => {
                                             if(!ing.ingIns){
                                                 ingi = '';
                                             }
-                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name + ' ' + ingi;
+                                            let temp = ingq + ' ' + ingu + ' ' + ing.ing_name;
+                                            let ii = ' '+ ingi;
                                             ingStringArr.push(temp);
+                                            ingI.push(ii);
                                         });
                                         ingStr = ingStringArr.join('/');
-                                        ingStringArr = []; 
-                                        resolve(ingStr);
+                                        ingIStr = ingI.join('/');
+                                        let strConcat = ingStr.concat('*', ingIStr);
+                                        ingStringArr = [];
+                                        ingI = []; 
+                                        resolve(strConcat);
                                     }
                                 })
                             })
                         }
+                        
                         async function getAllRecIng(save){
                             for(id of save){
                                 ingStr = await getIngs(id.rec_id);
-                                let ingArr = ingStr.split('/');
+                                let strArr = ingStr.split('*');
+                                let qui = strArr[0]
+                                let ins = strArr[1];
+                                insArr = ins.split('/');
+                                let ingArr = qui.split('/');
                                 for (const i of ingArr) {
                                     let quantNum = i.match(regexQuant);
                                     let iStr = i.match(regexStr); 
                                     if(Array.isArray(quantNum)){
-                                        //console.log(quantNum);
                                         quantArr.push(quantNum[0]);
                                     }else{
                                         quantArr.push(quantNum);
@@ -1399,21 +1412,48 @@ exports.userSavedRView = (req, res) => {
                                     finalStr = '';
                                 }
                             }
-                            conn.release();
                             let msg = req.flash('msg');
                             session = req.session;
+                            let isRated = false;
+                            let isSaved = false;
+                            let isMeal = false;
+                            // let ratedArr = [];
                             if(session.userId){
-                                res.render('userSavedRView', { save: save, recIngs: recIngs, quantArr: quantArr, msg, id: session.userName});
+                                conn.query('SELECT user_ratedRecs, user_Saved, user_mealPlan FROM users WHERE user_id = ?', [session.userId], (err, rated) => {
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        let getRated = rated[0].user_ratedRecs;
+                                        let getMeal = rated[0].user_mealPlan;
+                                        if(getRated){
+                                            let ratedArr = getRated.split('/');
+                                            if(ratedArr.includes(rId)){
+                                                isRated = true;
+                                            }
+                                        }
+                                        if(getMeal){
+                                            let mealArr = getMeal.split('/');
+                                            if(mealArr.includes(rId)){
+                                                isMeal= true;
+                                                console.log('isMeal');
+                                            }
+                                        }
+                                        res.render('userSavedRView', { save: save, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: session.userName, isRated: isRated, isSaved: isSaved, isMeal: isMeal});
+                                    }
+                                })
+                                
+
                             }
                             else{
-                                res.render('userSavedRView', { save: save, recIngs: recIngs, quantArr: quantArr, msg, id: ''});
+                                res.render('userSavedRView', { save: save, recIngs: recIngs, ins: insArr, quantArr: quantArr, msg, id: '', isRated: isRated, isSaved: '', isMeal: ''});
                             }
                             
                         }
                         getAllRecIng(save);
                     }
                 })
-
+                         
             }
         })
     } catch (error) {
