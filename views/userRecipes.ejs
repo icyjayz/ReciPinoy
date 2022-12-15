@@ -104,7 +104,9 @@
                                     <!-- rating -->
                                     <% if (rec.rec_rate) { %>
                                         <div class="box-rate">
-                                            <%= rec.rec_rate %>
+                                            <% let rating = rec.rec_rate/rec.rec_rateCount; %> 
+                                            <% rating = Math.round(rating)%> 
+                                            <%= rating%>
                                             <span class="str"></span>
                                         </div>
                                     <% } else { %>

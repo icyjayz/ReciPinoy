@@ -254,8 +254,10 @@
                                             <!-- rating -->
                                             <% if (rec.rec_rate) { %>
                                                 <div class="box-rate">
-                                                    <%= rec.rec_rate %>
-                                                    <span class="str"></span>
+                                                  <% let rating = rec.rec_rate/rec.rec_rateCount; %> 
+                                                  <% rating = Math.round(rating)%> 
+                                                  <%= rating%>
+                                                  <span class="str"></span>
                                                 </div>
                                             <% } else { %>
                                                 <span class="box-not">This recipe hasn't been rated.</span>

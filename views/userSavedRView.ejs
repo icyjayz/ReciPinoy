@@ -59,7 +59,9 @@
                         <p class="rec-name"><%= saved.rec_name %></p>
                         <% if (saved.rec_rate) { %>
                             <div class="star-rate">
-                                <%= saved.rec_rate %>
+                                <% let rating = saved.rec_rate/saved.rec_rateCount; %> 
+                                <% rating = Math.round(rating)%> 
+                                <%= rating%>
                                 <span class="str"></span>
                             </div>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ [eka] 
                                                                 lagyan ng star icon smth [euni]-->
@@ -305,7 +307,9 @@
             
             let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
             let target = stars[rating - 1];
-            target.dispatchEvent(new MouseEvent('click'));
+            if(target){
+                target.dispatchEvent(new MouseEvent('click'));
+            }
         });
 
         jQuery('input[name="q[]"]').each(function() {
@@ -423,14 +427,15 @@
             });
             let currentRating = document.getElementById('recRating').value;
             if ((parseInt(currentRating)) != 0) {
-                newRating = (num + parseInt(currentRating))/2;
-                newRating = Math.round(newRating);
+                // newRating = (num + parseInt(currentRating))/2;
+                newRating = (num + parseInt(currentRating));
+                // newRating = Math.round(newRating);
                 document.getElementById('userRate').value = newRating.toString();                
                 document.querySelector('.stars').setAttribute('data-rating', num);
             }
             else{
                 newRating = (num + parseInt(currentRating));
-                newRating = Math.round(newRating);
+                // newRating = Math.round(newRating);
                 document.getElementById('userRate').value = newRating.toString();
                 document.querySelector('.stars').setAttribute('data-rating', num);
             }

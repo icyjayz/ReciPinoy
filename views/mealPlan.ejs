@@ -99,8 +99,12 @@
                                         <!-- rating -->
                                         <% if (mealPlan.rec_rate) { %>
                                             <div class="box-rate">
-                                                <%= mealPlan.rec_rate %>
+                                                <% let rating = mealPlan.rec_rate/mealPlan.rec_rateCount; %> 
+                                                <% rating = Math.round(rating)%> 
+                                                <%= rating%>
                                                 <span class="str"></span>
+                                                <!-- <%#= mealPlan.rec_rate %> -->
+                                                <!-- <span class="str"></span> -->
                                             </div>
                                         <% } else { %>
                                             <span class="box-not">This recipe hasn't been rated.</span>

@@ -1165,6 +1165,17 @@ res.status(500).json({ message: error.message});
 exports.userRateRec = (req, res) =>{
     try {
         session = req.session;
+        function updateSave(conn, rate, count, id) {
+            conn.query('UPDATE saved SET rec_rate = ?, rec_rateCount = ? WHERE rec_id = ?', [rate, count, id], (err, row) => {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    return;
+                }
+            })
+            
+        }
         if(session.userId){
             pool.getConnection((err, conn)=>{
                 if(err){
@@ -1189,15 +1200,19 @@ exports.userRateRec = (req, res) =>{
                                 else{
                                     let rate = req.body.userRate;
                                     let recCount = req.body.ratingCount
+                                    console.log('count', recCount);
                                     if(recCount === null){
                                         recCount = 0;
                                     }
-                                    recCount += 1;
-                                    conn.query('UPDATE rec SET rec_rate = ?, rec_rateCount = ? WHERE rec_id = ?', [rate, recCount, id], (err, row) => {
+                                    let count = parseInt(recCount);
+                                    count += 1;
+                                    conn.query('UPDATE rec SET rec_rate = ?, rec_rateCount = ? WHERE rec_id = ?', [rate, count, id], (err, row) => {
                                         if(err){
                                             console.log(err);
                                         }
                                         else{
+                                            updateSave(conn, rate, count, id);
+                                            conn.release();
                                             req.flash('msg', 'Recipe successfully rated!');
                                             res.redirect('/recipes/' + id);
                                         }
