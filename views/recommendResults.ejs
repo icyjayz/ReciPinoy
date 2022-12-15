@@ -13,6 +13,10 @@
     <title><%= title %> </title>
 </head>
 <body>
+        <!-- loader -->
+        <div class="loader">
+            <img src="/images/loader.gif" alt="">
+        </div>
     <!-- user header -->
     <%#- include('./partials/guestNav'); %>
     <%- include('./partials/userNav'); %>
@@ -79,11 +83,15 @@
     <h3>Recommended Recipes</h3>
     <table>
         <tbody>
+            <% let count = 10; %> 
             <% for( let index = 0; index < recId.length; index++ ) { %>
-                <tr>
-                    <td><img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" height="100"></td>
-                    <td><a href="/recipes/<%= recId[index]%>"><%= recName[index] %></a></td>
-                </tr>
+                <% if (index < count) { %>
+                    <tr>
+                        <td><img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" height="100"></td>
+                        <td><a href="/recipes/<%= recId[index]%>"><%= recName[index] %></a></td>
+                    </tr>
+                <% } %>
+
             <% } %>
         </tbody>
     </table>
@@ -233,34 +241,6 @@
             }
             
         }
-
-        // const ingCont = document.querySelector("#ingDiv");
-        // const ings = ingCont.querySelectorAll('ul > li');
-        // ings.forEach(i => {
-        //     i.addEventListener('click',(e)=>{
-        //         let ingStr = e.target.textContent;
-        //         let newStr = ingStr.replace(/DEL/g, '');
-        //         newStr = newStr.trim();
-        //         deletedIng.push(newStr.toLowerCase());
-        //         e.target.remove();
-        //         add();
-        //     }   
-        //     )
-        // })
-
-        // const exIngcont = document.querySelector("#exIngDiv");
-        // const exIngs = exIngcont.querySelectorAll('ul > li');
-        // exIngs.forEach(ex => {
-        //     ex.addEventListener('click',(e)=>{
-        //         let ingStr = e.target.textContent;
-        //         let newStr = ingStr.replace(/DEL/g, '');
-        //         newStr = newStr.trim();
-        //         deletedExIng.push(newStr.toLowerCase());
-        //         e.target.remove();
-        //         add();
-        //     }   
-        //     )
-        // })
         
 
         function removeIng(ing) {
@@ -283,10 +263,6 @@
             add();
         }
     </script>
-
-    <div class="loader">
-        <img src="/images/loader.gif" alt="">
-    </div>
 
 
     <!-- custom js file link  -->

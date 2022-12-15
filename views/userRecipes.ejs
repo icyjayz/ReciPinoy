@@ -15,6 +15,10 @@
     <title>Recipes</title>
 </head>
 <body>
+    <!-- loader -->
+    <div class="loader">
+        <img src="/images/loader.gif" alt="">
+    </div>
    <!-- guest header -->
    <%- include('./partials/userNav'); %>
    <%#- include('./partials/guestNav'); %>
@@ -23,54 +27,54 @@
         <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
 
         <!-- title -->
-        <span class="titleheading">All Items</span>
+        <span class="view-title">All Items</span>
     
     <!-- search filter -->
     <div class="getFilter">
 
     <form action="/recipes" method="post">
-        <div id="sortResults" class="filter-cont">
+        <div id="sortResults" class="filter-cont1">
                 <!-- Alphabetically -->
-                <div class="select-box">
+                <div class="select-box1">
                     <div class="select-box__current" tabindex="1">
                         <div class="select-box__value">
                             <label class="select-box__input-text">Sort Alphabetically</label>
+                            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                         </div>
-                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                     </div>
                     <ul class="select-box__list">
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden">
                                 <input class="select-box__input" type="radio" name="alphabet" id="alphabet" value="a-z" onchange="this.form.submit()">
-                                A to Z
+                                <span class="sel-opt">A to Z</span>
                             </label>
                         </li>
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden">
                                 <input class="select-box__input" type="radio" name="alphabet" id="alphabet" value="z-a" onchange="this.form.submit()">
-                                Z to A
+                                <span class="sel-opt">Z to A</span>
                             </label>
                         </li>
                     </ul>
                 </div>
-                <div class="select-box">
+                <div class="select-box1">
                     <div class="select-box__current" tabindex="1">
                         <div class="select-box__value">
                             <label class="select-box__input-text">Sort by Ratings</label>
+                            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                         </div>
-                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                     </div>
                     <ul class="select-box__list">
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden">
                                 <input class="select-box__input" type="radio" name="rating" id="rating" value="h-l" onchange="this.form.submit()">
-                                Highest to Lowest
+                                <span class="sel-opt">Highest to Lowest</span>
                             </label>
                         </li>
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden">
                                 <input class="select-box__input" type="radio" name="rating" id="rating" value="l-h" onchange="this.form.submit()">
-                                Lowest to Highest
+                                <span class="sel-opt">Lowest to Highest</span>
                             </label>
                         </li>
                     </ul>
@@ -100,7 +104,9 @@
                                     <!-- rating -->
                                     <% if (rec.rec_rate) { %>
                                         <div class="box-rate">
-                                            <%= rec.rec_rate %>
+                                            <% let rating = rec.rec_rate/rec.rec_rateCount; %> 
+                                            <% rating = Math.round(rating)%> 
+                                            <%= rating%>
                                             <span class="str"></span>
                                         </div>
                                     <% } else { %>
@@ -120,9 +126,7 @@
 
     </div>  
     
-    <div class="loader">
-        <img src="/images/loader.gif" alt="">
-    </div>
+
  
      
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>

@@ -12,43 +12,71 @@
     <!-- custom css file link  -->
     <link rel="stylesheet" href="/public/css/style.css">
 
-    <title>Recipes</title>
+    <title>Saved Recipes</title>
 </head>
 <body>
+        <!-- loader -->
+        <div class="loader">
+            <img src="/images/loader.gif" alt="">
+        </div>
    <!-- guest header -->
    <%- include('./partials/userNav'); %>
    <%#- include('./partials/guestNav'); %>
 
-    <form action="/saved" method="get">
-        <!--<div id="sortResults">
-            <select name="recent" id="recent" onchange="this.form.submit()">
-                <option value="" disabled selected>sort to newest</option>
-                <option value="newest">newest</option>
-                <option value="oldest">oldest</option>
-            </select>-->
-        <table>
-            <tbody>
-                <% save.forEach( saved => { %>
-                    <tr>
-                        <td><img src="/images/<%= saved.rec_img%>" alt="<%= saved.rec_name %> Image" height="150"></td>
-                        <td><a href="/saved/<%= saved.rec_id%>"><%= saved.rec_name %></a></td>
-                        <td><% if (saved.rec_rating != 0) { %>
-                            <span>Rating: <%=saved.rec_rate  %> </span>
-                        <% } %></td>
-                        <td>
-                            <a href="/saved/<%= saved.rec_id%>" class="recview-btn">View Recipe</a>
-                            <a href="/saved/edit/<%= saved.rec_id %>" class="recedit-btn">Edit</a>
-                            <a href="/saved/delete/<%= saved.rec_id %>" class="recdelete-btn">Delete</a>
-                        </td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    </form>   
-    
-    <!-- <div class="loader">
-        <img src="/images/loader.gif" alt="">
-    </div> -->
+    <div class="userSaved">
+        <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
+
+        <span class="saved-title">My Saved Recipes</span>
+
+        <!-- <span class="green-line"></span> -->
+
+        <form action="/saved" method="get">
+            <!--<div id="sortResults">
+                <select name="recent" id="recent" onchange="this.form.submit()">
+                    <option value="" disabled selected>sort to newest</option>
+                    <option value="newest">newest</option>
+                    <option value="oldest">oldest</option>
+                </select>-->
+                <div class="saved-container">
+                    <% save.forEach( saved => { %>
+                        <div class="saved-card">
+                            <div class="each-card">
+                                <div class="saved-image">
+                                    <img src="/images/<%= saved.rec_img%>" alt="<%= saved.rec_name %> Image" class="saved-img">
+                                </div>
+                                <div class="details">
+                                    <div class="food-title">
+                                        <a style="font-size: 25px; text-decoration: none; margin-left: 15px;" href="/saved/<%= saved.rec_id%>"><%= saved.rec_name %></a>
+                                    </div>
+                                    <% if (saved.rec_rate) { %>
+                                        <div class="star-rate">
+                                            <% let savedRating = saved.rec_rate/saved.rec_rateCount; %> 
+                                            <% savedRating = Math.round(savedRating);%> 
+                                            <%= savedRating%>
+                                            <span class="str"></span>
+                                        </div>
+                                        <!-- <div class="rating" style="display:flex; font-size: 20px; margin-left: 15px;">
+                                            <%# let rating = saved.rec_rate/saved.rec_rateCount; %> 
+                                            <%# rating = Math.round(rating)%> 
+                                            <%#= rating%>
+                                            <span class="str"></span> -->
+                                    <% } else { %>
+                                            <span>This recipe hasn't been rated.</span>
+                                        <% } %>
+                                        </div>
+                                        <div class="saved-buttons">
+                                            <button class="saved-button"><a href="/saved/<%= saved.rec_id%>" class="recview-btn">View Recipe</a></button>
+                                            <button class="saved-button"><a href="/saved/edit/<%= saved.rec_id %>" class="recedit-btn">Edit</a></button>
+                                            <button class="saved-button"><a href="/saved/delete/<%= saved.rec_id %>" class="recdelete-btn">Delete</a></button>
+                                        </div>
+                                </div>
+                            </div>   
+                        </div>
+                    <% }) %>
+                </div>
+        </form>  
+    </div> 
+
 
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 

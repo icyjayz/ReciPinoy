@@ -4,22 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <link rel="icon" href="/images/logo/logo-recipinoy.png" type="image/icon type">
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <!-- <link rel="stylesheet" href="/public/css/style.css"> -->
+
+    <!-- bootstrap for modal -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link type="text/css" href="/css/bootstrap-timepicker.min.css" />
+    <script type="text/javascript" src="/js/bootstrap-timepicker.min.js"></script>
     <% let i = 0; %> 
-    <% let ingArr = []; %>
-    <% let ingSave = []; %> 
+    <% let ingArr = []; %> 
     <% let srv = 0; %>
     <% save.forEach(saved => { %>
     <title><%= saved.rec_name %></title>
-
-        <link rel="icon" href="/images/logo/logo-recipinoy.png" type="image/icon type">
-
-        <!-- font awesome cdn link  -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-        <!-- custom css file link  -->
-        <link rel="stylesheet" href="/public/css/style.css">
 </head>
+
 <body>
      <!-- message -->
      <% if (msg != '') { %>
@@ -27,148 +33,272 @@
             <span> <%= msg %> </span>
             <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
         </div>
-    <% } %>   
+    <% } %>  
 
     <!-- header -->
-    <%#- include('./partials/logoOnlyNav'); %>
     <%- include('./partials/userNav'); %>
-    
-    <a class="back-btn" onclick="history.back()">>> Back</a>
-
-    <section>
-    
-    <div class="userSavedRView">
-        <div class="rec-view">
-        <% if (saved.rec_img) { %>
-            <img src="/images/<%= saved.rec_img%>" alt="<%= saved.rec_name %> Image" class="img-rec">
-        <% } %><br><br>
-        </div>
-
-    <div class="rec-content">
-        <h3 class="rec-name"><%= saved.rec_name %></h3>
-        <h5 class="rec-desc"><%= saved.rec_desc %></h5>
-        
-        <div class="rec-col">
-            <ul class="rec-col-list">
-                <li>
-                    <h3>CATEGORY</h3>
-                    <span><%= saved.rec_categ %></span>
-                </li>
-                <li>
-                <% if (saved.rec_time) { %>
-                    <h3>TOTAL TIME</h3>
-                    <span><%= saved.rec_time %></span>
+    <%#- include('./partials/guestNav'); %>
+ 
+    <div class="userRecipeView">
+        <!-- back button -->
+        <a class="back-btn" onclick="history.back()"><span class="rec-back">Home</span></a>
+        <div class="urv-upper-content">
+            <!-- # image # -->
+            <div class="urv-img">
+                <% if (saved.rec_img) { %>
+                    <img src="/images/<%= saved.rec_img%>" alt="<%= saved.rec_name %> Image" class="img-rec">
                 <% } %>
-                </li>
-                <li>
-                <% if (saved.rec_serving) { %>
-                    <h3>SERVING </h3>
-                    <% if (saved.rec_serving == 1) { %>
-                        <span>
-                            <% srv = saved.rec_serving; %> 
-                            <button type="button" id="minusButton">-</button>
-                            <input type="number" name="servingInp" id="servingInp" value="<%= saved.rec_serving %>" min="1" readonly>
-                            <button type="button" id="plusButton">+</button>
-                        </span>
-                    <% } else { %>
-                        <% srv = saved.rec_serving; %> 
-                        <button type="button" id="minusButton">-</button>
-                        <input type="number" name="servingInp" id="servingInp" value="1" min="1" readonly>
-                        <button type="button" id="plusButton">+</button>
-                    <% } %>
-                <% } %>
-                </li>
-                <li>
-                <h3>CALORIES</h3>
-                <% if (saved.rec_cal) { %>
-                    <span><%= saved.rec_cal %></span>
-                <% } else { %>
-                    <span>Calorific value is not available.</span>
-                    <% } %>  
-                </li>
-                <li>
-                <h3>RATING</h3>
-                <% if (saved.rec_rate) { %>
-                    <span><%= saved.rec_rate %></span>  
-                <% } else { %>
-                    <span>This recipe hasn't been rated.</span>
-                <% } %>
-                </li>
-        </ul>
-        </div>
-
-        <div class="rec-ing">
-        <label class="ing-title">Ingredients </label>
-        <ul>
-            <div id="ings">
-                <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
-            <% for( let index = 0; index < recIngs.length; index++ ) { %>
-                <% if (srv == 1) { %>
-                    <% if (quantArr[index] != 0) { %>
-                        <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
-                        <span><%=recIngs[index]%></span></li>
-                    <% } else { %>
-                        <li><span id="quantSpan<%= index + 1%>"></span>
-                            <span><%=recIngs[index]%></span></li>
-                    <% } %>
-                    
-                <% } else { %>
-                    <% let newQuant = quantArr[index];%>
-                    <% newQuant = newQuant / srv; %>
-                    <% newQuant = newQuant.toFixed(2); %>  
-
-                    <% if (quantArr[index] != 0) { %>
-                        <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
-                        <span><%=recIngs[index]%></span></li>
-                    <% } else { %>
-                        <li><span id="quantSpan<%= index + 1%>"></span>
-                            <span><%=recIngs[index]%></span></li>
-                    <% } %>
-                <% } %>
-                
-            <% } %>
             </div>
-        </ul>
+
+            <div class="urv-grid">
+                <div class="urv-grid-header">
+                    <div class="urv-title">
+                        <!-- category -->
+                        <span class="rec-categ"><%= saved.rec_categ %></span>
+                        <!-- recipe name -->
+                        <p class="rec-name"><%= saved.rec_name %></p>
+                        <% if (saved.rec_rate) { %>
+                            <div class="star-rate">
+                                <% let rating = saved.rec_rate/saved.rec_rateCount; %> 
+                                <% rating = Math.round(rating)%> 
+                                <%= rating%>
+                                <span class="str"></span>
+                            </div>  <!-- hindi ko sya magawang star HAJDKAJKDAJKKJDKJ [eka] 
+                                                                lagyan ng star icon smth [euni]-->
+                        <% } else { %>
+                            <span>This recipe hasn't been rated.</span>
+                        <% } %>
+                    </div>
+
+                    <!-- # add to saved recipe # -->
+                    <div class="urv-saved-btn">
+                        <form action="/saved/unsave/<%= saved.rec_id%>" method="post">
+                            <br><br><button type="submit" value ="Unsave Recipe"></button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- recipe desc -->
+                <p class="rec-desc"><%= saved.rec_desc %></p>
+            
+                <!-- recipe details -->
+                <div class="urv-upper-details">
+                    <!-- total time -->
+                    <div class="urv-time">
+                        <p class="tt-time">TOTAL TIME</p>
+                        <% if (saved.rec_time) { %>
+                            <span class="tot-time"><%= saved.rec_time %></span>
+                        <% } else { %>
+                            <span class="calv">Total time is not available.</span>
+                        <% } %> 
+                    </div>
+
+                    <!-- border line -->
+                    <span class="bdr-line"></span>
+
+                    <!-- calories -->
+                    <div class="urv-cal">
+                        <p class="tt-cal">CALORIES</p>
+                        <% if (saved.rec_cal) { %>
+                            <span class="cal"><%= saved.rec_cal %></span>
+                        <% } else { %>
+                            <span class="calv">Calorific value is not available.</span>
+                        <% } %> 
+                    </div> 
+
+                    <!-- border line -->
+                    <span class="bdr-line"></span>
+                    
+                    <!-- add to meal plan -->
+                    <div class="urv-add-mp">
+                        <button type="button" id="mealPlanBut" class="add-mp">Add to Meal Plan</button>
+                            <div id="mealPlan" class="modal">
+                                <div class="modal-content">
+                                    <div id="cont">
+                                        <span class="closeBut">&times;</span>
+                                        <p class="mp-mdl">Choose Day & Meal Time</p>
+                                        <form action="/mealPlan" method="post"> 
+                                            <input type="text" class="mp-date" name="datetimes" />
+                                                <!-- <label for="recMTime" class="addRecLabel">Meal Time: </label> -->
+                                            <div class="meal-time">
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Breakfast">
+                                                    <label for="mtBreakfast" class="addRecLabel">Breakfast</label>
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Lunch">
+                                                    <label for="mtLunch" class="addRecLabel">Lunch</label>
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Meryenda">
+                                                    <label for="mtLunch" class="addRecLabel">Meryenda</label>
+                                                <input type="checkbox" id="recMTimeInp" name="recMTimeInp" value="Dinner">
+                                                    <label for="mtDinner" class="addRecLabel">Dinner</label>
+                                            </div>
+                                            <input type="hidden" name="recID" value="<%= saved.rec_id %>">
+                                            <input type="hidden" name="recName" id="recName" value="<%= saved.rec_name %>">
+                                            <input type="hidden" name="recImg" id="recImg" value="<%= saved.rec_img %>">
+                                            <button type="submit" class="mp-add">Add to Meal Plan</button>
+                                        </form>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- recipe source -->
+                <!-- <div class="rec-src"> -->
+                <a href="<%= saved.rec_src %>" class="r-source">
+                    <span class="src">This recipe was excepted from this source.</span>
+                </a>
+                <!-- </div> -->
+            </div>
         </div>
 
-        <div class="rec-process">
-        <label class="rproc">Process </label>
-            <textarea name="" id="" cols="30" rows="10" readonly><%= saved.rec_process %></textarea><br>
-        </div>
+        <!-- border line -->
+        <span class="section-line"></span>
 
+        <div class="urv-lower-content">
+            <!-- recipe ingredients -->
+            <div class="rec-ing">
+                <!-- title part details-->
+                <div class="ing-details">
+                    <!-- ingredient title -->
+                    <div class="rec-ing-title">
+                        <label>Ingredients </label>
+                    </div>
+                        
+                    <!-- add to grocery list button -->
+                    <div class="ing-gl-btn">
+                        <button type="button" id="openModal" class="gl-btn">add to grocery list</button>
+                        <!-- The Modal -->
+                        <div id="glModal" class="modal">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <p class="rec-name-mdl"><%= saved.rec_name %></p>
+                                <p class="ing-mdl">Ingredients</p>
+                                <!-- border line -->
+                                <span class="line-mdl"></span>
+                                <form action="/grocery-list" method="post" onsubmit="addGrocery()">
+                                    <input type="hidden" name="recId" value="<%= saved.rec_id %>">
+                                    <input type="hidden" name="gList" id="gList" value="">
+                                    <div id="ingList"></div>
+                                    <button type="submit" class="add-mdl">add ingredients</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- <div class="rec-src"><a href="<%= saved.rec_src %>"><strong>Source</strong></a></div> -->
-
-        <div class="rec-vid">
-            <% if (saved.rec_vid) { %>
-            <label class="rvid">Video </label>
-            <iframe src="<%= saved.rec_vid %>"></iframe>
-        <% } %> 
-        </div>
-    </div>
-</div>
-</section>
-
-        <form action="/saved/<%= saved.rec_id%>" method="post">
-            <br><h3>Rate the recipe!</h3><br>
-        <div class="stars" data-rating="0">
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-            <span class="star">&nbsp;</span>
-        </div>
-        <input type="hidden" name="recRating" id="recRating" value="<%= saved.rec_rate %>">
-        <br><br><button type="submit">Submit Rating!</button>
-        </form>
-    <% }) %>
-
-    <div class="loader">
-        <img src="images/loader.gif" alt="">
-    </div>
-
+                <!-- serving -->
+                <div class="rec-ing-serving">
+                    <% if (saved.rec_serving) { %>
+                        <span class="srv-title">Serving</span>
+                        <div class="serving-btn">
+                            <% if (saved.rec_serving == 1) { %>
+                                <% srv = saved.rec_serving; %> 
+                                <button type="button" id="minusButton" class="minus-btn"></button>
+                                <input type="number" class="num-srv" name="servingInp" id="servingInp" value="<%= saved.rec_serving %>" min="1" readonly>
+                                <button type="button" id="plusButton" class="add-btn"></button>
+                            <% } else { %>
+                                <% srv = saved.rec_serving; %> 
+                                <button type="button" id="minusButton" class="minus-btn"></button>
+                                <input type="number" class="num-srv" name="servingInp" id="servingInp" value="1" min="1" readonly>
+                                <button type="button" id="plusButton"class="add-btn"></button>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
     
+                <!-- ingredients list -->
+                <div id="ings">
+                    <input id="ingCount" value="<%= recIngs.length%>" type="hidden">
+                    <% for( let index = 0; index < recIngs.length; index++ ) { %>
+                        <input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>">
+                        <% if (srv == 1) { %>
+                            <% if (quantArr[index] != 0) { %>
+                                <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
+                                <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                                <span><%=recIngs[index]%><%=ins[index] %></span></li>
+                            <% } else { %>
+                                <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
+                                <li><span id="quantSpan<%= index + 1%>"></span>
+                                    <span><%=recIngs[index]%><%=ins[index] %></span></li>
+                            <% } %>
+                            
+                        <% } else { %>
+                            <% let newQuant = quantArr[index];%>
+                            <% newQuant = newQuant / srv; %>
+                            <% newQuant = newQuant.toFixed(2); %>  
+
+                            <% if (quantArr[index] != 0) { %>
+                                <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
+                                <li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span>
+                                <span><%=recIngs[index]%><%=ins[index] %></span></li>
+                            <% } else { %>
+                                <input type="hidden" name="q[]" value="<%=quantArr[index]%>">
+                                <li><span id="quantSpan<%= index + 1%>"></span>
+                                    <span><%=recIngs[index]%><%=ins[index] %></span></li>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+
+
+            <!-- ingredients process -->
+            <div class="rec-process">
+                <span class="rproc">How to Cook <%= saved.rec_name %></span>
+                <div contenteditable="true">
+                <textarea name="" id="" cols="30" rows="14" class="txt-area" readonly><%= saved.rec_process %></textarea><br>
+                </div>
+            </div>
+
+            <!-- recipe video with section line-->
+            <% if (saved.rec_vid) { %>
+                <!-- line -->
+                <div class="section-header">
+                    <h3 class="vid-title">Watch</h3>
+                </div>
+                <div class="rec-vid">
+                    <iframe src="<%= saved.rec_vid %>" 
+                        title="YouTube video player" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            <% } %>
+
+            <!-- border line -->
+            <span class="section-line"></span>
+
+            <!-- recipe ratings -->
+            <div class="rec-rating">
+                <form action="/recipes/rate/<%= saved.rec_id%>" method="post">
+                    <label class="rating-title">What do you think of this recipe?</label>
+                    <div class="stars" data-rating="0">
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                    </div>
+                    <% if (isRated) { %>
+                        <label class="rated-lbl">You've rated this recipe already!</label>
+                        <!-- <br><br><button type="submit" disabled>Submit Rating!</button> -->
+                    <% } else { %>
+                        <input type="hidden" name="ratingCount" value="<%= saved.rec_rateCount %>">
+                        <input type="hidden" name="recRating" id="recRating" value="<%= saved.rec_rate %>">
+                        <input type="hidden" name="userRate" id="userRate" value="">
+                        <button type="submit" class="rating-btn">Submit Rating</button>
+                    <% } %> 
+                </form>
+            </div>
+        </div>
+    </div>
+    <% }) %>   
+
+    <!-- js -->
     <script type="text/javascript">
+        let qArr = [];
+        let ingsArr = [];
+
         document.addEventListener('DOMContentLoaded', function(){
             let stars = document.querySelectorAll('.star');
             stars.forEach(function(star){
@@ -177,13 +307,23 @@
             
             let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
             let target = stars[rating - 1];
-            target.dispatchEvent(new MouseEvent('click'));
+            if(target){
+                target.dispatchEvent(new MouseEvent('click'));
+            }
+        });
+
+        jQuery('input[name="q[]"]').each(function() {
+                let q = this.value;
+                if(q){
+                    qArr.push(q);
+                }
         });
 
         const minusButton = document.getElementById('minusButton');
         const plusButton = document.getElementById('plusButton');
         const srvField = document.getElementById('servingInp').value;
         minusButton.disabled = true;
+
         function btnCntrl(val) {
             if (val != 1) {
                 minusButton.disabled = false;
@@ -194,14 +334,15 @@
         }
 
         minusButton.addEventListener('click', event => {
+            qArr = [];
             event.preventDefault();
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue - 1;
             $('#servingInp').val(currentValue);
             btnCntrl(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
-
-            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+            
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>"><% if (srv == 1) { %><% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %><% newQuant = newQuant.toFixed(2); %>  <% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } %><% } %>';
 
             $("#ings").html(htmlStr);
             for (let index = 1; index <= newIngNum; index++) {
@@ -212,17 +353,25 @@
                     if(Number(spanVal) % 1 === 0){
                         let newVal = parseInt(spanVal) * currentValue;
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     }
                     else{
                         let newVal = parseFloat(spanVal) * currentValue;
-                        newVal = newVal.toFixed(2);
+                        if(newVal % 1 === 0){
+                            newVal = parseInt(newVal);
+                        }
+                        else{
+                            newVal = newVal.toFixed(2);
+                        }
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     } 
                 }
             }
         });
 
         plusButton.addEventListener('click', event => {
+            qArr = [];
             event.preventDefault();
             let currentValue = parseInt($('#servingInp').val());
             currentValue = currentValue + 1;
@@ -230,7 +379,7 @@
             btnCntrl(currentValue);
             let newIngNum = parseInt($('#ingCount').val());
 
-            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><% if (srv == 1) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%></span></li> <% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %> <li><span id="quantSpan<%= index + 1%>"><%= newQuant%></span><span><%=recIngs[index]%></span></li><% } %><% } %>';
+            let htmlStr = '<input id="ingCount" value="<%= recIngs.length%>" type="hidden"><% for( let index = 0; index < recIngs.length; index++ ) { %><input type="hidden" name="uiInp[]" value="<%=recIngs[index]%>"><% if (srv == 1) { %><% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } else { %><% let newQuant = quantArr[index];%><% newQuant = newQuant / srv; %><% newQuant = newQuant.toFixed(2); %>  <% if (quantArr[index] != 0) { %><li><span id="quantSpan<%= index + 1%>"><%= quantArr[index]%></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } else { %><li><span id="quantSpan<%= index + 1%>"></span><span><%=recIngs[index]%><%=ins[index] %></span></li><% } %><% } %><% } %>'
 
             $("#ings").html(htmlStr);
             for (let index = 1; index <= newIngNum; index++) {
@@ -242,11 +391,18 @@
                     if(Number(spanVal) % 1 === 0){
                         let newVal = parseInt(spanVal) * currentValue;
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     }
                     else{
                         let newVal = parseFloat(spanVal) * currentValue;
-                        newVal = newVal.toFixed(2);
+                        if(newVal % 1 === 0){
+                            newVal = parseInt(newVal);
+                        }
+                        else{
+                            newVal = newVal.toFixed(2);
+                        }
                         span.textContent = newVal.toString();
+                        qArr.push(newVal.toString());
                     } 
                 }
             }
@@ -256,7 +412,7 @@
             let span = ev.currentTarget;
             let stars = document.querySelectorAll('.star');
             let match = false;
-            let num = 0;
+            let num, newRating = 0;
             stars.forEach(function(star, index){
                 if(match){
                     star.classList.remove('rated');
@@ -271,26 +427,190 @@
             });
             let currentRating = document.getElementById('recRating').value;
             if ((parseInt(currentRating)) != 0) {
-                let newRating = (num + parseInt(currentRating))/2;
-                document.getElementById('recRating').value = Math.round(newRating);
+                // newRating = (num + parseInt(currentRating))/2;
+                newRating = (num + parseInt(currentRating));
+                // newRating = Math.round(newRating);
+                document.getElementById('userRate').value = newRating.toString();                
                 document.querySelector('.stars').setAttribute('data-rating', num);
             }
             else{
-                let newRating = (num + parseInt(currentRating));
-                document.getElementById('recRating').value = Math.round(newRating);
+                newRating = (num + parseInt(currentRating));
+                // newRating = Math.round(newRating);
+                document.getElementById('userRate').value = newRating.toString();
                 document.querySelector('.stars').setAttribute('data-rating', num);
             }
             
         }
+        
+        function getIngs() {
+            let count = 0;
+            if(ingsArr.length === 0){
+                jQuery('input[name="uiInp[]"]').each(function() {
+                let ingstr = this.value;
+                if(ingstr){
+                    let q = qArr[count];
+                    if(q){
+                        if(q == 0){
+                            let finalStr = ingstr;
+                            ingsArr.push(finalStr.trim());
+                        }
+                        else{
+                            let finalStr = q + ingstr;
+                            ingsArr.push(finalStr); 
+                        }
+                    }
+                    else{
+                        let finalStr = ingstr;
+                        ingsArr.push(finalStr.trim());
+                    }
+                }
+                count++;
+                });
+            }
+            
+
+            //$('#gList').val(JSON.stringify(ingsArr));
+        }
+
+        function addGrocery() {
+            let gListArr = [];
+            let cont = document.querySelector('#ingList');
+            let ingChecked = cont.querySelectorAll('input[name="ingsCb[]"]');
+            ingChecked.forEach(ic => {
+                if(ic.checked){
+                    gListArr.push(ic.value);
+                }
+            });
+
+            $('#gList').val(JSON.stringify(gListArr));
+        }
+    
+        let modal = document.getElementById("glModal");
+        let btn = document.getElementById("openModal");
+        let span = document.getElementsByClassName("close")[0];
+
+        //open the modal
+        btn.onclick = function() {
+            getIngs();
+            ingsArr.forEach(ia => {
+                let input = '<div class="list-mdl" style="text-align:justify; font-size: 1.3em; margin:0.7em auto 0.7em;"><input type="checkbox" name="ingsCb[]" value="' + ia + '" style="transform: scale(2); margin: 0 0.5em 0 2.5em; cursor: pointer;">&nbsp;&nbsp;&nbsp;<label for="ingCheckbox" style="font-weight: normal;">' + ia + '</label><br></div><span class="bdr-mdl" style="display: block; border-top: 1px solid black; height: 1px; width: 100%; margin: 0 auto; opacity: 0.1;"></span></div>'
+                $("#ingList").append(input);
+            });
+            modal.style.display = "block";
+        }
+
+        //close the modal
+        span.onclick = function() {
+            $("#ingList").empty();
+            modal.style.display = "none";
+        }
+
+        //close it
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            $("#ingList").empty();
+            modal.style.display = "none";
+        }
+        }
+
+        $(function() {
+         $('input[name="datetimes"]').daterangepicker({
+            "singleDatePicker": true,
+        "minYear": 2022,
+        "showWeekNumbers": true,
+        "timePicker": true,
+        "locale": {
+        "format": "MM/DD/YYYY hh:mm A",
+        "separator": " - ",
+        "applyLabel": "Apply",
+        "cancelLabel": "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Su",
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa"
+        ],
+        "monthNames": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ],
+        "firstDay": 1
+        },
+        minDate: new Date(),
+        "opens": "center"
+        })
+        });
+
+    let mealModal = document.getElementById("mealPlan");
+        let button = document.getElementById("mealPlanBut");
+        let cls = document.getElementsByClassName("closeBut")[0];
+
+        //open the modal
+        button.onclick = function() {
+            mealModal.style.display = "block";
+        }
+
+        //close the modal
+        cls.onclick = function() {
+            // $("#cont").empty();
+            mealModal.style.display = "none";
+        }
+
+        //close it
+        window.onclick = function(event) {
+        if (event.target == mealModal) {
+            $("#cont").empty();
+            mealModal.style.display = "none";
+        }
+        }
+
+        //textarea
+        var textarea = document.querySelector('textarea');
+
+        textarea.addEventListener('keydown', autosize);
+             
+        function autosize(){
+        var el = this;
+        setTimeout(function(){
+            el.style.cssText = 'height:auto; padding:0';
+            // for box-sizing other than "content-box" use:
+            // el.style.cssText = '-moz-box-sizing:content-box';
+            el.style.cssText = 'height:' + el.scrollHeight + 'px';
+        },0);
+        }
+
+
     </script>
 
-<!-- <div class="loader">
+<div class="loader">
     <img src="/images/loader.gif" alt="">
-</div> -->
+</div>
 
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
-<!-- custom js file link  -->
-<script src="/public/js/script.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="/public/js/script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </body>
 </html>

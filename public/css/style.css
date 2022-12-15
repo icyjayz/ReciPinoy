@@ -127,7 +127,7 @@ section{
 
 .btn:hover,
 .delete-btn:hover,
-.back-btn:hover{
+.back-btn:hover {
    letter-spacing: .2rem;
 }
 
@@ -466,15 +466,15 @@ section{
    width: min(90%, 110rem);
 }
 
-/* search result page title */
-.titleheading{
+/* search result page & view recipe page title */
+.search-title, .view-title {
    display: block;
    text-align: center;
    margin: 2rem;
-   text-transform: capitalize;
    color:var(--black);
    font-size: 2.5rem;
-   font-weight: bold;
+   font-weight: normal;
+   text-transform: uppercase;
 }
 
 /* filter box */
@@ -485,7 +485,7 @@ section{
 .filter-cont{
    display: flex;
    flex-direction: row;
-   justify-content: center;
+   justify-content: space-between;
 }
 
 /* .categ-opt{
@@ -505,13 +505,14 @@ section{
 .select-box {
    position: relative;
    display: block;
-   width: 20%;
-   font-size: 1.6em;
+   width: 200px;
+   font-size: 18px;
    color: #60666d;
  }
+
  
  .select-box__current {
-   /* position: relative; */
+   position: relative;
    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
    cursor: pointer;
    outline: none;
@@ -531,14 +532,14 @@ section{
    -webkit-transform: translateY(-50%) rotate(180deg);
            transform: translateY(-50%) rotate(180deg);
  } */
- 
+
  .select-box__icon {
    position: absolute;
    top: 50%;
-   right: 15px;
+   right: 9px;
    -webkit-transform: translateY(-50%);
            transform: translateY(-50%);
-   width: 20px;
+   width: 15px;
    opacity: 0.3;
    /* transition: 0.2s ease; */
  }
@@ -547,12 +548,13 @@ section{
    display: flex;
  }
 
- /* .select-box__input {
-   display: none;
- } 
+ .select-box__input {
+   border: 5px solid #55c57a;
+ }
+
  .select-box__input:checked + .select-box__input-text {
    display: block;
- } */
+ }
 
  .select-box__input-text {
    /* display: none; */
@@ -568,8 +570,17 @@ section{
    padding: 0;
    list-style: none;
    opacity: 0;
+   /* -webkit-animation-name: HideList;
+           animation-name: HideList;
+   -webkit-animation-duration: 0.5s;
+           animation-duration: 0.5s;
+   -webkit-animation-delay: 0.5s;
+           animation-delay: 0.5s;
+   -webkit-animation-fill-mode: forwards;
+           animation-fill-mode: forwards;
+   -webkit-animation-timing-function: step-start;
+           animation-timing-function: step-start; */
    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
-   
  }
 
  .select-box__option {
@@ -582,6 +593,60 @@ section{
    color: #546c84;
    background-color: #fbfbfb;
  }
+ 
+ @-webkit-keyframes HideList {
+   from {
+     -webkit-transform: scaleY(1);
+             transform: scaleY(1);
+   }
+   to {
+     -webkit-transform: scaleY(0);
+             transform: scaleY(0);
+   }
+ }
+ 
+ @keyframes HideList {
+   from {
+     -webkit-transform: scaleY(1);
+             transform: scaleY(1);
+   }
+   to {
+     -webkit-transform: scaleY(0);
+             transform: scaleY(0);
+   }
+ }
+ 
+/* filter button */
+.btn-lang{
+   background-color: #fff;
+   width: 105px;
+}
+.fil-icon::before{
+   content: "\f0b0";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(141, 141, 141);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.fil-icon {
+   background-color: #fff;
+   font-size: 1.4em;
+}
+
+.fil-btn{
+   font-size: 18px;
+   background: none;
+   color: #888;
+   cursor:pointer;
+}
+
+ .fil-btn:hover{
+   color: var(--green);
+}
  
  /* ----------------------------------end of filter */
 
@@ -654,7 +719,7 @@ section{
 .usr-saved::before{
    content: "\f02e";
    display: inline-block;
-   color: rgb(27, 27, 27);
+   color: var(--green);
    font: var(--fa-font-regular);
    text-rendering: auto;
    -webkit-font-smoothing: antialiased;
@@ -689,6 +754,284 @@ section{
 /*--------------------------------------------------------------
 # View Recipes Page
 --------------------------------------------------------------*/
+
+.filter-cont1{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+}
+.select-box1 {
+   position: relative;
+   display: block;
+   width: 100%;
+   font-size: 18px;
+   color: #60666d;
+ }
+
+ .sel-opt{
+   margin-left: 0.5em;
+   font-size: 1em;
+   padding: 15px 15px 15px 0;
+ }
+
+ /*--------------------------------------------------------------
+# SAVED RECIPES MAIN PAGE
+--------------------------------------------------------------*/
+.userSaved{
+   background-color: #fff;
+   margin: 5rem auto;
+   padding: 0 4rem 4rem;
+   width: min(90%, 110rem);
+}
+
+.saved-title{
+   display: block;
+   text-align: center;
+   margin: 2rem 1.5rem 1rem;
+   color:var(--black);
+   font-size: 2.5rem;
+   font-weight: normal;
+   text-transform: uppercase;
+}
+
+.green-line{
+   border-top: 2px solid var(--green);
+   display: block;
+   height: 1px;
+   content: " ";
+   width: 100%; /* full-width ;)*/
+   top: 1.2em;
+   margin: 0 0 1em;
+   /* opacity: 0.1; */
+}
+
+
+
+.saved-container{
+   /* display: flex;
+   align-items: center;
+   flex-direction: column; */
+   display: grid;
+   gap: 3em;
+   margin-top: 5em;
+}
+
+.each-card {
+   display: flex;
+   flex-direction: row;
+   width: 80%;
+   margin:auto;
+   /* border-radius:25px; */
+   box-shadow: 0px 0px 15px 0px rgb(217, 217, 217);
+   /* padding: 1.5em; */
+}
+
+
+.saved-img{
+   width: 90%;
+   height: 100%;
+   /* border-radius:25px; */
+   object-fit: cover;
+}
+
+.detail{
+   margin-left: 10px;
+   width: 70%;
+}
+
+.food-title{
+   margin-top: 5px;
+}
+
+.food-title a{
+   color: black;
+}
+
+.food-title a:hover{
+   color:chartreuse;
+}
+
+.saved-buttons{
+   display: flex;
+   justify-content: center;
+   margin-left: 20px;
+}
+
+.saved-button{
+   background-color: var(--green);
+   margin-right: 30px;
+   border-radius: 50px;
+   width: 100px;
+   height: 30px;
+   text-align: center; 
+   margin-top: 50px;
+   transition: 1s;
+}
+
+.saved-button a{
+   text-decoration: none;
+   color: white;
+}
+
+.saved-button:hover{
+   background-color: white;
+   color: black;
+}
+
+.saved-button a:hover{
+   color: black;
+}
+
+
+/*--------------------------------------------------------------
+# SAVED RECIPES - EDIT RECIPE PAGE
+--------------------------------------------------------------*/
+.add-recipes{
+   background-color: #fff;
+   margin: 5rem auto;
+   padding: 0 4rem 4rem;
+   width: min(90%, 110rem);
+}
+
+.edit-cont{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.title-edit{
+   margin-bottom: 2rem;
+   font-size: 2.5rem;
+   color:var(--black);
+   text-transform: capitalize;
+   text-align: center;
+}
+
+
+.add-recipes form{
+   margin:0 auto;
+   max-width: 100rem;
+   background-color: var(--white);
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border:var(--border);
+   padding:2rem;
+}
+
+.add-recipes form .addRecLbl{
+   margin: 1.2em 1em 1em 0;
+   font-size: 1.8rem;
+   font-weight: bold;
+   color:var(--black);
+   text-align: left;
+   text-transform: capitalize;
+}
+
+/* variety of box */
+.add-recipes form .box{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 80%;
+   padding:1rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.add-recipes form .textareabox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 80%;
+   height: 20rem;
+   font-size: 1.7rem;
+   padding:1rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+   /* resize: vertical; */
+   resize: none;
+}
+
+.ing-edit{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+   align-items: center;
+}
+
+.ingLbl{
+   margin: 1.2em 0 1em;
+   font-size: 1.8rem;
+   font-weight: bold;
+   width: 12%;
+   color:var(--black);
+   text-transform: capitalize;
+}
+
+.ingLabel{
+   margin: 1.2em 0 1em;
+   font-size: 1.8rem;
+   font-weight: bold;
+   width: 25%;
+   color:var(--black);
+   text-transform: capitalize;
+}
+
+.user-edit{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+   align-items: center;
+}
+
+.s_ingredientbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 12%;
+   padding: .5rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+.ingredientbox{
+   background-color: var(--light-bg);
+   border:var(--border);
+   width: 25%;
+   padding: .5rem;
+   font-size: 1.7rem;
+   color:var(--black);
+   border-radius: .5rem;
+   margin: 1rem 0;
+}
+
+/* add another ingredient button */
+.plus-ing{
+   display: block;
+   font-size: 1rem;
+   margin: 1rem 0 0 5rem;
+   padding:1rem 1.2rem;
+   cursor: pointer;
+   background-color: var(--green);
+   color:var(--white);
+   text-transform: uppercase;
+}
+
+/* update saved recipe button */
+.ud-rec{
+   display: block;
+   font-size: 2rem;
+   margin: 6rem auto 3rem;
+   padding:1rem 1.2rem;
+   cursor: pointer;
+   background-color: var(--green);
+   color:var(--white);
+   text-transform: uppercase;
+}
+
+
 
 
 /*--------------------------------------------------------------
@@ -795,7 +1138,7 @@ section{
    content: "\f02e";
    display: inline-block;
    margin: 0.2rem 0.5rem 0 0;
-   color: rgb(27, 27, 27);
+   color: var(--green);
    font: var(--fa-font-regular);
    text-rendering: auto;
    -webkit-font-smoothing: antialiased;
@@ -1153,6 +1496,51 @@ textarea{
 /*--------------------------------------------------------------
 # Meal Plan
 --------------------------------------------------------------*/
+.userMealPlan{
+   background-color: #fff;
+   margin: 5rem auto;
+   padding: 0 4rem 4rem;
+   width: min(90%, 110rem);
+}
+
+.mp-title{
+   display: block;
+   text-align: center;
+   margin: 2rem;
+   color:var(--black);
+   font-size: 2.5rem;
+   font-weight: normal;
+   text-transform: uppercase;
+}
+
+
+.weekly-title{
+   display: flex;
+   flex: row;
+   justify-content: space-between;
+}
+
+.next-btn::before{
+   content: "\f061";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: rgb(27, 27, 27);
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.next-btn {
+   background-color: #fff;
+   font-size: 1.5rem;
+   padding: 1rem 0 1rem 1.5rem;
+   margin-bottom: 2rem;
+} 
+
+.next-btn:hover{
+   letter-spacing: 0.1rem;
+}
 
 
 
@@ -1163,8 +1551,9 @@ textarea{
 # Grocery List
 --------------------------------------------------------------*/
 .grocery-cont{
-   background-color: #f9f9fa;
+   background-color: #fff;
    margin: 5rem auto;
+   padding: 0 4rem 4rem;
    width: min(90%, 110rem);
 }
 
@@ -1177,6 +1566,7 @@ textarea{
 .gl-name {
    float: left;
    margin: 10px 10px 0;
+   font-size: 2.5rem;
    font-weight: normal;
    text-transform: uppercase;
 }
@@ -1244,7 +1634,7 @@ hr {
    clear: both;
    background-color: #fff;
    padding: 10px 0 0;
-   border-top: 3px solid var(--green);
+   border-top: 2px solid var(--green);
 }
 
 .glist-cont {
@@ -1828,6 +2218,9 @@ hr {
    /* .img-rec{
       height: 450px;
    } */
+   .select-box {
+      width: 170px;
+    }
 
    .rec-name {
       font-size: 1.9em;
@@ -1941,13 +2334,44 @@ hr {
       height: 365px;
       object-fit: cover;
    }
+
+   .select-box {
+      width: 140px;
+      font-size: 14px;
+    }
 }
 
-/* @media only screen and (max-width:950px){
-   .img-rec{
-      height: 450px;
+@media only screen and (max-width:950px){
+   .select-box {
+      width: 140px;
+      font-size: 14px;
+    }
+
+    .select-box__icon{
+      width: 12px;
+    }
+
+    .btn-lang{
+      width: 30px;
+    }
+
+    .fil-btn{
+      display: none;
    }
-} */
+
+}
+
+@media only screen and (max-width:830px){
+   .select-box {
+      width: 130px;
+      font-size: 13px;
+    }
+
+    .select-box__icon{
+      width: 10px;
+    }
+}
+
 
 
 @media only screen and (max-width:768px){
@@ -1955,12 +2379,39 @@ hr {
       font-size: 70%;
    }
 
-   .recipeResults, .userRecipeView, .grocery-cont , .user-details{
+   .userSaved, .add-recipes, .recipeResults, .userRecipeView, .grocery-cont , .user-details{
       background-color: #fff;
       margin: 0;
       width:auto;
    }
 
+   .getFilter{
+      margin: 0;
+   }
+
+   /* .filter-cont{
+      flex-direction: column;
+      flex-wrap: wrap;
+   } */
+
+   .btn-lang{
+      float: right;
+   }
+
+   .select-box {
+      margin-right: 1.2em;
+      width: 100%;
+      font-size: 13.5px;
+    }
+
+    .select-box__icon{
+      right: 5px;
+    }
+
+    .btn-lang{
+      width: 15px;
+    }
+   
    .usr-container {
       grid-template-columns: repeat(1, 1fr);
       gap: 2em;
@@ -2025,7 +2476,36 @@ hr {
    }
 }
 
-@media only screen and (max-width: 580px){
+@media only screen and (max-width: 670px){ 
+   .select-box {
+      margin-right: 1em;
+      width: 120px;
+      font-size: 11px;
+    }
+
+    .select-box__icon{
+      right: 3px;
+    }
+}
+
+@media only screen and (max-width: 580px){ 
+   .select-box {
+      width: 100px;
+      font-size: 12px;
+    }
+
+    /* .select-box__icon{
+      display: none;
+    } */
+
+   .select-box1 {
+      font-size: 13px;
+   }
+
+   .sel-opt{
+      font-size: 1.2em;
+   }
+   
    .img-rec{
       height: 270px;
      }
@@ -2093,6 +2573,15 @@ hr {
    
 
 @media only screen and (max-width: 473px){
+   /* .select-box1 {
+      font-size: 14px;
+   } */
+
+   .sel-opt{
+      font-size: 1.3em;
+   }
+   
+   
    .urv-add-mp .modal-content .meal-time input[type="checkbox"]::after {
       font-size: 16px;
    }
@@ -2135,6 +2624,14 @@ hr {
 
 
 @media only screen and (max-width: 396px){ 
+   .select-box1 {
+      font-size: 14px;
+   }
+
+   .sel-opt{
+      font-size: 1.4em;
+   }
+
    .urv-add-mp{
       margin: 1em 1.3em 1em 2em;
    }
@@ -2152,6 +2649,9 @@ hr {
 @media only screen and (max-width: 375px) { 
    .urv-add-mp{
       margin: 1em 1.1em 1em 1.7em;
+   }
+   .select-box1 {
+      font-size: 12px;
    }
 }
 
@@ -2171,6 +2671,9 @@ hr {
    #list {
       background-color: #fff;
       padding: 0 2px 0;
+   }
+   .select-box1 {
+      font-size: 11px;
    }
 }
 

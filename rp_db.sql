@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2022 at 08:15 AM
+-- Generation Time: Dec 15, 2022 at 01:24 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -480,7 +480,8 @@ CREATE TABLE `mealplan` (
 
 INSERT INTO `mealplan` (`mealPlan_id`, `user_id`, `rec_id`, `month`, `day`, `time`, `sDay`, `weekCount`, `dateTime`, `dayMonth`) VALUES
 (21, 5, 7, 'Nov', 6, '6:24am', 'Sunday', 44, '11/06/2022 06:24 AM', '610'),
-(22, 5, 6, 'Nov', 8, '9:52am', 'Tuesday', 45, '11/08/2022 09:52 AM', '810');
+(22, 5, 6, 'Nov', 8, '9:52am', 'Tuesday', 45, '11/08/2022 09:52 AM', '810'),
+(23, 5, 1, 'Dec', 18, '8:00pm', 'Sunday', 50, '12/18/2022 08:00 PM', '1811');
 
 -- --------------------------------------------------------
 
@@ -510,7 +511,7 @@ CREATE TABLE `rec` (
 --
 
 INSERT INTO `rec` (`rec_id`, `rec_name`, `rec_desc`, `rec_process`, `rec_categ`, `rec_time`, `rec_serving`, `rec_src`, `rec_vid`, `rec_cal`, `rec_mealTime`, `rec_image`, `rec_rate`, `rec_rateCount`) VALUES
-(1, 'Pinakbet', 'Pakbet is a Filipino dish made of pork and vegetables such as eggplant, okra, bitter melon, long beans, and calabasa. It\'s a delicious and nutritious dish served as a main entree or a side to fried fish or grilled meat.', '1. In pot over medium heat, heat oil. Add onions and garlic and cook, stirring regularly, until softened.\n2. Add pork and cook, stirring occasionally, until lightly browned.\n3. Add shourimp paste and continue to cook, stirring occasionally, until it begins to brown.\n4. Add tomatoes and cook, mashing with the back of a spoon, until softened and have released juice.\n5. Add water and bring to a boil. Lower heat, cover and cook for about 15 to 20 minutes or until meat is tender. Add more water in 1/2 cup increments as needed to maintain about 1 cup of liquid.\n6. Add squash and cook for about 2 minutes or until almost tender.\n7. Add long beans and continue to cook until tender-crisp.\n8. Add ampalaya, eggplant, and okra. Continue to cook for about 4 to 5 minutes or until vegetables are tender yet crisp.\n9. Season with salt and pepper to taste. Serve hot.', 'Luzon', '45 minutes', '1', 'https://www.kawalingpinoy.com/pinakbet', 'https://www.youtube.com/embed/O67yWXyLi-s', '434.26 kCal', 'Lunch, Dinner', 'pinakbet.jpg', 0, 0),
+(1, 'Pinakbet', 'Pakbet is a Filipino dish made of pork and vegetables such as eggplant, okra, bitter melon, long beans, and calabasa. It\'s a delicious and nutritious dish served as a main entree or a side to fried fish or grilled meat.', '1. In pot over medium heat, heat oil. Add onions and garlic and cook, stirring regularly, until softened.\n2. Add pork and cook, stirring occasionally, until lightly browned.\n3. Add shourimp paste and continue to cook, stirring occasionally, until it begins to brown.\n4. Add tomatoes and cook, mashing with the back of a spoon, until softened and have released juice.\n5. Add water and bring to a boil. Lower heat, cover and cook for about 15 to 20 minutes or until meat is tender. Add more water in 1/2 cup increments as needed to maintain about 1 cup of liquid.\n6. Add squash and cook for about 2 minutes or until almost tender.\n7. Add long beans and continue to cook until tender-crisp.\n8. Add ampalaya, eggplant, and okra. Continue to cook for about 4 to 5 minutes or until vegetables are tender yet crisp.\n9. Season with salt and pepper to taste. Serve hot.', 'Luzon', '45 minutes', '1', 'https://www.kawalingpinoy.com/pinakbet', 'https://www.youtube.com/embed/O67yWXyLi-s', '434.26 kCa', 'Lunch, Dinner', 'pinakbet.jpg', 22, 8),
 (2, 'Dinakdakan', 'Give your tastebuds a culinary adventure! Dinakdakan is an acquired taste, but you won\'t be able to get enough once you try it. It\'s creamy, flavorful, and delicious as an appetizer or main dish!', '1. In a pot over medium heat, combine pork face, salt, peppercorns, bay leaves, and enough water to cover. Bring to a boil, skimming scum that accumulates on top.\n2. Lower heat, cover, and simmer for about 45 minutes to 1 hour or until meat is tender but not falling apart. With a slotted spoon, remove meat and drain well.\n3. Add liver to the pot and cook for about 3 to 5 minutes or until half-done. Remove from pan and drain well.\n4. Add pig brain to pot and cook for about 8 to 10 minutes. With a slotted spoon, remove brain and transfer into a bowl. With a fork, mash until smooth. Set aside.\n5. Over hot coals, grill pork for about 4 to 6 minutes on each side or until crisp and slightly charred. Allow to cool to touch and slice thinly\n6. Grill liver for about 3 to 5 minutes until nicely charred and fully cooked.\n7. In a large bowl, combine pork meat, onions, ginger, and chili peppers.\n8. Add calamansi juice and toss to combine.\n9. Add mashed pig brain and stir until well-distributed. Season with salt and pepper to taste.', 'Luzon', '1 hour and 30 minutes', '1', 'https://www.kawalingpinoy.com/dinakdakan/#wprm-recipe-container-33051', 'https://www.youtube.com/embed/6eMQq1sE2KU', '828 kCal', 'Lunch, Dinner', 'dinakdakan.jpg', 0, 0),
 (3, 'Igado', 'Igado made with pork tenderloin, green peas, and bell peppers in a savory sauce for an easy weeknight dinner. This Ilocano stew is hearty, flavorful, and delicious with steamed rice.', '1. In a bowl, combine pork strips, vinegar, soy sauce, onions, garlic, bay leaves, and peppercorns. Marinate for about 15 to 20 minutes.\n2. Drain meat from marinade, squeezing excess liquid. Reserve marinade and aromatics.\n3. In a pan over medium-high heat, heat oil. Add bell peppers and cook for about 30 seconds. Remove and set aside.\n4. In the pan, add pork and cook, stirring occasionally, until color changes.\n5. Add onions, garlic, peppercorns, and bay leaves (from marinating pork) and cook until softened and pork is lightly browned.\n6. Add reserved marinade and bring to a boil, uncovered and without stirring, for about 4 to 5 minutes. \n7. Add water and bring to a boil.\n8. Lower heat, cover, and simmer for about 25 to 30 minutes or until pork is tender and liquid is reduced. \n9. Add liver, stirring gently to combine, and continue to cook for about 4 to 5 minutes or until liver is cooked thourough and sauce is thickened. \n10. Add green peas and cook for about 2 to 3 minutes or until heated thourough. \n11. Add bell peppers and continue to cook for another 1 to 2 minutes or until tender yet crisp. Season with salt to taste. Serve hot.', 'Luzon', '1 hour and 20 minutes', '1', 'https://www.kawalingpinoy.com/igado/#wprm-recipe-container-27357', 'https://www.youtube.com/embed/z-L07euFjmc', '478 kCal', 'Lunch, Dinner', 'igado.jpg', 0, 0),
 (4, 'Bagnet', 'Pork Bagnet is a type Filipino pork dish wherein pork belly (liempo) is boiled until it becomes very tender and then deep fried until the outside turns brown and crispy. This is almost the same as lechon kawali, except that traditional bagnet recipe do not use any seasoning at all. Instead, it utilizes pork fat in order to add flavor to the dish and this is done during the boiling process wherein pork fat or bacon grease is added in boiling water.', '1. Pour water in a deep cooking pot. Let boil. \n2. Add pork fat or bacon grease and then put the pork belly into the pot. Cover and boil in medium heat for 2 to 2 ½ hours or until the pork belly becomes very tender. \n3. Remove the pork belly from the cooking pot. Let the temperature cool down to a point wherein you can handle it with your hands. Tap the pork dry with a piece of paper towel. Set aside. \n4. Heat oil in a deep fryer or a deep cooking pot (until it reaches around 350F). \n5. Deep-fry the boiled pork belly for 15 minutes. \n6. Remove from the pot or deep fryer. Let excess oil drip. \n7. Cut into serving pieces. Serve with spicy vinegar or you can also use this as an ingredient to other dishes such as pinakbet and sinigang na may bagnet. \n8.Serve. Share and enjoy!', 'Luzon', '3 hours and 20 minutes', '1', 'https://panlasangpinoy.com/cook-pork-bagnet-crispy-fried-pork-belly/#recipe', 'https://www.youtube.com/embed/Ipbhb9Dts3o', '', 'Lunch, Dinner', 'bagnet.jpg', 0, 0),
@@ -2171,16 +2172,17 @@ CREATE TABLE `saved` (
   `rec_cal` varchar(50) NOT NULL,
   `rec_mealTime` varchar(50) NOT NULL,
   `rec_img` varchar(50) NOT NULL,
-  `rec_rate` int(11) NOT NULL
+  `rec_rate` int(11) NOT NULL,
+  `rec_rateCount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `saved`
 --
 
-INSERT INTO `saved` (`saved_id`, `user_id`, `rec_id`, `rec_name`, `rec_desc`, `rec_process`, `rec_categ`, `rec_time`, `rec_serving`, `rec_src`, `rec_vid`, `rec_cal`, `rec_mealTime`, `rec_img`, `rec_rate`) VALUES
-(1, 5, 11, 'Pancit Bato Guisado', 'Pancit Bato is a noodle dish that closely resembles pancit canton. This originated in the province of Camarines Sur, Bicol region in a municipality known as Bato. I think that it is clear where this noodle dish got its name.', '1. Heat the cooking oil in a cooking pot or deep pan. \r\n2. Once the oil is hot, saute the garlic and onion. \r\n3. Add the sliced pork. Cook for 3 minutes. \r\nPour-in the soy sauce, fish sauce, and chicken broth. 4. Let boil. Simmer covered for 20 minutes. Add water if needed. \r\n5. Add the ground black pepper. Stir. \r\n6. Put-in the shrimp, snap peas, and carrots. Cook for a minute. \r\n7. Add the cabbage. Cook for 2 minutes. \r\n8. Put-in the noodles (pancit bato). Stir and cook until all the liquid is absorbed. The noodles should be soft. Otherwise, add a little water to soften the noodles. \r\n9. Transfer to a serving plate. \r\n10. Serve. Share and enjoy!', 'Luzon', '45 mins', 1, 'https://panlasangpinoy.com/pancit-bato-guisado/#recipe', 'https://www.youtube.com/embed/9_57oZycDgE', '', 'Breakfast, Meryenda', 'pancit_bato.jpg', 2),
-(2, 5, 1, 'Pinakbet', 'Pakbet is a Filipino dish made of pork and vegetables such as eggplant, okra, bitter melon, long beans, and calabasa. It\'s a delicious and nutritious dish served as a main entree or a side to fried fish or grilled meat.', '1. In pot over medium heat, heat oil. Add onions and garlic and cook, stirring regularly, until softened.\r\n2. Add pork and cook, stirring occasionally, until lightly browned.\r\n3. Add shourimp paste and continue to cook, stirring occasionally, until it begins to brown.\r\n4. Add tomatoes and cook, mashing with the back of a spoon, until softened and have released juice.\r\n5. Add water and bring to a boil. Lower heat, cover and cook for about 15 to 20 minutes or until meat is tender. Add more water in 1/2 cup increments as needed to maintain about 1 cup of liquid.\r\n6. Add squash and cook for about 2 minutes or until almost tender.\r\n7. Add long beans and continue to cook until tender-crisp.\r\n8. Add ampalaya, eggplant, and okra. Continue to cook for about 4 to 5 minutes or until vegetables are tender yet crisp.\r\n9. Season with salt and pepper to taste. Serve hot.', 'Luzon', '45 minutes', 1, 'https://www.kawalingpinoy.com/pinakbet', 'https://www.youtube.com/embed/O67yWXyLi-s', '434.26 kCa', 'Lunch, Dinner', 'pinakbet.jpg', 0);
+INSERT INTO `saved` (`saved_id`, `user_id`, `rec_id`, `rec_name`, `rec_desc`, `rec_process`, `rec_categ`, `rec_time`, `rec_serving`, `rec_src`, `rec_vid`, `rec_cal`, `rec_mealTime`, `rec_img`, `rec_rate`, `rec_rateCount`) VALUES
+(2, 5, 1, 'Pinakbet', 'Pakbet is a Filipino dish made of pork and vegetables such as eggplant, okra, bitter melon, long beans, and calabasa. It\'s a delicious and nutritious dish served as a main entree or a side to fried fish or grilled meat.', '1. In pot over medium heat, heat oil. Add onions and garlic and cook, stirring regularly, until softened.\r\n2. Add pork and cook, stirring occasionally, until lightly browned.\r\n3. Add shourimp paste and continue to cook, stirring occasionally, until it begins to brown.\r\n4. Add tomatoes and cook, mashing with the back of a spoon, until softened and have released juice.\r\n5. Add water and bring to a boil. Lower heat, cover and cook for about 15 to 20 minutes or until meat is tender. Add more water in 1/2 cup increments as needed to maintain about 1 cup of liquid.\r\n6. Add squash and cook for about 2 minutes or until almost tender.\r\n7. Add long beans and continue to cook until tender-crisp.\r\n8. Add ampalaya, eggplant, and okra. Continue to cook for about 4 to 5 minutes or until vegetables are tender yet crisp.\r\n9. Season with salt and pepper to taste. Serve hot.', 'Luzon', '45 minutes', 1, 'https://www.kawalingpinoy.com/pinakbet', 'https://www.youtube.com/embed/O67yWXyLi-s', '434.26 kCa', 'Lunch, Dinner', 'pinakbet.jpg', 22, 8),
+(4, 2, 53, 'Crispy Pata', 'Crispy Pata made whole pork leg boiled until tender and then deep-fried until golden and crisp. Crunchy on the outside and moist on the inside, this popular Filipino delicacy is sinfully delicious', '1. With a knife, scrape any stray hairs on pork leg and trim off nails. \r\n2. In a large pot over medium heat, combine pork leg, vinegar, 7-up, enough water to cover, garlic, peppercorns, bay leaves, and 1/3 cup salt. Bring to a boil, skimming scum that may accumulate on top. \r\n3. Lower heat, cover, and then simmer for about 1-1/2 to 2 hours or until meat is tender but not falling apart. If the meat is drying before it is fully cooked, add more water in 1 cup increments. \r\n4. Drain pork leg, discarding liquid and aromatics. Place on a rack and allow to cool to touch, \r\n5. Sprinkle with about 2 tablespoons salt and massage all over. Place in a container with a lid and freeze overnight. \r\n6. In a large, tall pot over medium heat, heat about 4 to 5 cups of oil (enough to cover the pork leg during deep-frying) to 350 F. \r\n7. Gently add pork leg and deep-fry, turning as needed, until golden. \r\n8. Remove pork from the pat and drain on a wire rack set over a baking sheet. Let rest for about 3 to 5 minutes before chopping. Serve hot with dipping sauce. \r\n9. Dipping Sauce: In a small bowl, combine vinegar, soy sauce, shallots, garlic, chili peppers, and salt and pepper to taste. Stir well.', 'Popular', '10 hours and 30 minutes', 1, 'https://www.kawalingpinoy.com/crispy-pata/#wprm-recipe-container-16070', 'https://www.youtube.com/embed/9c1cdS6lipw', '560 kCal', 'Lunch, Dinner', 'crispy_pata.jpg', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2225,7 +2227,21 @@ INSERT INTO `saved_recing` (`rec_id`, `ingId`, `ingQuant`, `ingUnit`, `ingIns`) 
 (1, 10, 0, '', 'seeded, halved and cut into 1-inch think'),
 (1, 11, 0, '', 'end trimmed and cut into 1 inch thick'),
 (1, 12, 118, 'ml', ''),
-(1, 21, 0, '', 'to taste');
+(1, 21, 0, '', 'to taste'),
+(53, 222, 0, 'whole', ''),
+(53, 24, 0, 'cup', ''),
+(53, 136, 0, 'can', ''),
+(53, 3, 0, 'head', 'peeled and minced'),
+(53, 102, 0, 'tbsp', ''),
+(53, 79, 1, '', ''),
+(53, 20, 0, '', ''),
+(53, 1, 1, 'cups', ''),
+(53, 24, 0, 'cups', 'for the dipping sauce'),
+(53, 25, 0, '', 'for the dipping sauce'),
+(53, 65, 0, '', 'for the dipping sauce, peeled and chopped'),
+(53, 1, 3, 'cloves', 'for the dipping sauce, peeled and minced'),
+(53, 19, 0, '', 'for the dipping sauce, peeled and minced'),
+(53, 21, 0, '', 'for the dipping sauce, to taste');
 
 -- --------------------------------------------------------
 
@@ -2252,15 +2268,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_email`, `user_password`, `user_token`, `user_allergy`, `user_restrict`, `user_grocery`, `user_ratedRecs`, `user_mealPlan`, `user_Saved`) VALUES
-(1, 'Junkyu', 'junkyu@email.com', '$2b$10$6cQDSGfj.RbpdPLjKhYEfOKDwjzpH9dNldjGbdhO4IaRcq3PflN7S', NULL, NULL, NULL, '', NULL, '0', ''),
-(2, 'Hyunsuk', 'hyunsuk@email.com', '$2b$10$Frr5a1gA6W97g2o4mPhYqulRC2S/QkokiJv7sUwJqdiotyNvnE5U6', NULL, 'shellfish', 'lactose intolerance', '0.11 kg pork face/28 g pork brain/banana/', '1/2/3/', '0', ''),
-(3, 'Haruto', 'haruto@email.com', '$2b$10$bl/3C8eyIiEEiZVSagPQQOMBkAbmPQ6CDOroIj0y9AFiO9ZW5Xg6.', NULL, NULL, NULL, '0.11 kg pork face/0.25 laurel leaves/', '2/1/', '0', ''),
-(5, 'Jayziol', 'jayziol@email.com', '$2b$10$Skif0FMup80y0BZtEgKl.uh/mcLY.RvqgiCIJ4LZwh4/AuS9Cusdy', NULL, NULL, NULL, '', NULL, '7/6/', '1/'),
-(6, 'Asahi', 'asahi@email.com', '$2b$10$GoB.2x12SSY1/2P0n1FOEueTjARWLymsY49IASOuLRqVXG.3/Od7a', NULL, NULL, NULL, '', NULL, '0', ''),
+(1, 'Junkyu', 'junkyu@email.com', '$2b$10$6cQDSGfj.RbpdPLjKhYEfOKDwjzpH9dNldjGbdhO4IaRcq3PflN7S', NULL, NULL, NULL, '', '1/', '0', ''),
+(2, 'Hyunsuk', 'hyunsuk@email.com', '$2b$10$Frr5a1gA6W97g2o4mPhYqulRC2S/QkokiJv7sUwJqdiotyNvnE5U6', NULL, 'shellfish', 'lactose intolerance', '0.11 kg pork face/28 g pork brain/2 cups glutinous rice flour/1.50 cups tapioca pearl/1 cup jackfruit/3 pcs quail eggs/1.50 tsp magic sarap seasoning powder/0.08 tsp orange food coloring powder/0.25 whole pork leg/0.25 can sprite/orange/banana/', '1/', '0', '53/'),
+(3, 'Haruto', 'haruto@email.com', '$2b$10$bl/3C8eyIiEEiZVSagPQQOMBkAbmPQ6CDOroIj0y9AFiO9ZW5Xg6.', NULL, NULL, NULL, '0.11 kg pork face/0.25 laurel leaves/', '1/', '0', ''),
+(5, 'Jayziol', 'jayziol@email.com', '$2b$10$Skif0FMup80y0BZtEgKl.uh/mcLY.RvqgiCIJ4LZwh4/AuS9Cusdy', NULL, NULL, NULL, '', '1/', '7/6/1/', '1/'),
+(6, 'Asahi', 'asahi@email.com', '$2b$10$GoB.2x12SSY1/2P0n1FOEueTjARWLymsY49IASOuLRqVXG.3/Od7a', NULL, NULL, NULL, '', '1/', '0', ''),
 (7, 'Trulufridae', 'bruxebesuze-4055@yopmail.com', '$2b$10$R41s4WztVHXdffzbQ4Ih5u3syw3a3uLuTltx2t35STZFRkM6X53zG', NULL, NULL, NULL, '', NULL, '0', ''),
-(8, 'plapla', 'yappaucaweve-9348@yopmail.com', '$2b$10$NcpC4d417xp8e/bxqeTJ/.NbPpvLxujRQHuFjcs4cxrNQkJNamGkq', NULL, NULL, NULL, '', NULL, '0', ''),
-(9, 'ledu', 'ledujeunaye-8272@yopmail.com', '$2b$10$zQbOL7rUU.FRMl2U5T0AL.Z.4seBJxb2B0AtDR5wv4I1ZAx8Z5b.K', NULL, NULL, NULL, '', NULL, '0', ''),
-(10, 'tigire', 'tigirehawu-4087@yopmail.com', '$2b$10$CV/78MJG/2Kgts33y4MbmOwi/C.fOu4XEQcYz.mXzTpfCpNXj/DyO', NULL, NULL, NULL, '', NULL, '0', ''),
+(8, 'plapla', 'yappaucaweve-9348@yopmail.com', '$2b$10$NcpC4d417xp8e/bxqeTJ/.NbPpvLxujRQHuFjcs4cxrNQkJNamGkq', NULL, NULL, NULL, '', '1/', '0', ''),
+(9, 'ledu', 'ledujeunaye-8272@yopmail.com', '$2b$10$zQbOL7rUU.FRMl2U5T0AL.Z.4seBJxb2B0AtDR5wv4I1ZAx8Z5b.K', NULL, NULL, NULL, '', '1/', '0', ''),
+(10, 'tigire', 'tigirehawu-4087@yopmail.com', '$2b$10$CV/78MJG/2Kgts33y4MbmOwi/C.fOu4XEQcYz.mXzTpfCpNXj/DyO', NULL, NULL, NULL, '', '1/', '0', ''),
 (11, 'Greffellene', 'quogreffellene-9712@yopmail.com', '$2b$10$reJbbumF6S8ph91L/gpH6Ot14aOaDvo6U6GSUjqWZFDLm9Sk2m702', NULL, NULL, NULL, '', NULL, '0', ''),
 (13, 'Grog', 'grogrocrutteco-1189@yopmail.com', '$2b$10$SzMxO25D/WziH6rfJWzWxuqBWuvX7KSYT5kTgQyZlszYjPO4zxyXa', 'i9IIQqrTkLR8YeAPeQGy', NULL, NULL, '', NULL, '0', '');
 
@@ -2324,7 +2340,7 @@ ALTER TABLE `ing`
 -- AUTO_INCREMENT for table `mealplan`
 --
 ALTER TABLE `mealplan`
-  MODIFY `mealPlan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `mealPlan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `rec`
@@ -2336,7 +2352,7 @@ ALTER TABLE `rec`
 -- AUTO_INCREMENT for table `saved`
 --
 ALTER TABLE `saved`
-  MODIFY `saved_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `saved_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`

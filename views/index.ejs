@@ -19,15 +19,19 @@
     <!-- manifest link -->
     <link rel="manifest" href="/public/js/manifest.json">
    <!-- link apple icon -->
-   <link rel="apple-touch-icon" href="/images/apple-icon.png">
+   <link rel="apple-touch-icon" href="/images/logo/icon-192x192.png">
    <!-- link theme -->
-   <meta name="theme-color" content="#3367D6" />
+   <meta name="theme-color" content="#16be5c" />
    <!-- description to improve seo -->
    <meta
   name="description"
   content="ReciPinoy: Selected Filipino Cuisines Recommender Web Application">
 </head>
 <body>
+       <!-- loader -->
+       <div class="loader">
+         <img src="/images/loader.gif" alt="">
+     </div>
    <!-- message  -->
    <% if (msg != '') { %>
        <div class="message">
@@ -134,9 +138,6 @@
    
    </section>
 
-   <div class="loader">
-      <img src="/images/loader.gif" alt="">
-   </div>
 
 
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>

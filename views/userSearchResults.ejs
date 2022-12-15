@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
+      <!-- loader -->
+      <div class="loader">
+        <img src="/images/loader.gif" alt="">
+    </div>
     <!-- guest dashboard section starts  -->
     <%#- include('./partials/logoOnlyNav'); %>
     <%- include('./partials/userNav'); %>
@@ -23,8 +27,16 @@
         <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
 
         <!-- title -->
-        <span class="titleheading">Search Results</span>
+        <span class="search-title">Search Results</span>
         
+        <!-- search form section starts  -->
+        <section class="search-form">
+          <form method="post" action="/search">
+              <input type="text" name="searchInp" id="searchInp" placeholder="Search Recipes" class="box">
+              <button type="submit" name="search_btn" class="fas fa-search"> </button>
+          </form>
+        </section>
+        <!-- search form section ends -->
         <!-- search filter -->
         <div class="getFilter">
             <!-- <span class="filter-title">Filter: </span> -->
@@ -37,34 +49,32 @@
                         <label class="select-box__input-text">Dish Type</label>
                         <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                       </div>
-              
                     </div>
-                    <ul class="select-box__list">
-                      <li>
-                        <label class="select-box__option" for="Breakfast" aria-hidden="aria-hidden">
+                    
+                      <ul class="select-box__list">
+                        <li>
+                          <label class="select-box__option" aria-hidden="aria-hidden">
                             <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Breakfast">
-                            Breakfast
-                        </label>
-                      </li>
-                      <li>
-                        <label class="select-box__option" aria-hidden="aria-hidden">
-                            <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Lunch">
-                            Lunch
-                        </label>
-                      </li>
-                      <li>
-                        <label class="select-box__option"  aria-hidden="aria-hidden">
-                            <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Meryenda">
-                            Meryenda
-                        </label>
-                      </li>
-                      <li>
-                        <label class="select-box__option" aria-hidden="aria-hidden">
-                            <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Dinner">
-                            Dinner
-                        </label>
-                      </li>
-                    </ul>
+                            Breakfast</label>
+                        </li>
+                        <li>
+                          <label class="select-box__option" aria-hidden="aria-hidden">
+                            <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Lunch"> Lunch</label>
+                        </li>
+                        <li>
+                          <label class="select-box__option"  aria-hidden="aria-hidden">
+                              <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Meryenda">
+                              Meryenda
+                          </label>
+                        </li>
+                        <li>
+                          <label class="select-box__option" aria-hidden="aria-hidden">
+                              <input class="select-box__input" type="radio" name="recDishInp" id="recDishInp" value="Dinner">
+                              Dinner
+                          </label>
+                        </li>
+                      </ul>
+                    
                 </div>
                
                 <!-- category -->
@@ -72,8 +82,8 @@
                     <div class="select-box__current" tabindex="1">
                       <div class="select-box__value">
                         <label class="select-box__input-text">Category</label>
+                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                       </div>
-                      <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                     </div>
                     <ul class="select-box__list">
                       <li>
@@ -109,8 +119,8 @@
                     <div class="select-box__current" tabindex="1">
                       <div class="select-box__value">
                         <label class="select-box__input-text">Cooking Time</label>
+                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                       </div>
-                      <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                     </div>
                     <ul class="select-box__list">
                       <li>
@@ -134,7 +144,7 @@
                       <li>
                         <label class="select-box__option" aria-hidden="aria-hidden">
                             <input class="select-box__input" type="radio"  name="recTimeInp" id="recTimeInp" value="1 hr and 31 minutes">
-                            More than 2 hours
+                            More than 1 hour and 30 minutes
                         </label>
                       </li>
                     </ul>
@@ -146,8 +156,8 @@
                     <div class="select-box__current" tabindex="1">
                       <div class="select-box__value">
                         <label class="select-box__input-text">Calorie</label>
+                        <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                       </div>
-                      <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
                     </div>
                     <ul class="select-box__list">
                       <li>
@@ -176,7 +186,9 @@
                       </li>
                     </ul>
                 </div>
-                <button type="submit" class="usr-saved">Filter</button>
+                <button type="submit" class="btn-lang">
+                  <span class="fil-icon"></span>
+                  <span class="fil-btn">Filter</span></button>
 
 
 
@@ -242,8 +254,10 @@
                                             <!-- rating -->
                                             <% if (rec.rec_rate) { %>
                                                 <div class="box-rate">
-                                                    <%= rec.rec_rate %>
-                                                    <span class="str"></span>
+                                                  <% let rating = rec.rec_rate/rec.rec_rateCount; %> 
+                                                  <% rating = Math.round(rating)%> 
+                                                  <%= rating%>
+                                                  <span class="str"></span>
                                                 </div>
                                             <% } else { %>
                                                 <span class="box-not">This recipe hasn't been rated.</span>
@@ -277,13 +291,7 @@
                                         </div>
                                     </div>
                                 </a>
-
-                                <!-- view recipe button -->
-                                <!-- <div class="usr-view">
-                                    <a href="/recipes/<%= rec.rec_id%>" class="usr-view-btn">
-                                        <span></span>View Recipe</a>
-                                </div> -->
-                            </div>
+                      </div>
                         </form>
                     </div>
                 <% }) %>

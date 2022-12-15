@@ -36,7 +36,12 @@
           <p class="name"><%= id %></p>
           <div class="flex">
              <a href="/profile" class="btn">Profile</a>
-             <a href="/logout" onclick="return confirm('Logout from this website?');" class="delete-btn">Logout</a>
+             <form action="/logout" method="post" id="logoutForm">
+              <input type="hidden" name="logoutRes" id="response" value="">
+              <input type="button" value="Logout" onclick="logout()" class="delete-btn">
+              
+              <!-- <a href="/logout" onclick="logout()" class="delete-btn">Logout</a> -->
+             </form>
           </div>
         </div>
       
@@ -69,6 +74,19 @@
     </section>
 
   </header>
+
+  <script>
+    function logout() {
+      let text = "Are you logging out from the website?";
+      if (confirm(text) == true) {
+        text = "Yes";
+      } else {
+        text = "No";
+      }
+      document.getElementById("response").value = text;
+      document.getElementById('logoutForm').submit();
+  }
+  </script>
     
 </body>
 
