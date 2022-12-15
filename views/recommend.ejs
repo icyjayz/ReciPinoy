@@ -15,6 +15,10 @@
     <title><%=title  %> </title>
 </head>
 <body>
+        <!-- loader -->
+        <div class="loader">
+            <img src="/images/loader.gif" alt="">
+        </div>
     <!-- user header -->
     <%#- include('./partials/guestNav'); %>
     <%- include('./partials/userNav'); %>
@@ -224,10 +228,6 @@
             console.log("ingStr: ", ingStr);
         }
     </script>
-
-    <div class="loader">
-        <img src="/images/loader.gif" alt="">
-    </div>
 
 <!-- custom js file link  -->
 <script src="/public/js/script.js"></script>

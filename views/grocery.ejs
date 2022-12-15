@@ -17,12 +17,17 @@
 </head>
 
 <body>
+        <!-- loader -->
+        <div class="loader">
+            <img src="/images/loader.gif" alt="">
+        </div>
     <!-- header -->
     <%- include('./partials/userNav'); %>
 
     <!-- content -->
     <div class="grocery-cont">
         <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
+
         <div class="grocery-header">
             <span class="gl-name">Grocery List</span>
             <button type="button" class="del-all" onclick="deleteAll()"></button>
@@ -30,7 +35,7 @@
                 <label for="gItem"></label>
                 <input type="text" name="newItem" id="newItem" class="newItem" placeholder="+ Add Item">
                 <input type="hidden" name="itemVal" value="" id="itemVal">
-                <button type="button" id="gFormBtn" class="gFormBtn">Add</button><br><br>
+                <button type="button" id="gFormBtn" class="gFormBtn" disabled>Add</button><br><br>
             </form>
         </div>
 
@@ -79,15 +84,23 @@
                         }
                         else {
                             let d = Date.now();
-                            itemDiv[count].setAttribute("data-id", d);
-                            addIngToListObj(val, d);
-                            count++;
-
+                            if(itemDiv[count]){
+                                itemDiv[count].setAttribute("data-id", d);
+                                addIngToListObj(val, d);
+                                count++;
+                            }
                         }
 
                     }
                 })
             });
+
+            $('#newItem').keyup(function(){
+            if($(this).val().length !=0)
+                $('#gFormBtn').attr('disabled', false);            
+            else
+                $('#gFormBtn').attr('disabled',true);
+            })
 
             function checkStorage() {
                 let values = [],
@@ -167,9 +180,6 @@
             }
         </script>
 
-    <div class="loader">
-        <img src="/images/loader.gif" alt="">
-    </div>
 
         <!-- custom js file link  -->
         <script src="/public/js/script.js"></script>

@@ -12,9 +12,13 @@
     <!-- custom css file link  -->
     <link rel="stylesheet" href="/public/css/style.css">
 
-    <title>Recipes</title>
+    <title>Saved Recipes</title>
 </head>
 <body>
+        <!-- loader -->
+        <div class="loader">
+            <img src="/images/loader.gif" alt="">
+        </div>
    <!-- guest header -->
    <%- include('./partials/userNav'); %>
    <%#- include('./partials/guestNav'); %>
@@ -61,10 +65,7 @@
                 </div>
         </form>  
     </div> 
-    
-    <!-- <div class="loader">
-        <img src="/images/loader.gif" alt="">
-    </div> -->
+
 
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
