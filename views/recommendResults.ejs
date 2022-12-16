@@ -14,87 +14,160 @@
 </head>
 <body>
         <!-- loader -->
-        <div class="loader">
+        <!-- <div class="loader">
             <img src="/images/loader.gif" alt="">
-        </div>
+        </div> -->
     <!-- user header -->
     <%#- include('./partials/guestNav'); %>
     <%- include('./partials/userNav'); %>
+
+    <div class ="recipeResults">
+        <a class="back-btn" onclick="history.back()"><span class="rec-back">>> Back</span></a>
+        <br>
+
+        <!-- title -->
+        <span class="titleheading">Recipe Recommender using Ingredients</span>
+
+        <span class="toCenter"><a href="/recommend"><button class="getRecommAgainBtn">Get Recommendation Again!</button></a></span>
     
-    <a class="back-btn" onclick="history.back()">>> Back</a>
-    <br><br>
-    <a href="/recommend">Get Recommendation again!</a>
-    <br><br>
-    <br><br>
-    <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
-    <% } %>
-    <br><br>
-    <h3>Included Ingredients:</h3><br>
-    <form action="/recommend/new" method="post" id="resForm">
-        <div id="ingDiv">
-            <ul id="ingCont">
-                <% for( let index = 0; index < ings.length; index++ ) { %>
-                    <!-- mukhang button to dapat yung li since clickable sya -->
-                    <li name="ingLi[]" onclick="removeIng(this)"><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
-                    <input type="hidden" name="ings[]" id="ing<%= index+1 %>" value="<%= ings[index] %>">
-                    <input type="hidden" name="ingNum" id="ingNum" value="<%= index+1 %>">
-                <% } %>
-                </ul>
-        </div>
-    <button type="button" id="addIngredientsBtn">Add ingredients to include</button><br><br>
-    <div id="showForm" style="display:none;">
-            <input type="text" name="ings[]" id="ingNew" class ="ingsInp">
-            <button type="button" onclick="add()">Include ingredient</button>
-            <input type="hidden" name="ingsVal" value="" id="ingsVal">
-    </div>
+        <% if (msg != '') { %>
+            <h4><%= msg %> </h4>
+            <br>
+        <% } %>
+        <br>
 
-
-    <h3>Excluded Ingredients:</h3><br>
-    <% if (exIngs) { %>
-        <div id="exIngDiv">
-            <ul id="exIngCont">
-                <% for( let index = 0; index < exIngs.length; index++ ) { %>
-                     <!-- mukhang button to dapat yung li since clickable sya -->
-                     <% if (exIngs[index]) { %>
-                        <li name="exIngLi[]" onclick="removeExIng(this)"><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></li> 
-                        <input type="hidden" name="exIng[]" id="exIng<%= index+1 %>" value="<%= exIngs[index] %>">
-                     <% } %> 
-
-                    
-                <% } %>
-                </ul>
-                <input type="hidden" name="exIngNum" id="exIngNum" value="0">
-        </div>
+        <form action="/recommend/new" method="post" id="resForm">
+            <!-- Included Ingredients -->
+            <div class="parentContainerRes">
+                <!-- Included Ingredients List Box -->
+                <div class="containerRes">
+                    <div class="addedIngBoxRes">
+                        <h2 style="text-align: center;">Included Ingredients</h2>
+                        <br>
+                        <div id="ingDiv" style="text-align: center;">
+                            <ul id="ingCont">
+                                <% for( let index = 0; index < ings.length; index++ ) { %>
+                                    <!-- mukhang button to dapat yung li since clickable sya -->
+                                    <li name="ingLi[]" onclick="removeIng(this)"><%= ings[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">X</b></li> 
+                                    <input type="hidden" name="ings[]" id="ing<%= index+1 %>" value="<%= ings[index] %>">
+                                    <input type="hidden" name="ingNum" id="ingNum" value="<%= index+1 %>">
+                                <% } %>
+                            </ul>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <!-- Button for Show Form -->
+                <span class="toCenter"><button type="button" id="addIngredientsBtn" class="BtnForAddShowForm">Add More Ingredients to Include</button></span>
+                <!-- Show Form -->
+                <div id="showForm" style="display:none; width: 100%;">
+                    <div class="searchandaddRes" >
+                        <div class="searchRes">
+                            <input type="text" placeholder="Enter your ingredients onhand..." name="ings[]" id="ingNew" class="ingsInp">
+                            <div class="iconRes">
+                                <i class="fa-solid fa-magnifying-glass-plus" style="font-size: 32px; margin-right: 8px;"></i>
+                            </div>
+                        </div>
+                        <button type="button" onclick="add()" class="addIngBtnRes">
+                            <i class="fa fa-plus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Include Ingredient
+                        </button>
+                    </div>
+                    <input type="hidden" name="ingsVal" value="" id="ingsVal">
+                </div>
+            </div>
         
-    <% } else { %>
-        <p><strong>No exclusions.</strong></p>
-        <input type="hidden" name="exIngNum" id="exIngNum" value="0">
-    <% } %>
-    <button type="button" id="addExIngredientsBtn">Add ingredients to exclude</button><br><br>
-    <div id="showExForm" style="display:none;">
-        <!-- <input type="hidden" name="exIngNum" id="exIngNum" value="0"> -->
-        <input type="text" name="exIng[]" id="exIngNew" class ="ingsInp">
-        <button type="button" onclick="add()">Exclude ingredient</button>
-        <input type="hidden" name="exIngsVal" value="" id="exIngsVal">  
-    </div>
-</form>
+            <!-- Excluded Ingredients -->
+            <div class="parentContainerRes">
+                <!-- Excluded Ingredients List Box -->
+                <div class="containerRes">
+                    <div class="excludedIngBoxRes">
+                        <h2 style="text-align: center;">Excluded Ingredients</h2>
+                        <br>
+                        <% if (exIngs) { %>
+                        <div id="exIngDiv" style="text-align: center;">
+                            <ul id="exIngCont">
+                                <% for( let index = 0; index < exIngs.length; index++ ) { %>
+                                    <!-- mukhang button to dapat yung li since clickable sya -->
+                                    <% if (exIngs[index]) { %>
+                                       <li name="exIngLi[]" onclick="removeExIng(this)"><%= exIngs[index] %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">X</b></li> 
+                                       <input type="hidden" name="exIng[]" id="exIng<%= index+1 %>" value="<%= exIngs[index] %>">
+                                    <% } %>    
+                               <% } %>
+                            </ul>
+                            <input type="hidden" name="exIngNum" id="exIngNum" value="0">
+                        </div>
+                        <% } else { %>
+                            <p><strong>No exclusions.</strong></p>
+                            <input type="hidden" name="exIngNum" id="exIngNum" value="0">
+                        <% } %>
+                        <br>
+                    </div>
+                </div>
+                <!-- Button for Show Form -->
+                <span class="toCenter"><button type="button" id="addExIngredientsBtn" class="BtnForExShowForm">Add More Ingredients to Exclude</button></span>
+                <!-- Show Form -->
+                <div id="showExForm" style="display:none; width: 100%;">
+                    <div class="searchandaddRes">
+                        <div class="searchRes">
+                            <input type="text" placeholder="Enter ingredients you want to exclude..." name="exIng[]" id="exIngNew" class="ingsInp">
+                            <div class="iconExcludeRes">
+                                <i class="fa-solid fa-magnifying-glass-plus" style="font-size: 32px; margin-right: 8px;"></i>
+                            </div>
+                        </div>
+                        <button type="button" onclick="add()" class="excludeIngBtnRes">
+                            <i class="fa fa-plus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Exclude Ingredient
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" name="exIngsVal" value="" id="exIngsVal">  
+            </div>
+        </form>
 
     <h3>Recommended Recipes</h3>
-    <table>
-        <tbody>
-            <% let count = 10; %> 
-            <% for( let index = 0; index < recId.length; index++ ) { %>
-                <% if (index < count) { %>
-                    <tr>
-                        <td><img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" height="100"></td>
-                        <td><a href="/recipes/<%= recId[index]%>"><%= recName[index] %></a></td>
-                    </tr>
-                <% } %>
+        <div class="usr-container">
+                <% let count = 10; %> 
+                <% for( let index = 0; index < recId.length; index++ ) { %>
+                    <% if (index < count) { %>
+                        <div class="result-card">
+                            <div class="box-card">
+                            <!-- img -->
+                            <div class="box-header">
+                                <a href="/recipes/<%= recId[index]%>"><%= recName[index] %></a></td>
+                                <img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" height="100"></td>
+                                </a>
+                            </div>
+                            <!-- details -->
+                            <div class="box-details">
+                                <a href="/recipes/<%= recId[index]%>" class="rec-usr">
+                                    <div class="box-one">
+                                        <div class="name-cont">
+                                            <!-- category -->
+                                            <span class="box-categ"><%= rec.rec_categ %></span>
+                                            <!-- recipe name -->
+                                            <p class="box-name"><%= rec.rec_name %></p>
+                                            <!-- rating -->
+                                            <% if (rec.rec_rate) { %>
+                                                <div class="box-rate">
+                                                    <% let rating = rec.rec_rate/rec.rec_rateCount; %> 
+                                                    <% rating = Math.round(rating)%> 
+                                                    <%= rating%>
+                                                    <span class="str"></span>
+                                                </div>
+                                            <% } else { %>
+                                                <span class="box-not">This recipe hasn't been rated.</span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </a>                       
+                            </div>
+                            </div>
+                        </div>
+                    <% } %>
 
-            <% } %>
-        </tbody>
-    </table>
+                <% } %>
+        </div>
+    </div>
+
 
 
     <script type="text/javascript">
@@ -154,12 +227,12 @@
 
             jQuery('li[name="exIngLi[]"]').each(function() {
                 let str = $(this).text();
-                let newStr = str.replace(/DEL/g, '');
+                let newStr = str.replace(/X/g, '');
                 tempExIng.push(newStr.trim());
             });
             jQuery('li[name="ingLi[]"]').each(function() {
                 let str = $(this).text();
-                let newStr = str.replace(/DEL/g, '');
+                let newStr = str.replace(/X/g, '');
                 tempIng.push(newStr.trim());
             });
 
@@ -247,7 +320,7 @@
             ing.parentNode.removeChild(ing);
             console.log("ing: ", ing);
             let str = $(ing).text();
-            let newStr = str.replace(/DEL/g, '');
+            let newStr = str.replace(/X/g, '');
             deletedIng.push(newStr.trim());
             console.log(deletedIng);
             add();
@@ -257,7 +330,7 @@
             ing.parentNode.removeChild(ing);
             console.log("ing: ", ing);
             let str = $(ing).text();
-            let newStr = str.replace(/DEL/g, '');
+            let newStr = str.replace(/X/g, '');
             deletedExIng.push(newStr.trim());
             console.log(deletedExIng);
             add();

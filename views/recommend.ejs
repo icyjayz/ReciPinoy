@@ -28,9 +28,11 @@
 
         <!-- title -->
         <span class="titleheading">Recipe Recommender using Ingredients</span>
+        <br>
 
     <% if (msg != '') { %>
-        <h3><%= msg %> </h3>
+        <h4><%= msg %> </h4>
+        <br>
     <% } %>
 
     <form action="/recommend" method="post" onsubmit="getAllIngs()">
@@ -45,7 +47,7 @@
                     </div>
                 </div>
                 <button type="button" id="addIngredientsBtn" class="addIngBtn">
-                    <i class="fa fa-plus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Add Ingredients
+                    <i class="fa fa-plus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Add Ingredient
                 </button>
             </div>
             <h4 id="ingCheck" class="ingCheck"></h4>
@@ -57,6 +59,7 @@
                     <div style="text-align: center;">
                         <ul id="ingCont"></ul>
                     </div>
+                    <br>
                 </div>
             </div>
         </div>
@@ -74,7 +77,7 @@
                     </div>
                 </div>
                 <button type="button" id="exIngredientsBtn" class="excludeIngBtn">
-                    <i class="fa fa-minus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Exclude Ingredients
+                    <i class="fa fa-minus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Exclude Ingredient
                 </button>
             </div>
             <br>
@@ -94,6 +97,7 @@
         <span class="toCenter"><button type="submit" disabled id="getRecommBtn">Get Recommendation!</button></span>
         
     </form>
+</div>
 
     <script type="text/javascript">
         $('#addIngredientsBtn').on('click', add);
