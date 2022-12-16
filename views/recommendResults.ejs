@@ -142,13 +142,13 @@
                                     <div class="box-one">
                                         <div class="name-cont">
                                             <!-- category -->
-                                            <span class="box-categ"><%= rec.rec_categ %></span>
+                                            <span class="box-categ"><%= recCateg[index] %></span>
                                             <!-- recipe name -->
-                                            <p class="box-name"><%= rec.rec_name %></p>
+                                            <p class="box-name"><%= recName[index] %></p>
                                             <!-- rating -->
-                                            <% if (rec.rec_rate) { %>
+                                            <% if (recRate[index]) { %>
                                                 <div class="box-rate">
-                                                    <% let rating = rec.rec_rate/rec.rec_rateCount; %> 
+                                                    <% let rating = recRate[index]/recRateCount[index]; %> 
                                                     <% rating = Math.round(rating)%> 
                                                     <%= rating%>
                                                     <span class="str"></span>

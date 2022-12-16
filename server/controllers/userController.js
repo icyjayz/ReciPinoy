@@ -702,6 +702,9 @@ pool.getConnection((err, conn) => {
         let recId = [];
         let recName = [];
         let userRecIds = [];
+        let recCateg = [];
+        let recRate = [];
+        let recRateCount = [];
         
         function getUserFilter(id) {
             return new Promise((resolve, reject) => {
@@ -842,10 +845,16 @@ pool.getConnection((err, conn) => {
                         let id = recs[0].rec_id;
                         let name = recs[0].rec_name;
                         let image = recs[0].rec_image;
+                        let categ = recs[0].rec_categ;
+                        let rate = recs[0].rec_rate;
+                        let count = recs[0].rec_rateCount;
                         //console.log(id);
                         recName.push(name);
                         recId.push(id);
                         recImage.push(image);
+                        recCateg.push(categ);
+                        recRate.push(rate);
+                        recRateCount.push(count);
                         resolve();
                     }
                 })
@@ -930,7 +939,7 @@ pool.getConnection((err, conn) => {
                             console.log(recId);
                             let msg = req.flash('msg');
                             conn.release();
-                            res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: session.userName});
+                            res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, recCateg: recCateg, recRate: recRate, recRateCount: recRateCount, msg, id: session.userName});
                         }
                         else{
                             conn.release();
@@ -950,7 +959,7 @@ pool.getConnection((err, conn) => {
                     let msg = req.flash('msg');
                     conn.release();
 
-                    res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: ''});
+                    res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, recCateg: recCateg, recRate: recRate, recRateCount: recRateCount, msg, id: ''});
                 }
             }
 
@@ -1123,7 +1132,7 @@ pool.getConnection((err, conn) => {
                                 console.log(recId);
                                 let msg = req.flash('msg');
                                 conn.release();
-                                res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: session.userName});
+                                res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, recCateg: recCateg, recRate: recRate, recRateCount: recRateCount, msg, id: session.userName});
                             }
                             else{
                                 conn.release();
@@ -1143,7 +1152,7 @@ pool.getConnection((err, conn) => {
                         let msg = req.flash('msg');
                         conn.release();
     
-                        res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, msg, id: ''});
+                        res.render('recommendResults', {title: 'Recommended Recipes', ings: recomm.getIngs(), exIngs: recomm.getExIngs(), recName: recName, recId: recId, recImage: recImage, recCateg: recCateg, recRate: recRate, recRateCount: recRateCount, msg, id: ''});
                     }
                 }
                 
