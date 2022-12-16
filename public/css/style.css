@@ -1602,14 +1602,14 @@ textarea{
 }
 
 .meal-line{
-   border-top: 2px solid var(--green);
+   border-top: 2px solid var(--black);
    display: block;
    height: 1px;
    content: " ";
    width: 100%; /* full-width ;)*/
    top: 1.2em;
    margin-bottom: 2em;
-   opacity: 0.4;
+   opacity: 0.1;
 }
 
 .btn-flex{
@@ -1731,13 +1731,162 @@ textarea{
 
 /* end of weekly */
 
-/* recipe cards */
-/* .mp-container{
-   display: grid;
-   grid-template-columns: repeat(1, 1fr);
-   gap: 5px;
-} */
+/* bottom contents */
+.mp-bot{
+   display: flex;
+   flex-direction: column;
+}
 
+/* title headers */
+.mp-day{
+   flex-grow: 1;
+   display: block;
+   text-align: left;
+   margin: 2rem 0 1rem;
+   background-color:  rgb(241, 241, 241);
+   color:var(--black);
+   font-size: 2.7rem;
+   padding: 1rem;
+   font-weight: normal;
+   text-transform: capitalize;
+}
+
+
+/* recipe cards */
+.mp-slider {
+   display: flex;
+   /* border: var(--border); */
+   padding: 1.8em;
+}
+
+/* prev & next buttons */
+.owl-nav{
+   top:0; 
+   left:0; 
+   right:0;
+   z-index: 1000;
+   font-size: 6em;
+}
+
+.owl-nav button {
+   position: absolute;
+   top: 45%;
+   background-color: rgb(70, 65, 65);
+   color: #fff;
+   margin: 0;
+   transition: all 0.3s ease-in-out;
+ }
+
+ .owl-nav button.owl-prev {
+   left: 0;
+ }
+
+ .owl-nav button.owl-next {
+   right: 0;
+ }
+
+ /* end of prev & next */
+
+.mp-slider .mp-card{
+   margin: 1em;
+   /* transition: all 0.2s ease-out; */
+   /* box-shadow: 0px 4px 8px var(--green); */
+}
+
+.mp-slider .mp-card .card-cont{
+   display: flex;
+   flex-direction: column;
+   /* border: var(--border); */
+   box-shadow: 0px 0px 10px 0px rgb(217, 217, 217);
+   cursor: pointer;
+   margin: 1em;
+}
+
+/* delete button */
+.mp-card .card-cont .mp-header .clear-icon {
+   position: relative;
+}
+
+.mp-card .card-cont .mp-header .clear-icon .clear-mp::before{
+   content: "\f00d";
+   display: inline-block;
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   cursor:pointer;
+}
+
+.mp-card .card-cont .mp-header .clear-icon .clear-mp {
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: 28px;
+   height: 28px;
+   background: rgb(255, 255, 255);
+   color: var(--black);
+   text-align: center;
+   line-height: 28px;
+   font-size: 20px;
+   cursor: pointer;
+   z-index: 1;
+   transition: all 200ms ease;
+}
+
+.mp-card .card-cont .mp-header .clear-icon .clear-mp:hover {
+   background: transparent;
+   color: var(--black);
+}
+/* end of delete button */
+
+.mp-card .card-cont .mp-header .box-img{
+   width: 100%;
+}
+
+.mp-card .card-cont .mp-details .mp-usr{
+   color:rgb(27, 27, 27);
+   cursor: pointer;
+   text-decoration: none;
+}
+
+.mp-card .card-cont .mp-details .mp-one{
+   display: flex;
+   flex-direction: row;
+   margin: 1.7em 1em 2em 0.7em;
+}
+
+.mp-card .card-cont .mp-details .mp-cont{
+   padding-left: 0.5em;
+   flex-grow: 1;
+}
+
+.mp-card .card-cont .mp-details .mp-categ{
+   text-transform: uppercase;
+   font-weight: normal;
+   font-size: 1rem;
+   color:rgb(142, 142, 142);
+}
+
+.mp-card .card-cont .mp-details .mp-name{
+   font-weight: 450;
+   font-size: 1.5rem;
+   margin: 0.6rem 1rem 0.9rem 0;
+}
+
+/* star ulet sa ratings */
+.mp-card .card-cont .mp-details .mp-rate .mp-str::before{
+   content: "\f005";
+   display: inline-block;
+   margin: 0.2rem 0.5rem 0 0;
+   color: goldenrod;
+   font: var(--fa-font-solid);
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+}
+
+/* .mp-slider .mp-empty{
+   background-color: #fff;
+   padding: 1em;
+} */
 
 
 /*--------------------------------------------------------------

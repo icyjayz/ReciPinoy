@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logo/logo-recipinoy.png" type="image/icon type">
 
+    <!-- for slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
  
@@ -121,55 +126,68 @@
             </div>
 
             <!-- border line -->
-            <span class="meal-line"></span>
+            <!-- <span class="meal-line"></span> -->
 
 
-            <!-- recipe card -->
-            <div class="usr-container">
-                <% if (mealPlan.length > 0) { %>
-                <% mealPlan.forEach(mealPlan => { %>
-                    <div class="result-card">
-                        <div class="box-card">
-                        <!-- img -->
-                        <div class="box-header">
-                            <a href="/mealPlan/delete/<%= mealPlan.rec_id%>">x</a>
-                            <a href="/recipes/<%= mealPlan.rec_id%>">
-                            <img src="/images/<%= mealPlan.rec_image%>" alt="<%= mealPlan.rec_name %> Image" class="box-img">
-                            </a>
-                        </div>
+            <!-- bottom contents -->
+            <div class="mp-bot">
+                <!-- day headers: monday, tues -->
+                <span class="mp-day">Monday</span>
 
-                        <!-- details -->
-                        <div class="box-details">
-                            <a href="/recipes/<%= mealPlan.rec_id%>" class="rec-usr">
-                                <div class="box-one">
-                                    <div class="name-cont">
-                                        <!-- category -->
-                                        <span class="box-categ"><%= mealPlan.rec_categ %></span>
-                                        <!-- recipe name -->
-                                        <p class="box-name"><%= mealPlan.rec_name %></p>
-                                        <!-- rating -->
-                                        <% if (mealPlan.rec_rate) { %>
-                                            <div class="box-rate">
-                                                <% let rating = mealPlan.rec_rate/mealPlan.rec_rateCount; %> 
-                                                <% rating = Math.round(rating)%> 
-                                                <%= rating%>
-                                                <span class="str"></span>
-                                                <!-- <%#= mealPlan.rec_rate %> -->
-                                                <!-- <span class="str"></span> -->
-                                            </div>
-                                        <% } else { %>
-                                            <span class="box-not">This recipe hasn't been rated.</span>
-                                        <% } %>
+                <!-- recipe card -->
+                <div class="mp-slider owl-carousel">
+                    <% if (mealPlan.length > 0) { %>
+                    <% mealPlan.forEach(mealPlan => { %>
+                        <div class="mp-card">
+                            <div class="card-cont">
+                                <div class="mp-header">
+                                    <div class="clear-icon">
+                                        <a href="/mealPlan/delete/<%= mealPlan.rec_id%>" class="clear-mp"></a>
+                                        <a href="/recipes/<%= mealPlan.rec_id%>">
+                                        <img src="/images/<%= mealPlan.rec_image%>" alt="<%= mealPlan.rec_name %> Image" class="box-img">
+                                        </a>
                                     </div>
                                 </div>
-                            </a>                       
+
+                                <div class="mp-details">
+                                    <a href="/recipes/<%= mealPlan.rec_id%>" class="mp-usr">
+                                        <div class="mp-one">
+                                            <div class="mp-cont">
+                                                <span class="mp-categ"><%= mealPlan.rec_categ %></span>
+                                                <p class="mp-name"><%= mealPlan.rec_name %></p>
+                                                <% if (mealPlan.rec_rate) { %>
+                                                    <div class="mp-rate">
+                                                        <% let rating = mealPlan.rec_rate/mealPlan.rec_rateCount; %> 
+                                                        <% rating = Math.round(rating)%> 
+                                                        <%= rating%>
+                                                        <span class="mp-str"></span>
+                                                    </div>
+                                                <% } else { %>
+                                                    <span class="mp-empty">This recipe hasn't been rated.</span>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </a>                       
+                                </div>
+                            </div>
                         </div>
-                    </div>
-            </div>
-                <% }) %>
-                <% } else { %>
-                    <p class="empty">No saved meal recipes found.</p>
-                <% } %>
+                    <% }) %>
+                    <% } else { %>
+                        <span class="mp-empty"></span> 
+                    <% } %>
+                </div>
+
+                <span class="mp-day">Tuesday</span>
+
+                <span class="mp-day">Wednesday</span>
+
+                <span class="mp-day">Thursday</span>
+
+                <span class="mp-day">Friday</span>
+
+                <span class="mp-day">Saturday</span>
+
+                <span class="mp-day">Sunday</span>
             </div>
         </div>  
     
@@ -200,18 +218,58 @@
             searchModal.style.display = "none";
         }
         }
-        addfrom = document.querySelector('.addfrom');
 
-        window.onscroll = () =>{
-            navbar.classList.remove('active');
-            profile.classList.remove('active');
-            addfrom.classList.remove('active');
-        }
+        //for plus button in meal plan
+        addfrom = document.querySelector('.addfrom');
 
         document.querySelector('#plus-btn').onclick = () =>{
             addfrom.classList.toggle('active');
             navbar.classList.remove('active');
         }
+
+        window.onscroll = () =>{
+            addfrom.classList.remove('active');
+        }
+
+        //for slider
+        $(".mp-slider").owlCarousel({
+            nav: true,
+            dots: false,
+            mouseDrag: true,
+            responsive: {
+                360:{
+                    items: 2
+                },
+
+                414:{
+                    items: 2
+                },
+                
+                540: {
+                items: 2
+                },
+
+                768: {
+                items: 3
+                },
+
+                820: {
+                items: 4
+                },
+
+                912: {
+                items: 4
+                },
+
+                1024: {
+                items: 4
+                },
+
+                1400: {
+                items: 3
+                }
+            }
+        });
 
     </script>
 </body>
