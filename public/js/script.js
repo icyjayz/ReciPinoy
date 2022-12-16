@@ -12,9 +12,18 @@ document.querySelector('#user-btn').onclick = () =>{
    navbar.classList.remove('active');
 }
 
+//for meal plan button
+addfrom = document.querySelector('.addfrom');
+
+document.querySelector('#plus-btn').onclick = () =>{
+   addfrom.classList.toggle('active');
+   navbar.classList.remove('active');
+}
+
 window.onscroll = () =>{
    navbar.classList.remove('active');
    profile.classList.remove('active');
+   addfrom.classList.remove('active');
 }
 
 // function loader(){
