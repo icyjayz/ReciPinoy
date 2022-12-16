@@ -122,8 +122,8 @@
                 <input type="hidden" name="exIngsVal" value="" id="exIngsVal">  
             </div>
         </form>
-
-    <h3>Recommended Recipes</h3>
+    <br>
+    <h5>Recommended Recipes</h5>
         <div class="usr-container">
                 <% let count = 10; %> 
                 <% for( let index = 0; index < recId.length; index++ ) { %>
@@ -132,9 +132,7 @@
                             <div class="box-card">
                             <!-- img -->
                             <div class="box-header">
-                                <a href="/recipes/<%= recId[index]%>"><%= recName[index] %></a></td>
-                                <img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" height="100"></td>
-                                </a>
+                                <img src="/images/<%= recImage[index]%>" alt="<%= recName[index] %> Image" class="box-img">
                             </div>
                             <!-- details -->
                             <div class="box-details">
