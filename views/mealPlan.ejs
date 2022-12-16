@@ -54,7 +54,7 @@
                              <!-- border line -->
                             <span class="mp-line"></span>
 
-                            <!-- search resipes -->
+                            <!-- search recipes -->
                             <div class="userSearch">
                                 <button type="button" id ="searchBut" class="userBtn">Search Recipes</button>&nbsp;
                                 <div id="search" class="modal">
@@ -181,7 +181,7 @@
     <script>
         let searchModal = document.getElementById("search");
         let button = document.getElementById("searchBut");
-        let cls = document.getElementsByClassName("closeBut")[0];
+        let cls = document.getElementsByClassName("close");
 
         //open the modal
         button.onclick = function() {
@@ -190,8 +190,8 @@
 
         //close the modal
         cls.onclick = function() {
-
-            modal.style.display = "none";
+            // searchModal.style.display = "none";
+            document.getElementsByClassName('userSearch').style.display = "none";
         }
 
         //close it
@@ -199,6 +199,18 @@
         if (event.target == searchModal) {
             searchModal.style.display = "none";
         }
+        }
+        addfrom = document.querySelector('.addfrom');
+
+        window.onscroll = () =>{
+            navbar.classList.remove('active');
+            profile.classList.remove('active');
+            addfrom.classList.remove('active');
+        }
+
+        document.querySelector('#plus-btn').onclick = () =>{
+            addfrom.classList.toggle('active');
+            navbar.classList.remove('active');
         }
 
     </script>
