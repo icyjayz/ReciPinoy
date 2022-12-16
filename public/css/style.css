@@ -1881,6 +1881,169 @@ hr {
 }
 
 /*--------------------------------------------------------------
+# GET RECOMMENDATIONS
+--------------------------------------------------------------*/
+.parentContainer{
+   width: min(100%, 110rem);
+   /* max-width: 450px; */
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   /* background-color: blue; */
+ }
+
+ .parentContainer .ingCheck{
+   font-size: 1.5rem;
+   text-decoration: none;
+   font-family: 'Rubik';
+   color: var(--red);
+   background-color: white;
+   border: none;
+   outline: none;
+ }
+
+.parentContainer .searchandadd{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   padding: 1rem;
+   width: min(100%, 110rem);
+   /* background-color: red; */
+}
+
+.parentContainer .searchandadd .search {
+   background: yellow;
+   width: 75%;
+   position: relative;
+   box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+} 
+
+.parentContainer .searchandadd .addIngBtn, .parentContainer .searchandadd .excludeIngBtn{
+   border-radius: 40px;
+   display: flex;
+   cursor: pointer;
+   flex-direction: row;
+   width: fit-content;   
+   justify-content: space-around;
+   align-items: center;
+   padding:1rem 2.5rem;
+   font-size: 1.5rem;
+   color: white;
+}
+
+.parentContainer .searchandadd .addIngBtn{
+   background: var(--green);
+}
+
+.parentContainer .searchandadd .excludeIngBtn{
+   background: #DC3545;
+}
+
+.search input {
+   height: 50px;
+   width: 100%;
+   border-radius: 5px;
+   outline: none;
+   border: none;
+   padding: 0 60px 0 20px;
+   font-size: 18px;
+   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+ }
+
+ .search.active input {
+   border-radius: 5px 5px 0 0;
+ }
+
+ .search .icon {
+   position: absolute;
+   right: 0px;
+   top: 0px;
+   height: 7rem;
+   line-height: 70px;
+   color: var(--green);
+   cursor: pointer;
+ }
+
+ .search .iconExclude {
+   position: absolute;
+   right: 0px;
+   top: 0px;
+   height: 7rem;
+   line-height: 70px;
+   color: #DC3545;
+   cursor: pointer;
+ }
+
+ .container{
+   width: 90%;
+   margin: auto;
+   display: flex;
+}
+
+.addedIngBox, .excludedIngBox{
+   width: 50%;
+   min-height: 35rem;
+   margin: auto; 
+   box-shadow: 4px 4px 7px 2px rgba(0, 0, 0, 0.2);
+}
+
+.addedIngBox{
+   background: #DAF8ED; 
+}
+
+.excludedIngBox{
+   background: #F1AEB5; 
+}
+
+.addedIngBox h2, .excludedIngBox h2{
+   display: block;
+   font-size: 2rem;
+   margin-top: 1em;
+}
+
+.addedIngBox ul, .excludedIngBox ul{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+.addedIngBox ul li, .excludedIngBox ul li{
+   font-size: 1.8rem;
+   background-color: #D9D9D9;
+   border-radius: 40px;
+   list-style-type: none;
+   margin: 2%;
+   padding: 5px;
+   width: fit-content;
+   padding-right: 10px;
+   padding-left: 12px;
+}
+
+#getRecommBtn{
+   border-radius: 40px;
+   cursor: pointer;
+   min-width: 24vh;
+   padding:1rem 2.5rem;
+   font-size: 1.9rem;
+   font-weight: bold;
+   background-color: var(--green);
+   color: white;
+   align-self: center;
+}
+
+.toCenter{
+   display: block;
+   text-align: center;
+   margin: 2.5rem;
+}
+
+/*--------------------------------------------------------------
+# RECOMMEND RESULTS
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
 # PROFILE
 --------------------------------------------------------------*/
 .user-details{

@@ -23,35 +23,76 @@
     <%#- include('./partials/guestNav'); %>
     <%- include('./partials/userNav'); %>
     
-    <a class="back-btn" onclick="history.back()"><span class="rec-back">Home</span></a>
-    <br><br>
-    <h1>Recipe Recommender using ingredients</h1>
-    <br><br>
+    <div class ="recipeResults">
+        <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
+
+        <!-- title -->
+        <span class="titleheading">Recipe Recommender using Ingredients</span>
+
     <% if (msg != '') { %>
         <h3><%= msg %> </h3>
     <% } %>
-    <br><br>
-    <form action="/recommend" method="post" onsubmit="getAllIngs()">
-        <div id="ingInps">
-            <h3>Enter your ingredients onhand: </h3> 
-            <h4 id="ingCheck"></h4>
-            <input type="hidden" name="ingNum" id="ingNum" value="0">
-            <input type="text" name="ings[]" id="ing1" class ="ingsInp">
-            <ul id="ingCont"></ul>
-        </div>
-        <input type="hidden" name="ingsVal" value="" id="ingsVal"> 
-        <br><button type="button" id="addIngredientsBtn">Add another ingredient</button><br><br><br>
 
-        <div id="exIngs">
-            <input type="hidden" name="exIngNum" id="exIngNum" value="0">
-            <h3 id="exTitle">Excluded Ingredients: </h3>
-            <input type="text" name="exIng[]" class ="ingsInp" id="exIng">
-            <ul id="exIngCont"></ul>
+    <form action="/recommend" method="post" onsubmit="getAllIngs()">
+        <!-- Search Ingredients -->
+        <div class="parentContainer" id="ingInps">
+            <div class="searchandadd">
+                <div class="search">
+                    <input type="text" placeholder="Enter your ingredients onhand..." name="ings[]" id="ing1" class="ingsInp">
+                    <input type="hidden" name="ingNum" id="ingNum" value="0">
+                    <div class="icon">
+                        <i class="fa-solid fa-magnifying-glass-plus" style="font-size: 32px; margin-right: 8px;"></i>
+                    </div>
+                </div>
+                <button type="button" id="addIngredientsBtn" class="addIngBtn">
+                    <i class="fa fa-plus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Add Ingredients
+                </button>
+            </div>
+            <h4 id="ingCheck" class="ingCheck"></h4>
+            <br>
+            <div class="container">
+                <div class="addedIngBox">
+                    <h2 style="text-align: center;">Added Ingredients</h2>
+                    <br>
+                    <div style="text-align: center;">
+                        <ul id="ingCont"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="ingsVal" value="" id="ingsVal">
+        <br>
+        
+        <!-- Exclude Ingredients -->
+        <div class="parentContainer" id="exIngs">
+            <div class="searchandadd">
+                <div class="search">
+                    <input type="text" placeholder="Enter ingredients you want to exclude..." name="exIng[]" class ="ingsInp" id="exIng">
+                    <input type="hidden" name="exIngNum" id="exIngNum" value="0">
+                    <div class="iconExclude">
+                        <i class="fa-solid fa-magnifying-glass-minus" style="font-size: 32px; margin-right: 8px;"></i>
+                    </div>
+                </div>
+                <button type="button" id="exIngredientsBtn" class="excludeIngBtn">
+                    <i class="fa fa-minus fa-1x" aria-hidden="true" style="padding-right: 10px;"></i>Exclude Ingredients
+                </button>
+            </div>
+            <br>
+            <div class="container">
+                <div class="excludedIngBox">
+                    <h2 style="text-align: center;">Excluded Ingredients</h2>
+                    <br>
+                    <div style="text-align: center;">
+                        <ul id="exIngCont"></ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <input type="hidden" name="exIngsVal" value="" id="exIngsVal">
-        <br><button type="button" id="exIngredientsBtn">Exclude ingredients</button>
-        <br><br>
-        <button type="submit" disabled id="getRecommBtn">Get Recommendation!</button>
+        <br>
+
+        <span class="toCenter"><button type="submit" disabled id="getRecommBtn">Get Recommendation!</button></span>
+        
     </form>
 
     <script type="text/javascript">
@@ -108,7 +149,7 @@
                     let current = $(this);
                     if(current.children().size() > 0){
                         let ingStr = $(this).text();
-                        let newStr = ingStr.replace(/DEL/g, '');
+                        let newStr = ingStr.replace(/X/g, '');
                         newStr = newStr.trim();
                         iv.push(newStr.toLowerCase());
                     }
@@ -120,7 +161,7 @@
                     let current = $(this);
                     if(current.children().size() > 0){
                         let ingStr = $(this).text();
-                        let newStr = ingStr.replace(/DEL/g, '');
+                        let newStr = ingStr.replace(/X/g, '');
                         newStr = newStr.trim();
                         xv.push(newStr.toLowerCase());
                     }
@@ -138,7 +179,7 @@
             
                 jQuery('li[name="exIngLi[]"]').each(function() {
                 let str = $(this).text();
-                let newStr = str.replace(/DEL/g, '');
+                let newStr = str.replace(/X/g, '');
                 exIngArr.push(newStr.trim());
             });
             console.log("exIngArr: ", exIngArr);
@@ -149,7 +190,7 @@
             }
             else{
                 let newIngNum = parseInt($('#exIngNum').val()) + 1;
-                let p = '<li onclick="removeExIng(ing)" name="exIngLi[]"><pre>'+ ingstr +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></pre></li>';
+                let p = '<li onclick="removeExIng(ing)" name="exIngLi[]"><pre>'+ ingstr +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">X</b></pre></li>';
                 $('#exIngCont').append(p);
                 $("#exIng").val('');
                 $('#exIngNum').val(newIngNum);  
@@ -165,7 +206,7 @@
 
             jQuery('li[name="ingLi[]"]').each(function() {
                 let str = $(this).text();
-                let newStr = str.replace(/DEL/g, '');
+                let newStr = str.replace(/X/g, '');
                 ingStr.push(newStr.trim());
             });
 
@@ -177,7 +218,7 @@
             else{
                 let newIngNum = parseInt($('#ingNum').val()) + 1;
                 $('#ingNum').val(newIngNum); 
-                let p = '<li onclick="removeIng(this)" name="ingLi[]"><pre>'+ str +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">DEL</b></pre></li>';
+                let p = '<li onclick="removeIng(this)" name="ingLi[]"><pre>'+ str +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="color:red;">X</b></pre></li>';
                 $('#ingCont').append(p);
                 $("#ing1").val('');
                 let ingCheck = document.getElementById('ingCheck');
@@ -186,7 +227,7 @@
                 ingCount = ingNum - clickCount;
                 console.log("ingCount: ", ingCount);
                 if (ingCount >= 0 && ingCount < 4) {
-                    ingCheck.innerHTML = "Ingredients should be at least 4!";
+                    ingCheck.innerHTML = "NOTE: Ingredients should be at least 4!";
                 } else {
                     getRecommBtn.disabled = false;
                     ingCheck.innerHTML = '';
@@ -205,14 +246,14 @@
             ingStr = [];
             jQuery('li[name="ingLi[]"]').each(function() {
                 let str = $(this).text();
-                let newStr = str.replace(/DEL/g, '');
+                let newStr = str.replace(/X/g, '');
                 ingStr.push(newStr.trim());
             });
 
             console.log("ingStr: ", ingStr);
 
             if (ingCount >= 0 && ingCount < 4) {
-                ingCheck.innerHTML = "Ingredients should be at least 4!";
+                ingCheck.innerHTML = "NOTE: Ingredients should be at least 4!";
                 getRecommBtn.disabled = true;
             }   
         }
@@ -221,7 +262,7 @@
             exIngArr = [];
             jQuery('li[name="exIngLi[]"]').each(function() {
                 let str = $(this).text();
-                let newStr = str.replace(/DEL/g, '');
+                let newStr = str.replace(/X/g, '');
                 exIngArr.push(newStr.trim());
             });
 

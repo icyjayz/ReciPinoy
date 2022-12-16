@@ -105,7 +105,7 @@ exports.getRegData = (req,res) => {
                 glPassword = user.getUserPassword();
                 let rePassword = req.body.regRePasswordInp;
                 if(user.getUserPassword().length < 8){
-                    req.flash('msg', 'Passwords should be at least 8 characters!');
+                    req.flash('msg', 'Short passwords are easy to guess. Make one with at least 8 characters!');
                     res.redirect('/register'); 
                 }
                 if(user.getUserPassword() !== rePassword){
@@ -120,7 +120,7 @@ exports.getRegData = (req,res) => {
                         }
                         else if(row.length > 0)
                         {
-                            req.flash('msg', 'Email is already registered!');
+                            req.flash('msg', 'Your email is already registered!');
                             conn.release();
                             res.redirect('/register');
                         }
@@ -282,7 +282,7 @@ exports.otpPage = (req, res) => {
 exports.userVerified = async(req,res) => {
     try{  
         if (req.body.otpInp == otp) {
-            console.log('successfully registered!\n');
+            console.log('Successfully Registered!\n');
             //let user = new User();
             //console.log(user.getUserEmail());
             bcrypt.genSalt(10, async (err, salt) => {
@@ -307,7 +307,7 @@ exports.userVerified = async(req,res) => {
             
         }
         else {
-            req.flash('msg', 'Incorrect OTP! Try again!');
+            req.flash('msg', 'Incorrect OTP! Please try again!');
             res.redirect('/verify');
             //res.render('otpVerify', { title: 'Verify your email', msg: 'otp is incorrect'});
         }
@@ -800,7 +800,7 @@ pool.getConnection((err, conn) => {
                         resolve(id);
                     }
                     else{
-                        req.flash('msg', 'There is an invalid ingredient! Look for misspelled and try again!');
+                        req.flash('msg', 'There is an invalid ingredient! Look for misspelled word and try again!');
                         res.redirect('/recommend');
                     }
                 })
@@ -973,7 +973,7 @@ pool.getConnection((err, conn) => {
                             resolve(id);
                         }
                         else{
-                            req.flash('msg', 'There is an invalid ingredient! Look for misspelled and try again!');
+                            req.flash('msg', 'There is an invalid ingredient! Look for misspelled word and try again!');
                             res.redirect('/recommend');
                         }
                     })
@@ -1903,7 +1903,7 @@ exports.updateProfile = (req,res) => {
                             console.log(err);
                         } else {
                             conn.release();
-                            req.flash('msg', 'profile successfully updated!');
+                            req.flash('msg', 'Profile successfully updated!');
                             res.redirect('/profile');
                         }
                     })
@@ -1957,7 +1957,7 @@ exports.groceryPage = (req, res) => {
             renderPage();
         }
         else{
-            req.flash('msg', 'you need to log in first!');
+            req.flash('msg', 'You need to log in first!');
             res.redirect('/login');
         }
     } catch (error) {
@@ -2004,7 +2004,7 @@ exports.addGrocery = (req,res) => {
                                 console.log(err);
                             } else {
                                 conn.release();
-                                req.flash('msg', 'ingredients added to your grocery list!');
+                                req.flash('msg', 'Ingredients added to your Grocery List!');
                                 res.redirect('/recipes/' + recId);
                             }
                         })
@@ -2013,7 +2013,7 @@ exports.addGrocery = (req,res) => {
             })
         }
         else{
-            req.flash('msg', 'you need to log in first!');
+            req.flash('msg', 'You need to log in first!');
             res.redirect('/login');
         }
     } catch (error) {
@@ -2071,7 +2071,7 @@ exports.addItem = (req, res) => {
             })
         }
         else{
-            req.flash('msg', 'you need to log in first!');
+            req.flash('msg', 'You need to log in first!');
             res.redirect('/login');
         }
     } catch (error) {
@@ -2483,7 +2483,7 @@ exports.mealPlan = (req, res) =>{
                                         console.log(err);
                                     }
                                     else{
-                                        req.flash('msg', 'Recipe successfully saved to meal plan!');
+                                        req.flash('msg', 'Recipe successfully saved to your Meal Plan!');
                                         res.redirect('/recipes/' + id); 
                                     }
                                     })
@@ -2497,7 +2497,7 @@ exports.mealPlan = (req, res) =>{
                 }
             })
         }else{
-            req.flash('msg', 'You need to login to add the recipe to meal plan!')
+            req.flash('msg', 'You need to login to add the recipe to your Meal Plan!')
             res.redirect('/login');
         }
         
@@ -2540,7 +2540,7 @@ exports.mealPlanRec = (req, res) =>{
                         getRec(conn, session.userName);
                     }})
         }else{
-            req.flash('msg', 'You need to login to view mealplan!')
+            req.flash('msg', 'You need to login to view Meal Plan!')
             res.redirect('/login');
         }
         
@@ -2912,7 +2912,7 @@ exports.mealPlanEditButton = (req, res) => {
                                 console.log(err);
                             }
                             else{
-                                req.flash('msg', 'Successfully rescheduled the meal plan!');
+                                req.flash('msg', 'Successfully rescheduled the Meal Plan!');
                                 res.redirect('/mealPlan/' + id); 
                             }
                             })
@@ -2924,7 +2924,7 @@ exports.mealPlanEditButton = (req, res) => {
                     
             })
         }else{
-            req.flash('msg', 'You need to login to add the recipe to meal plan!')
+            req.flash('msg', 'You need to login to add the recipe to your Meal Plan!')
             res.redirect('/login');
         }
         
