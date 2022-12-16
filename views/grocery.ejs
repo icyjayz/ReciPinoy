@@ -25,8 +25,10 @@
         <a href="/" class="back-btn"><span class="rec-back">Home</span></a>
 
         <div class="grocery-header">
-            <span class="gl-name">Grocery List</span>
-            <button type="button" class="del-all" onclick="deleteAll()"></button>
+            <div class="gr-title">
+                <span class="gl-name">Grocery List</span>
+                <button type="button" class="del-all" onclick="deleteAll()"></button>
+            </div>
             <form action="/grocery-list/add" method="post" id="gForm" class="gForm">
                 <label for="gItem"></label>
                 <input type="text" name="newItem" id="newItem" class="newItem" placeholder="+ Add Item">
@@ -46,10 +48,12 @@
                         <% let l=list[index]; %>
                         <% if (l !='' ) { %>
                             <div class="gl-item">
+                                <input type="text" class="gl-txt" name="item[]" value="<%= l %>" readonly>
                                 <span class="delete"></span>
-                                    <input type="text" class="gl-txt" name="item[]" value="<%= l %>" readonly>
                                 <div class="itm-txt"></div>
                             </div>
+                            <!-- border line -->
+                            <span class="mp-line"></span>
                         <% } %>
                     <% } %>
                 </div>
